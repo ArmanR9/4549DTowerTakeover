@@ -17,7 +17,7 @@ EXTRA_CFLAGS=
 EXTRA_CXXFLAGS=
 
 # Set to 1 to enable hot/cold linking
-USE_PACKAGE:=1
+USE_PACKAGE:=0
 
 # Add libraries you do not wish to include in the cold image here
 # EXCLUDE_COLD_LIBRARIES:= $(FWDIR)/your_library.a
@@ -26,11 +26,19 @@ EXCLUDE_COLD_LIBRARIES:=
 # Set this to 1 to add additional rules to compile your project as a PROS library template
 IS_LIBRARY:=0
 # TODO: CHANGE THIS!
-LIBNAME:=libbest
+LIBNAME:=lib4549
 VERSION:=1.0.0
 # EXCLUDE_SRC_FROM_LIB= $(SRCDIR)/unpublishedfile.c
 # this line excludes opcontrol.c and similar files
 EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/main,$(foreach cext,$(CEXTS),$(file).$(cext)) $(foreach cxxext,$(CXXEXTS),$(file).$(cxxext)))
+#EXCLUDE_SRC_FROM_LIB+=$(SRCDIR)/gui.cpp             # exclude any files in the src/scripts directory
+#EXCLUDE_SRC_FROM_LIB+=$(SRCDIR)/odometry.cpp             # exclude any files in the src/scripts directory
+#EXCLUDE_SRC_FROM_LIB+=$(SRCDIR)/sensors.cpp             # exclude any files in the src/scripts directory
+#EXCLUDE_SRC_FROM_LIB+=$(SRCDIR)/utilities.cpp             # exclude any files in the src/scripts directory
+#EXCLUDE_SRC_FROM_LIB+=$(SRCDIR)/motors.cpp             # exclude any files in the src/scripts directory
+
+
+
 
 # files that get distributed to every user (beyond your source archive) - add
 # whatever files you want here. This line is configured to add all header files

@@ -34,19 +34,11 @@ struct PosUtils{
   float dR; // right wheel travel
   float dB; //backwheel travel
   float dS; // distance the tracking center travels
-
-/*  float dispLY; // Displacement our localY travelled
-  float dDispLY;
-  float prevDispLY;
-
-  float dispLX;
-  float dDispLX;
-  float prevDispLX;
-*/
 };
 
 // TODO:
 //Make this into a class with private interface (to avoid accidentally overwriting a,x,y)
+
 class ABSPosition{
 private:
   // Data that can't be exposed directly to the public interface

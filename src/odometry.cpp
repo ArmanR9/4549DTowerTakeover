@@ -21,7 +21,7 @@
 ABSPosition pos;
 Velocity velo;
 
-void tracking_update(void *){
+void tracking_update(void * ign){
 std::uint32_t timer = pros::millis();
 PosUtils odom;
 
@@ -29,11 +29,11 @@ pos.set_alpha(pos.get_a_initial());
 
 while(true){
 
-  odom.dL = (LB_mtr.get_position() - pos.lW) * ticks_to_in_mtr;
+  odom.dL = (LB_mtr.get_position() - pos.lW) * (ticks_to_in_mtr);
   //dL = (encoder360L.get_value() - pos.lW) * TICKS_TO_IN;
-  odom.dR = (RB_mtr.get_position() - pos.rW) * ticks_to_in_mtr;
+  odom.dR = (RB_mtr.get_position() - pos.rW) * (ticks_to_in_mtr);
   //dR = (encoder360R.get_value() - pos.rW)* TICKS_TO_IN;
-  odom.dB = (encoder360B.get_value() - pos.bW) * ticks_to_in;
+  odom.dB = (encoder360B.get_value() - pos.bW) * (ticks_to_in);
 
   odom.dS = odom.dL + odom.dR / 2.0;
 
@@ -89,13 +89,13 @@ else{
 
  pos.compute_position(odom);
  // Updating my global position from computing x,y,a from last cycle
-
+ std::cout << 'a';
 
   //Velocity tracking
   velo.compute_velocity(pos);
-
-
-  pros::Task::delay_until(&timer, 10);
+  pos.log_position();
+  pros::delay(10);
+//  pros::Task::delay_until(&timer, 10);
  }
 }
 

@@ -7,10 +7,12 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
-#include "odometry.hpp"
+//#include "odometry.hpp"
+#include "op.hpp"
 #include "motors.hpp"
 #include "sensors.hpp"
 #include "utilities.hpp"
+#include <vector>
 //#include "enver_logo.h"
 
 LV_IMG_DECLARE(logo);
@@ -27,6 +29,12 @@ static lv_style_t s_sm_text;
 
 static lv_style_t s_btn_rel;
 static lv_style_t s_btn_pr;
+
+static lv_style_t s_field_cont;
+static lv_style_t s_field;
+static lv_style_t s_robot;
+static lv_style_t s_line;
+
 
 lv_theme_t *th;
 void theme(){
@@ -84,6 +92,37 @@ void style_sm_text(){
   s_sm_text.text.color = LV_COLOR_WHITE;
 }
 
+
+void field_cont_style(){
+lv_style_copy(&s_field_cont ,&lv_style_plain);
+s_field_cont.body.main_color = LV_COLOR_BLACK;
+s_field_cont.body.grad_color = LV_COLOR_BLACK;
+s_field_cont.body.border.width = 0;
+s_field_cont.body.radius = 0;
+}
+
+void field_style(){
+  lv_style_copy(&s_field ,&lv_style_plain);
+  s_field_cont.body.main_color = LV_COLOR_WHITE;
+  s_field_cont.body.grad_color = LV_COLOR_WHITE;
+  s_field_cont.body.border.width = 0;
+  s_field_cont.body.radius = 0;
+}
+
+void robot_style(){
+  s_robot.body.radius = LV_RADIUS_CIRCLE;
+  s_robot.body.main_color = LV_COLOR_RED;
+  s_robot.body.grad_color = LV_COLOR_RED;
+  s_robot.body.border.color = LV_COLOR_WHITE;
+  s_robot.body.border.width = 2;
+  s_robot.body.border.opa = LV_OPA_100;
+}
+
+void line_style(){
+  s_line.line.width = 3;
+  s_line.line.opa = LV_OPA_100;
+  s_line.line.color = LV_COLOR_GREEN;
+}
 
 
 
@@ -144,6 +183,93 @@ static lv_res_t btn_reset_f(lv_obj_t * btn) {
    return LV_RES_OK; /*Return OK if the button is not deleted*/
 }
 
+lv_obj_t * robot = nullptr;
+lv_obj_t * line = nullptr;
+std::vector<lv_point_t> linePoints = {{0, 0}, {0, 0}};
+double fieldDim = 0.0;
+int lineWidth = 0;
+int lineLength = 0;
+
+void gui_odom(){
+  lv_obj_t * container;
+  container = lv_cont_create(lv_scr_act(), NULL);
+  lv_obj_set_size(container, lv_obj_get_width(lv_scr_act()), lv_obj_get_height(lv_scr_act()));
+  lv_obj_align(container, NULL, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_set_style(container, &s_field_cont);
+
+
+  lv_obj_t * field = lv_obj_create(container, NULL);
+  lv_coord_t size = std::min(lv_obj_get_width(container), lv_obj_get_height(container));
+  fieldDim = size;
+  lv_obj_set_size(field, size, size);
+  lv_obj_align(field, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
+  lv_obj_set_style(field, &s_field);
+
+  robot = lv_led_create(field, NULL);
+  lv_led_on(robot);
+  lv_obj_set_size(robot, lv_obj_get_width(field) / 15, lv_obj_get_height(field) / 15);
+  lv_obj_set_style(robot, &s_robot);
+
+  line = lv_line_create(field, NULL);
+  lv_obj_set_pos(line, 0, 0);
+  lv_obj_set_style(line, &s_line);
+
+  lineWidth = 3;
+  lineLength = fieldDim / 6;
+
+}
+
+void odom_update(void* ign){
+
+  while(true){
+  lv_line_set_points(line, linePoints.data(), linePoints.size());
+
+  double c_x = pos.get_x();
+  double c_y = pos.get_y();
+  double c_theta = radians_to_degrees(pos.get_alpha());
+
+  lv_obj_set_pos(robot, c_x, c_y);
+
+linePoints[0] = {(int16_t)((c_x * fieldDim)), (int16_t)((c_y * fieldDim) - (lineWidth/2))};
+double newY = lineLength * cos(c_theta);
+double newX = lineLength * sin(c_theta);
+linePoints[1] = {(int16_t)(newX + linePoints[0].x), (int16_t)(-newY + linePoints[0].y)};
+
+lv_line_set_points(line, linePoints.data(), linePoints.size());
+lv_obj_invalidate(line);
+
+
+  lv_obj_t * x_label2 = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_align(x_label2, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 10);
+  lv_obj_set_style(x_label2, &s_white_num);
+
+  lv_obj_t * y_label2 = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_align(y_label2, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 35);
+  lv_obj_set_style(y_label2, &s_white_num);
+
+  lv_obj_t * a_label2 = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_align(a_label2, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 60);
+  lv_obj_set_style(a_label2, &s_white_num);
+
+  std::ostringstream x2;
+  x2 << std::setprecision(4) << pos.get_x();
+  auto s12 = x2.str();
+  lv_label_set_text(x_label2, s12.c_str());
+
+  std::ostringstream y2;
+  y2 << std::setprecision(4) << pos.get_y();
+  auto s22 = y2.str();
+  lv_label_set_text(y_label2, s22.c_str());
+
+  std::ostringstream a2;
+  a2 << std::setprecision(4) << radians_to_degrees(pos.get_alpha());
+  auto s32 = a2.str();
+  lv_label_set_text(a_label2, s32.c_str());
+
+  pros::delay(30);
+  }
+  pros::delay(1);
+}
 
 
 void gui_debug() {
@@ -213,8 +339,7 @@ lv_label_set_text(label, "Vel A:");
 
 void debug_update(void*){
 //char x[5];
-double i = 5.1233456;
-
+double g = 5;
 lv_obj_t * x_label = lv_label_create(lv_scr_act(), NULL);
 lv_obj_align(x_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 10);
 lv_obj_set_style(x_label, &s_white_num);
@@ -247,10 +372,9 @@ lv_obj_set_style(vA_label, &s_white_num);
 
 
 while(true){
-i++;
-
+g++;
 std::ostringstream x;
-x << std::setprecision(4) << pos.get_x();
+x << std::setprecision(4) << xyz.get_x();//pos.get_x();
 auto s1 = x.str();
 lv_label_set_text(x_label, s1.c_str());
 
@@ -266,7 +390,7 @@ auto s3 = a.str();
 lv_label_set_text(a_label, s3.c_str());
 
 std::ostringstream e360b;
-e360b << std::setprecision(4) << encoder360B.get_value();//encoder360B.get_value();
+e360b << std::setprecision(4) << g;//  encoder360B.get_value();//encoder360B.get_value();
 auto s4 = e360b.str();
 lv_label_set_text(e360b_label, s4.c_str());
 
@@ -578,7 +702,12 @@ static lv_res_t demo_click_action(lv_obj_t * btn) {
   }
   else if (demo_id == 5){
   gui_debug();
-  pros::Task debug_task(debug_update, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "debug");
+  pros::Task debug_task(debug_update, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "LVGL: debug gui");
+  }
+
+  else if(demo_id == 6){
+  gui_odom();
+  pros::Task odom_task(odom_update, nullptr , TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "LVGL: odom gui");
   }
 
    return LV_RES_OK; /*Return OK if the button is not deleted*/
@@ -618,7 +747,10 @@ void gui_init() {
    style_btn_rel();
    style_sm_text();
    page();
-   //page2();
+   field_cont_style();
+   field_style();
+   robot_style();
+   line_style();
 
    lv_theme_set_current(th);
 }
@@ -713,9 +845,9 @@ void gui_init() {
   lv_obj_t * btn6 = lv_btn_create(lv_scr_act(), NULL);
   lv_obj_set_size(btn6, btn_width, btn_height);
   lv_obj_align(btn6, NULL, LV_ALIGN_IN_BOTTOM_RIGHT, -10, -15);
-  lv_obj_set_free_num(btn6, 5);               /*Set a unique number for the button*/
+  lv_obj_set_free_num(btn6, 6);               /*Set a unique number for the button*/
   lv_btn_set_action(btn6, LV_BTN_ACTION_CLICK, demo_click_action);
 
   label = lv_label_create(btn6, NULL);
-  lv_label_set_text(label, "DEBUG");
+  lv_label_set_text(label, "ODOM");
 }

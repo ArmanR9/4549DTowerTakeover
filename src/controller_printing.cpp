@@ -5,9 +5,11 @@
 #include "sensors.hpp"
 #include "motors.hpp"
 #include "joystick.hpp"
+#include "odometry.hpp"
+
 using namespace pros;
 
-std::array<std::string, 3> lines = {};
+std::array<std::string, 3> lines = {}; // init string arrays
 std::array<std::string, 3> lastLines = {};
 
 
@@ -26,7 +28,7 @@ DriverProfile* profile = (DriverProfile*)param; //cast void pointer param into t
 
     bool delayed = false;
 
-    switch(profile->getDrive()){
+    switch(profile->getDrive()){            // Switch case for switching printed strings on controller (Driver Layout)
       case (DriverProfile::Drive_State::TANK_DRIVE):
           lines[0] = "Tank";
         break;
@@ -40,7 +42,7 @@ DriverProfile* profile = (DriverProfile*)param; //cast void pointer param into t
           break;
     }
 
-     switch(profile->getCurve()){
+     switch(profile->getCurve()){ // Switch case for switching printed strings on controller (Curve setting)
      case (DriverProfile::Curve_State::CUBIC_DRIVE):
      lines[1] = "Cubic Curve";
      break;
@@ -55,7 +57,7 @@ DriverProfile* profile = (DriverProfile*)param; //cast void pointer param into t
      break;
    }
 
-   switch(profile->get_sModifier()){
+   switch(profile->get_sModifier()){ // Switch case for switching printed strings on controller (Joystick Modifier setting)
 
     case(DriverProfile::Modifier_State::SLOW_DRIVE):
     lines [2] = "Slow boi";
@@ -71,41 +73,30 @@ DriverProfile* profile = (DriverProfile*)param; //cast void pointer param into t
    }
 
 
-    //while(!pros::competition::is_autonomous()){
 
-    for(int i = 0; i < lines.size(); i++) {
+    for(int i = 0; i < lines.size(); i++) {  // For Loop to fill up controller screen string length (15 characters) (to remove default VEXOS UI)
 
       if(lines.at(i) != lastLines.at(i)) {
 
         std::string str = lines.at(i);
-        if(str.size() < maxWidth) {
-          str.insert(str.end(), maxWidth - str.size(), ' ');
+        if(str.size() < maxWidth) { // Check if string is less than max controller string length (15)
+          str.insert(str.end(), maxWidth - str.size(), ' '); // Fill up with spaces if characters unsued
         } else {
-          str.erase(str.begin() + maxWidth, str.end());
+          str.erase(str.begin() + maxWidth, str.end()); // Remove characters if over limit
         }
 
-
-/*          if(lines.at(i) == lines.at(1)){
-            master_controller.print(i, 0 , str.c_str(), opc_profile.get_profile());
-          }
-
-          else if(lines.at(i) == lines.at(3)){
-            master_controller.print(i, 0, str.c_str(), pros::battery::get_capacity());
-          }
-
-        */    master_controller.set_text(i, 0, str.c_str());
+        master_controller.set_text(i, 0, str.c_str()); // Set each chracter on each line indiviually
         master_controller.print(i, 0, str.c_str());
-      //  pros::c::controller_set_text(pros::E_CONTROLLER_MASTER, i, 0, str.c_str());
 
-        lastLines.at(i) = lines.at(i);
-        pros::delay(52);
+        lastLines.at(i) = lines.at(i); // Check for each cycle if character at (i) has changed
+        pros::delay(52); // Delay at max polling rate (50ms)
         delayed = true;
       }
 
     }
-//  }
+
     if(!delayed) {
-      pros::delay(52);
+      pros::delay(52); // if no changes to text, just sleep
     }
   }
 }

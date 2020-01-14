@@ -10,6 +10,7 @@
 #include "tilter.hpp"
 #include "lift.hpp"
 #include "okapi/api.hpp"
+#include "op.hpp"
 /**
  * A callback function for LLEMU's center button.
  *
@@ -48,8 +49,8 @@ void initialize() {
 //	pros::lcd::register_btn0_cb(auton_index_left);
 
 	pros::Task odometry_task_ctor(tracking_update, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "odometry task");
-	pros::Task tilter_task_ctor(tilter::tilter_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "tilter task");
-	pros::Task lift_task_ctor(lift::lift_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "lift task");
+//	pros::Task tilter_task_ctor(tilter::tilter_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "tilter task");
+//	pros::Task lift_task_ctor(lift::lift_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "lift task");
 
 }
 
@@ -83,8 +84,13 @@ void competition_initialize() {}
  * If the robot is disabled or communications is lost, the
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
+
  */
+ ABSPosition xyz;
 void opcontrol() {
+
+
+
 	lift::g_auton_flag = false;
 	lift::g_opc_flag = true;
 	bool pressed = false;
@@ -145,7 +151,7 @@ if(r1.changedToPressed() && iterator < lift::heights::E_NUM_OF_HEIGHTS - 1){
 
 
 
-
+  xyz.set_x(5);
 
 		/*pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
@@ -158,6 +164,7 @@ if(r1.changedToPressed() && iterator < lift::heights::E_NUM_OF_HEIGHTS - 1){
 		//RF_mtr = right;
 		//std::cout << "hi\n";
 	//	std::cout << master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A) << '\n';
+	 std::cout << "gfffff";
 		pros::delay(10);
 
 

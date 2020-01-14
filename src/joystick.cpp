@@ -79,7 +79,7 @@ int Analog_Control::speedCap(int control_value){
 
     if(m_max_speed > 120){
       control_value = m_max_speed * sgn_(control_value);
-      return control_value;//127 * control_value / max_speed;
+      return control_value;
       }
       else{
   return control_value;
@@ -93,11 +93,11 @@ int Analog_Control::calc_l_difference(int & deltaL){
 
     if(m_joy_difference < 15 && m_joy_difference > 0 && abs(getJoyLY(master_controller)) > 20){
       m_assist_control = deltaL;
+      return m_assist_control;
       }
       else {
-        m_assist_control = 0;
+       return 0;
       }
-return m_assist_control;
 }
 
 
@@ -107,11 +107,11 @@ int Analog_Control::calc_r_difference(int &deltaR){
 
   if(m_joy_difference < 15 && m_joy_difference > 0 && abs(getJoyRY(master_controller)) > 20){
       m_assist_control = deltaR;
+      return m_assist_control;
       } else {
         m_assist_control = 0;
+        return 0;
       }
-
-return m_assist_control;
 }
 
 /*-----------------------------
@@ -129,7 +129,7 @@ void joystick_drive(DriverProfile * profile, Analog_Control * analog){
 
       case (DriverProfile::Drive_State::ARCADE_DRIVE):
 
-        analog->powerLY = pow(master_controller.get_analog(ANALOG_LEFT_Y), 3);
+        analog->powerLY = analog->speedCap(pow(master_controller.get_analog(ANALOG_LEFT_Y), 3)) * analog->deadband(master_controller.get_analog(ANALOG_LEFT_Y));
         analog->powerLX = analog->speedCap(master_controller.get_analog(ANALOG_LEFT_X)) * analog->deadband(master_controller.get_analog(ANALOG_LEFT_X));
 
 
@@ -142,8 +142,14 @@ void joystick_drive(DriverProfile * profile, Analog_Control * analog){
 
       case (DriverProfile::Drive_State::ARCADE_LIFT_DRIVE):
 
-  // test this multiplying the control exponential
-      analog->powerLY = 1.1*(pow(master_controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y), 3)/16129);
+
+      analog->powerLY = analog->speedCap(pow(master_controller.get_analog(ANALOG_LEFT_Y), 3)) * analog->deadband(master_controller.get_analog(ANALOG_LEFT_Y));
+      analog->powerLX = analog->speedCap(pow(master_controller.get_analog(ANALOG_LEFT_X), 3)) * analog->deadband(master_controller.get_analog(ANALOG_LEFT_X));
+      analog->powerRY = pow(master_controller.get_analog(ANALOG_RIGHT_Y), 3) * analog->deadband(master_controller.get_analog(ANALOG_RIGHT_Y));
+
+      leftdrive_set(analog->powerLY + analog->powerLX);
+      rightdrive_set(analog->powerLY - analog->powerLX);
+      lift_set(analog->powerRY);
 
 
    // DEFAULT TANK DRIVE, the normal one
