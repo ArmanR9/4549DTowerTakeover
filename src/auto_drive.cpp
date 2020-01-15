@@ -20,24 +20,36 @@ void drive_coordinator(float setpoint, float velocity, float voltage){
   }
 }
 
-void motion_profile(float setpoint, float velocity = 200.0){
-float error = setpoint - encoder360avg_in();
+void motion_profile(double setpoint){
+Velocity profile;
+isAccel_done = false; // Set flag to false as we are beginning the acceleration stage.
 
-const double jerk = 0.1;
+// Bot's constraints; max jerk, accel, and velocity
+const double maxJerk = 0.1;
 const double maxAccel = 5.0;
-const double maxVel = velocity;
+const double maxVel = 200;
 
-double accel = 0.0;
+if(fabs(setpoint) > 200) setpoint = maxVel * sgn_(setpoint); // If over max velocity, adjust to +-200RPM
+
+double accel = 0.0; // intialize vel,accel,jerk is 0
 double vel = 0.0;
+double jerk = 0.0;
 
-while (vel < maxVel) {
-    if (accel < maxAccel) accel = std::min(accel + jerk, maxAccel);
-    vel = std::min(vel + accel, maxVel); // I accidentally did vel += maxVel when I intended to do vel += accel. I've also now added a cap to vel, although this is somewhat unecessary as the motors won't go any faster than they can lol.
-    drive_setV(vel);
+while (vel < setpoint){ // Until current velocity is at cruising speed, accelerate
+
+  vel = profile.get_vel();
+  accel = profile.get_accel(); // Set vel, accel, jerk all to current bot's.
+  jerk = profile.get_jerk();
+
+    if (accel < maxAccel) accel = std::min(accel + jerk, maxAccel); // Keep increasing the accleration by the jerk (limit accel not to go over constraint)
+    vel = std::min(vel + accel, setpoint); // Add the acceleration to the velocity until it peaks to max allowable velocity
+    drive_setV(vel); // Drive at the current computed velocity
     pros::delay(10);
 }
-g_currError = error;
-isAccel_done = true;
+//g_currError = error;
+isAccel_done = true; // Acceleration is done, enable flag and start normal motion algorithim.
+
+
 // send target as global, calculate the error during this function, do target -= target - error to find remaining target left, and feed it into drive_encoder
 }
 

@@ -92,7 +92,7 @@ else{
  std::cout << 'a';
 
   //Velocity tracking
-  velo.compute_velocity(pos);
+  velo.compute_velocity_xya(pos);
   pos.log_position();
   pros::delay(10);
 //  pros::Task::delay_until(&timer, 10);
@@ -100,13 +100,13 @@ else{
 }
 
 void ABSPosition::compute_position(PosUtils& o){
-m_x += o.h * sin(o.beta);
-m_x += o.hB * cos(o.beta);
+m_x += o.h * sin(o.beta); // Multiply h by sin of our ending engle to get x
+m_x += o.hB * cos(o.beta); // Same as above but for back arc
 
-m_y += o.h * cos(o.beta);
-m_y += o.hB * sin(-o.beta);
+m_y += o.h * cos(o.beta); // Multiply h by cos of our ending engle to get y
+m_y += o.hB * sin(-o.beta); // Same as above but for back arc (sin- for rotation matrix)
 
-m_alpha += o.dAlpha;
+m_alpha += o.dAlpha; // Add the displacement of alpha to our current alpha
 }
 
 
@@ -151,23 +151,41 @@ void ABSPosition::log_position(){
 // **** Velocity ***** //
 // ******************* //
 
-void Velocity::compute_velocity(ABSPosition& position){
-  m_curTime = pros::millis();
-  m_dT = m_curTime - m_lastTime;
+void Velocity::compute_velocity_xya(ABSPosition& position){
+  m_curTime = pros::millis(); // Current time
+  m_dT = m_curTime - m_lastTime; // Calculate the time different between cycles
 
     if(m_dT > 40){
-    m_vel_x = (position.get_x() - m_last_pos_x) / (static_cast<float>(m_dT) / 1000.0);
-    m_vel_y = (position.get_y() - m_last_pos_y) / (static_cast<float>(m_dT) / 1000.0);
-    m_vel_a = (position.get_alpha() - m_last_pos_a) / (static_cast<float>(m_dT) / 1000.0);
+    m_vel_x = (position.get_x() - m_last_pos_x) / (m_dT / 1000.0); // Velocity is ΔdX over Δt (conversion from ms to s)
+    m_vel_y = (position.get_y() - m_last_pos_y) / (m_dT / 1000.0); // Velocity is ΔdY over Δt (conversion from ms to s)
+    m_vel_a = (position.get_alpha() - m_last_pos_a) / (m_dT / 1000.0); // Velocity is ΔdA over Δt (conversion from ms to s)
 
      m_last_pos_x = position.get_x();
-     m_last_pos_y = position.get_y();
+     m_last_pos_y = position.get_y(); // Get the last positions from last cycle.
      m_last_pos_a = position.get_alpha();
 
-     m_lastTime = m_curTime;
+     m_lastTime = m_curTime; // Get the last time from last cycle
     }
 
  }
+
+
+void Velocity::compute_velo_accel_jerk(){
+  m_curTime = pros::millis(); // Current time
+  m_dT = m_curTime - m_lastTime; // Calculate the time different between cycles
+
+    if(m_dT > 40){ // Calculate every 40ms
+    m_vel = (encoder360avg_in() - m_last_pos) / (m_dT / 1000.0); // Velocity is Δd over Δt (conversion from ms to s)
+    m_accel = (m_vel - m_last_vel) / (m_dT / 1000.0); // Acceleration is Δv over Δt (conversion from ms to s)
+    m_jerk = (m_accel - m_last_accel) / (m_dT / 1000.0); // Jerk is Δa over Δt (conversion from ms to s)
+
+     m_last_pos = encoder360avg_in();
+     m_last_vel = m_vel;    // Get the last velocity, acceleration, and jerk from last cycle.
+     m_last_accel = m_accel;
+
+     m_lastTime = m_curTime; // Get the last time from last cycle
+    }
+}
 
 void Velocity::reset_velocity(ABSPosition& position){
 m_vel_x = m_vel_y = m_vel_a = 0.0;

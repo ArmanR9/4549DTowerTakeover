@@ -90,10 +90,17 @@ class Velocity{
     double m_vel_y;
     double m_vel_a;
 
+    double m_vel;
+    double m_accel;
+    double m_jerk;
+
     double m_last_pos_x;
     double m_last_pos_y;
     double m_last_pos_a;
 
+    double m_last_pos;
+    double m_last_vel;
+    double m_last_accel;
 
     uint32_t m_curTime;
     uint32_t m_lastTime;
@@ -102,17 +109,26 @@ class Velocity{
 public:
 
 // Methods
-void compute_velocity(ABSPosition& position);
+void compute_velocity_xya(ABSPosition& position);
+void compute_velo_accel_jerk();
 
 // Setters
 void set_vel_x(double vx){ m_vel_x = vx; }
 void set_vel_y(double vy){m_vel_y = vy;}
 void set_vel_a(double va){m_vel_a = va;}
 
+void set_vel(double v){ m_vel = v; }
+void set_accel(double a){m_accel = a;}
+void set_jerk(double j){m_jerk = j;}
+
 // Getters
 double get_vel_x(){ return m_vel_x;}
 double get_vel_y(){ return m_vel_y;}
 double get_vel_a(){ return m_vel_a;}
+
+double get_vel(){ return m_vel; }
+double get_accel(){ return m_accel;}
+double get_jerk(){ return m_jerk;}
 
 void reset_velocity(ABSPosition &position);
 void log_velocity();
