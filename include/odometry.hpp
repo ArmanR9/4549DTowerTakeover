@@ -3,7 +3,6 @@
 #include "main.h"
 
 
-
 struct Vector{
 double x;
 double y;

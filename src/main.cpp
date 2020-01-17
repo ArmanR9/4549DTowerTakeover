@@ -10,7 +10,6 @@
 #include "tilter.hpp"
 #include "lift.hpp"
 #include "okapi/api.hpp"
-#include "op.hpp"
 /**
  * A callback function for LLEMU's center button.
  *
@@ -37,6 +36,9 @@ void initialize() {
 	pros::delay(1000);
   gui_init();
 	gui();
+	encoder360B.reset();
+	encoder360L.reset();
+	encoder360R.reset();
 //	reset_sensors();
 //	pros::lcd::initialize();
 
@@ -48,7 +50,7 @@ void initialize() {
 //	pros::lcd::register_btn1_cb(auton_locker);
 //	pros::lcd::register_btn0_cb(auton_index_left);
 
-	pros::Task odometry_task_ctor(tracking_update, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "odometry task");
+//	pros::Task odometry_task_ctor(tracking_update, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "odometry task");
 //	pros::Task tilter_task_ctor(tilter::tilter_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "tilter task");
 //	pros::Task lift_task_ctor(lift::lift_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "lift task");
 
@@ -86,15 +88,12 @@ void competition_initialize() {}
  * task, not resume it from where it left off.
 
  */
- ABSPosition xyz;
+//ABSPosition xyz;
+
 void opcontrol() {
-
-
-
+	//lift_mtr.set_brake_mode(MOTOR_BRAKE_HOLD);
 	lift::g_auton_flag = false;
 	lift::g_opc_flag = true;
-	bool pressed = false;
-	bool pressed2 = false;
   int iterator{0};
 
 	okapi::Controller master2;
@@ -150,21 +149,51 @@ if(r1.changedToPressed() && iterator < lift::heights::E_NUM_OF_HEIGHTS - 1){
 	}
 
 
+if(master_controller.get_digital(DIGITAL_R1)){
+intake_set(127);
+}
 
-  xyz.set_x(5);
+else if (master_controller.get_digital(DIGITAL_R2)){
+intake_set(-127);
+}
+
+else { intake_set(0);}
+
+if(master_controller.get_digital(DIGITAL_L1)){
+lift_mtr.move_velocity(75);
+}
+
+else if (master_controller.get_digital(DIGITAL_R2)){
+lift_mtr.move_velocity(-50);
+}
+
+else { lift_mtr.move_velocity(0); }
+
+
+
+if(master_controller.get_digital(DIGITAL_A)){
+tilter_mtr.move(100);
+}
+
+else if (master_controller.get_digital(DIGITAL_B)){
+tilter_mtr.move(-50);
+}
+
+else { tilter_mtr.move(0); }
+  //xyz.set_x(5);
 
 		/*pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 										 */
-	//	int left = master_controller.get_analog(ANALOG_LEFT_Y);
-		//int right = master_controller.get_analog(ANALOG_RIGHT_Y);
+           	//	int left = master_controller.get_analog(ANALOG_LEFT_Y);
+		      //int right = master_controller.get_analog(ANALOG_RIGHT_Y);
 
-		//LF_mtr = left;
-		//RF_mtr = right;
-		//std::cout << "hi\n";
-	//	std::cout << master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A) << '\n';
-	 std::cout << "gfffff";
+		    //LF_mtr = left;
+	  	//RF_mtr = right;
+		 //std::cout << "hi\n";
+	 //	std::cout << master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A) << '\n';
+	std::cout << encoder360B.get_value() << encoder360L.get_value() << encoder360R.get_value() << std::endl;
 		pros::delay(10);
 
 

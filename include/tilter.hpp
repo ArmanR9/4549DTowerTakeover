@@ -107,11 +107,12 @@ public:
 
 
 
+
 namespace tilter {
 extern bool g_auton_flag;
 extern bool g_opc_flag;
 
-enum class State_Machine :int{
+enum class State_Machine : int{
 E_OFF, // 0
 E_STACK, // 1
 E_LIFT // 2

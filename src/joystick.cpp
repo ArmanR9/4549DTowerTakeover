@@ -158,15 +158,15 @@ void joystick_drive(DriverProfile * profile, Analog_Control * analog){
 
 
          analog->powerLY = (pow (getJoyLY(master_controller), 2) / 127) * sgn_(getJoyLY(master_controller));
-         analog->powerLY -= analog->calc_l_difference(delta_joyL) * sgn_(getJoyLY(master_controller));
-         analog->powerLY *= analog->deadband(getJoyLY(master_controller));
+        // analog->powerLY -= analog->calc_l_difference(delta_joyL) * sgn_(getJoyLY(master_controller));
+        // analog->powerLY *= analog->deadband(getJoyLY(master_controller));
 
            leftdrive_set((analog->speedCap(analog->powerLY))*profile->getModifier());
 
 
          analog->powerRY = (pow (getJoyRY(master_controller), 2) / 127) * sgn_(getJoyRY(master_controller));
-         analog->powerRY -= analog->calc_r_difference(delta_joyR) * sgn_(getJoyRY(master_controller));
-         analog->powerRY *= analog->deadband(getJoyRY(master_controller));
+         //analog->powerRY -= analog->calc_r_difference(delta_joyR) * sgn_(getJoyRY(master_controller));
+        // analog->powerRY *= analog->deadband(getJoyRY(master_controller));
 
            rightdrive_set((analog->speedCap(analog->powerRY))*profile->getModifier());
 

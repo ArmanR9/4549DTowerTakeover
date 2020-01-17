@@ -8,14 +8,36 @@ namespace tilter{
   bool g_auton_flag;
   bool g_opc_flag;
 
-  tilter::State_Machine state;
+  State_Machine state;
   int g_target;
 
+  void setTarget(State_Machine setTarget){
+
+      switch(setTarget){
+
+            case(State_Machine::E_OFF):
+
+                g_target = 0;
+                break;
+
+                case(State_Machine::E_STACK):
+
+                g_target = 2000;
+                break;
+
+                case(State_Machine::E_LIFT):
+
+                g_target = 1000;
+
+                break;
+              }
+
+      }
 
 
 
 
-   tilter::State_Machine get_state(){
+   State_Machine get_state(){
    return state;
    }
 
@@ -35,6 +57,28 @@ namespace tilter{
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 void Tilter::set_state(State_Machine s){

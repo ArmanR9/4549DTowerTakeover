@@ -29,9 +29,9 @@ pos.set_alpha(pos.get_a_initial());
 
 while(true){
 
-  odom.dL = (LB_mtr.get_position() - pos.lW) * (ticks_to_in_mtr);
+  odom.dL = (encoder360L.get_value() - pos.lW) * (ticks_to_in_mtr);
   //dL = (encoder360L.get_value() - pos.lW) * TICKS_TO_IN;
-  odom.dR = (RB_mtr.get_position() - pos.rW) * (ticks_to_in_mtr);
+  odom.dR = (encoder360R.get_value()  - pos.rW) * (ticks_to_in_mtr);
   //dR = (encoder360R.get_value() - pos.rW)* TICKS_TO_IN;
   odom.dB = (encoder360B.get_value() - pos.bW) * (ticks_to_in);
 
@@ -93,7 +93,7 @@ else{
 
   //Velocity tracking
   velo.compute_velocity_xya(pos);
-  pos.log_position();
+///  pos.log_position();
   pros::delay(10);
 //  pros::Task::delay_until(&timer, 10);
  }

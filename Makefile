@@ -30,7 +30,7 @@ LIBNAME:=lib4549
 VERSION:=1.0.0
 # EXCLUDE_SRC_FROM_LIB= $(SRCDIR)/unpublishedfile.c
 # this line excludes opcontrol.c and similar files
-EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/main,$(foreach cext,$(CEXTS),$(file).$(cext)) $(foreach cxxext,$(CXXEXTS),$(file).$(cxxext)))
+#EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/main,$(foreach cext,$(CEXTS),$(file).$(cext)) $(foreach cxxext,$(CXXEXTS),$(file).$(cxxext)))
 #EXCLUDE_SRC_FROM_LIB+=$(SRCDIR)/gui.cpp             # exclude any files in the src/scripts directory
 #EXCLUDE_SRC_FROM_LIB+=$(SRCDIR)/odometry.cpp             # exclude any files in the src/scripts directory
 #EXCLUDE_SRC_FROM_LIB+=$(SRCDIR)/sensors.cpp             # exclude any files in the src/scripts directory

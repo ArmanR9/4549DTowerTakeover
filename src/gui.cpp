@@ -7,8 +7,7 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
-//#include "odometry.hpp"
-#include "op.hpp"
+#include "odometry.hpp"
 #include "motors.hpp"
 #include "sensors.hpp"
 #include "utilities.hpp"
@@ -30,10 +29,12 @@ static lv_style_t s_sm_text;
 static lv_style_t s_btn_rel;
 static lv_style_t s_btn_pr;
 
+/*
 static lv_style_t s_field_cont;
 static lv_style_t s_field;
 static lv_style_t s_robot;
 static lv_style_t s_line;
+*/
 
 
 lv_theme_t *th;
@@ -92,7 +93,7 @@ void style_sm_text(){
   s_sm_text.text.color = LV_COLOR_WHITE;
 }
 
-
+/*
 void field_cont_style(){
 lv_style_copy(&s_field_cont ,&lv_style_plain);
 s_field_cont.body.main_color = LV_COLOR_BLACK;
@@ -123,7 +124,7 @@ void line_style(){
   s_line.line.opa = LV_OPA_100;
   s_line.line.color = LV_COLOR_GREEN;
 }
-
+*/
 
 
 int auton_sel = 0;
@@ -189,7 +190,7 @@ std::vector<lv_point_t> linePoints = {{0, 0}, {0, 0}};
 double fieldDim = 0.0;
 int lineWidth = 0;
 int lineLength = 0;
-
+/*
 void gui_odom(){
   lv_obj_t * container;
   container = lv_cont_create(lv_scr_act(), NULL);
@@ -218,10 +219,11 @@ void gui_odom(){
   lineLength = fieldDim / 6;
 
 }
-
+*/
 void odom_update(void* ign){
 
-  while(true){
+  //while(true){
+    /*
   lv_line_set_points(line, linePoints.data(), linePoints.size());
 
   double c_x = pos.get_x();
@@ -269,6 +271,7 @@ lv_obj_invalidate(line);
   pros::delay(30);
   }
   pros::delay(1);
+  */
 }
 
 
@@ -374,7 +377,7 @@ lv_obj_set_style(vA_label, &s_white_num);
 while(true){
 g++;
 std::ostringstream x;
-x << std::setprecision(4) << xyz.get_x();//pos.get_x();
+x << std::setprecision(4) << pos.get_x();//pos.get_x();
 auto s1 = x.str();
 lv_label_set_text(x_label, s1.c_str());
 
@@ -705,11 +708,6 @@ static lv_res_t demo_click_action(lv_obj_t * btn) {
   pros::Task debug_task(debug_update, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "LVGL: debug gui");
   }
 
-  else if(demo_id == 6){
-  gui_odom();
-  pros::Task odom_task(odom_update, nullptr , TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "LVGL: odom gui");
-  }
-
    return LV_RES_OK; /*Return OK if the button is not deleted*/
 }
 
@@ -747,11 +745,11 @@ void gui_init() {
    style_btn_rel();
    style_sm_text();
    page();
-   field_cont_style();
+   /*field_cont_style();
    field_style();
    robot_style();
    line_style();
-
+*/
    lv_theme_set_current(th);
 }
 

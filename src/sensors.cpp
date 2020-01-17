@@ -3,11 +3,11 @@
 #include "motors.hpp"
 //#include "utilities.h"
 
-pros::ADIEncoder encoder360R (1,2,true); // top port wire | bottom port wire | reverse boolean
-pros::ADIEncoder encoder360L (3,4,false);
-pros::ADIEncoder encoder360B (5,6, true);
-pros::ADIPort lift_pot (5, pros::E_ADI_ANALOG_IN);
-pros::ADIPort tilter_pot(6, pros::E_ADI_ANALOG_IN);
+pros::ADIEncoder encoder360R (5,6,true); // top port wire | bottom port wire | reverse boolean
+pros::ADIEncoder encoder360L (1,2,false);
+pros::ADIEncoder encoder360B (3,4, true);
+//pros::ADIPort lift_pot (5, pros::E_ADI_ANALOG_IN);
+//pros::ADIPort tilter_pot(6, pros::E_ADI_ANALOG_IN);
 pros::Controller master_controller(pros::E_CONTROLLER_MASTER);
 
 

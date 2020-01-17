@@ -2,14 +2,14 @@
 #include "main.h"
 // Motor constructor(uint8_t port, enum E_MOTOR_GEARSET, bool reverse, enum E_MOTOR_ENCODER)
 
-pros::Motor LF_mtr (6, pros::E_MOTOR_GEARSET_18, false , pros::E_MOTOR_ENCODER_COUNTS); //false  10 10
-pros::Motor RF_mtr (5, pros::E_MOTOR_GEARSET_18, true , pros::E_MOTOR_ENCODER_COUNTS); // port 12 true
-pros::Motor RIntake_mtr (11, pros::E_MOTOR_GEARSET_36, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor LF_mtr (8, pros::E_MOTOR_GEARSET_18, false , pros::E_MOTOR_ENCODER_COUNTS); //false  10 10
+pros::Motor RF_mtr (7, pros::E_MOTOR_GEARSET_18, true , pros::E_MOTOR_ENCODER_COUNTS); // port 12 true
+pros::Motor RIntake_mtr (13, pros::E_MOTOR_GEARSET_36, true, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor LIntake_mtr (10, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor tilter_mtr (20, pros::E_MOTOR_GEARSET_36, true, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor RB_mtr (19, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS); // [port 4] true
-pros::Motor LB_mtr (12, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);// port 5 false
-pros::Motor lift_mtr (13, pros::E_MOTOR_GEARSET_36, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor tilter_mtr (12, pros::E_MOTOR_GEARSET_36, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor RB_mtr (6, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS); // [port 4] true
+pros::Motor LB_mtr (5, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);// port 5 false
+pros::Motor lift_mtr (4, pros::E_MOTOR_GEARSET_36, true, pros::E_MOTOR_ENCODER_COUNTS);
 
 float encoder_avg_mtrs(){
 return (LF_mtr.get_position() + RF_mtr.get_position() + RB_mtr.get_position() + LB_mtr.get_position()) / 4;
