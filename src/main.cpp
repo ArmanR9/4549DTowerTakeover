@@ -44,11 +44,13 @@ std::shared_ptr<pros::Task> lift_task_ctor(nullptr);
 
 void initialize() {
 	pros::delay(1000);
-  gui_init();
+  	gui_init();
 	gui();
 	encoder360B.reset();
 	encoder360L.reset();
 	encoder360R.reset();
+	pos.reset_pos();
+
 	tilter_mtr.tare_position();
 //	reset_sensors();
 //	pros::lcd::initialize();
@@ -110,7 +112,7 @@ void autonomous(){
 	using namespace okapi;
 	using namespace okapi::literals;
 
-   driveToPosition(12.0, 0.0, 0.0, 0.0, 0.1, 50.0, true, true);
+   driveToPosition(12.0, 0.0, pos.get_y(), pos.get_x(), 0.1, 50.0, true, true);
 /*
 	auto chassis =
 	ChassisControllerBuilder()
@@ -282,11 +284,11 @@ drive_set(-35);
 intake_set(-50);
 }
 
-if(master_controller.get_digital_new_press(DIGITAL_DOWN)){
-bool prezzed = !prezzed;
-if(prezzed)
-autonomous();
-}
+//if(master_controller.get_digital_new_press(DIGITAL_DOWN)){
+//bool prezzed = !prezzed;
+//if(prezzed)
+//autonomous();
+//}
 /*
 if(master_controller.get_digital(DIGITAL_L1)){
 lift_mtr.move_velocity(75);

@@ -930,9 +930,11 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
         std::cout << "LINE A: " << lineAngle  << std::endl << std::endl;
 
 
-        pos_drive.calculateTimer(pos_drive.getSettle() , pos_drive.getError());
+        pos_drive.calculateTimer(pos_drive.getSettle(), pos_drive.getError());
 
         do{
+           std::cout << "get x: " << pos.get_x()  << std::endl << std::endl;
+            
 
           cur_pos_vector.x = pos.get_x() - x;
           cur_pos_vector.y = pos.get_y() - y;
@@ -950,7 +952,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
             correction *= kP_c;
 
 
-            if(direction == _Dir::BWD){
+            if(direction == _Dir::FWD){
             correction *= -1;
             }
           }
@@ -963,7 +965,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
          switch(sgn_(correction)){
 
          case(1):
-         driveLR_set(final_power, final_power + correction);
+         driveLR_set(final_power + correction, final_power );//+ correction);
          break;
 
          case(-1):

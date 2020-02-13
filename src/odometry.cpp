@@ -17,12 +17,12 @@
 //Polar p;
 ABSPosition pos;
 Velocity velo;
+Velocity wheel_vel;
 
 void tracking_update(void * ign){
 std::uint32_t timer = pros::millis();
 PosUtils odom;
 
-pos.set_alpha(pos.get_a_initial());
 
 while(true){
 
@@ -111,7 +111,7 @@ m_x += o.h * sin(o.beta); // Multiply h by sin of our ending engle to get x
 m_x += o.hB * cos(o.beta); // Same as above but for back arc
 
 m_y += o.h * cos(o.beta); // Multiply h by cos of our ending engle to get y
-m_y += o.hB * sin(-o.beta); // Same as above but for back arc (sin- for rotation matrix)
+m_y += o.hB * -sin(o.beta); // Same as above but for back arc (sin- for rotation matrix)
 
 m_alpha += o.dAlpha; // Add the displacement of alpha to our current alpha
 
@@ -122,7 +122,7 @@ m_angularV = o.dAlpha; // Angular displacement of the robot
 
 void ABSPosition::computeX(PosUtils& o){
 m_x += o.h * sin(o.beta);
-//m_x += o.hB * cos(o.beta);
+m_x += o.hB * cos(o.beta);
 }
 
 void ABSPosition::computeY(PosUtils& o){
@@ -247,7 +247,10 @@ return atan2(iLine.p2.x - iLine.p1.x, iLine.p2.y - iLine.p1.y);
 }
 
 double getLineLength(Path iLine){
-return sqrt(pow(iLine.p2.x - iLine.p1.x, 2) + pow(iLine.p2.y - iLine.p1.x, 2));
+float x = iLine.p2.x - iLine.p1.x;
+float y = iLine.p2.y - iLine.p1.y;
+
+return sqrt(x * x + y * y);
 }
 
 
@@ -258,7 +261,7 @@ p.r = sqrt(v.x * v.x + v.y * v.y);
 p.theta = atan2(v.y, v.x);
 }
 
-else p.r = p.theta = 0;
+else { p.r = p.theta = 0; }
 
 return p;
 }
@@ -269,7 +272,7 @@ if(p.r){
 v.x = cos(p.theta) * p.r;
 v.y = sin(p.theta) * p.r;
 }
-else v.x = v.y = 0;
+else { v.x = v.y = 0; }
 
 return v;
 }
