@@ -31,6 +31,7 @@ float encoder_RIntake();
 
 void reset_mtr_encoders();
 
+void driveLR_vel_set(int velL, int velR);
 void driveLR_set(int voltageL, int voltageR);
 void turning_set(int voltage);
 void drive_set(int voltage);

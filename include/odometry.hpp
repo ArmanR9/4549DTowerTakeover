@@ -161,12 +161,15 @@ double get_vel(){ return m_vel; }
 double get_accel(){ return m_accel;}
 double get_jerk(){ return m_jerk;}
 
+//void applyHarshStop(Velocity& vel);
+
 void reset_velocity(ABSPosition &position);
 void log_velocity();
 
  Velocity() {}
 };
 
+void applyHarshStop();
 
 double getLineAngle(Path iline);
 

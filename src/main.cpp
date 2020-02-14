@@ -112,7 +112,7 @@ void autonomous(){
 	using namespace okapi;
 	using namespace okapi::literals;
 
-   driveToPosition(12.0, 0.0, pos.get_y(), pos.get_x(), 0.1, 50.0, true, true);
+   driveToPosition(12.0, 0.0, pos.get_y(), pos.get_x(), 0.1, 50.0, true, true, false);
 /*
 	auto chassis =
 	ChassisControllerBuilder()

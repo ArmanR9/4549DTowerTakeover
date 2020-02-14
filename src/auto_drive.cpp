@@ -877,7 +877,7 @@ rightdrive_set(0);
 
 
 // double kP, double kD, double kI, double threshold, double maxVel, uint32_t settle, uint32_t max_time
-void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float maxVel, bool enableCorrect, bool forward){
+void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float maxVel, bool enableCorrect, bool forward, bool harshStop){
 
 // Initialize PID
   PID pos_drive(7.5, 0.0, 0.0, 2.0, 100, 200, 5000);
@@ -899,7 +899,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
   float lineLength = getLineLength(followLine);
   // The angle of the line to rotate our local position to.
   float lineAngle = getLineAngle(followLine);
-  // nearest angle to the line
+  // nearest angle to the line (Flip the angle by 180 degrees if moving backwards)
   float pidAngle = nearAngle((lineAngle - (forward == false ? PI : 0)), pos.get_alpha());
 
   pos_drive.setMaxVel(maxVel);
@@ -934,7 +934,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
 
         do{
            std::cout << "get x: " << pos.get_x()  << std::endl << std::endl;
-            
+
 
           cur_pos_vector.x = pos.get_x() - x;
           cur_pos_vector.y = pos.get_y() - y;
@@ -948,11 +948,10 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
            errorX = cur_pos_vector.x + cur_pos_vector.y * sin(errorA) / cos(errorA);
            correctA = atan2(x - pos.get_x(), y - pos.get_y());
 
-            correction = std::abs(errorX) > maxErrX ? correctA : 0;
-            correction *= kP_c;
+            correction = std::abs(errorX) > maxErrX ? kP_c * nearAngle(correctA, pos.get_alpha() - pos.get_alpha()) : 0.0;
 
 
-            if(direction == _Dir::FWD){
+            if(direction == _Dir::BWD){
             correction *= -1;
             }
           }
@@ -985,8 +984,12 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
 
        } while(cur_pos_vector.y < 0.0);
 
-
+      if(harshStop){
+      applyHarshStop();
+      }
+       else{
          driveLR_set(0,0);
+       }
 
       //   std::cout << "final_power" << final_power << std::endl << std::endl;
           // std::cout << "cur pos vec y" << cur_pos_vector.y << std::endl << std::endl;
@@ -1106,7 +1109,7 @@ void position_sweep(double y, double x, double ys, double xs, bool forward){
 
               case(_Dir::FWD):
 
-              driveLR_set(lFinal_Power, rFinal_Power);
+              driveLR_vel_set(lFinal_Power, rFinal_Power);
               break;
 
               case(_Dir::BWD):

@@ -35,6 +35,12 @@ LB_mtr.tare_position();
 RB_mtr.tare_position();
 }
 
+void driveLR_vel_set(int velL, int velR){
+  LF_mtr.move_velocity(velR);
+  RF_mtr.move_velocity(velR);
+  LB_mtr.move_velocity(velL);
+  RB_mtr.move_velocity(velR);
+}
 
 void driveLR_set(int voltageL, int voltageR){
   LF_mtr.move(voltageL);

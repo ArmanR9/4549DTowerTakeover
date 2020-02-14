@@ -278,7 +278,6 @@ return v;
 }
 
 
-
 double degrees_to_radians(double degrees)
 {
 	return degrees * M_PI / 180.0;
@@ -292,4 +291,32 @@ double radians_to_degrees(double radians)
 double nearAngle(double angle, double reference)
 {
 	return round((reference - angle) / (2.0 * M_PI)) * (2.0 * M_PI) + angle;
+}
+
+void applyHarshStop(){
+    Vector vel;
+    vel.x = velo.get_vel_x();
+    vel.y = velo.get_vel_y();
+
+  	Polar polarVel;
+
+  	vector_to_polar(vel, polarVel);
+  	polarVel.theta += pos.get_alpha();
+  	polar_to_vector(polarVel, vel);
+
+
+  	float yPow = vel.y, aPow = velo.get_vel_a();
+
+    int left = yPow + aPow, right = yPow - aPow;
+
+    left = sgn_(left) * std::max(7, std::abs(left));
+    right = sgn_(right) * std::max(7, std::abs(right));
+
+    left = std::min(30, left);
+    right = std::min(30, right);
+
+    driveLR_set(left, right);
+    pros::delay(150);
+    driveLR_set(0, 0);
+
 }

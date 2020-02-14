@@ -9,7 +9,7 @@
 //pros::ADIEncoder encoder360B (3,4, true);
 pros::ADIEncoder encoder360L{1,2};
 pros::ADIEncoder encoder360R{5,6, true};
-pros::ADIEncoder encoder360B{3,4, true};
+pros::ADIEncoder encoder360B{3,4, false};
 
 //pros::ADIPort lift_pot (5, pros::E_ADI_ANALOG_IN);
 //pros::ADIPort tilter_pot(6, pros::E_ADI_ANALOG_IN);

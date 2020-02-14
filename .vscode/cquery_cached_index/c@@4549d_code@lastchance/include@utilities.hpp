@@ -17,12 +17,12 @@ inline constexpr float wheel_diam_in_mtr {4.125}; // 4.125" wheels
 inline constexpr double chassis_width {4.4575};
 
 // The distance between the tracking wheels and the centre of the robot in inches
-inline constexpr float l_distance_in {5.25};
-inline constexpr float r_distance_in {5.25};
-inline constexpr float b_distance_in {2.5};
+inline constexpr double l_distance_in {2.22875};
+inline constexpr double r_distance_in {2.22875};
+inline constexpr float b_distance_in {0.01};
 
 // Ticks for one full revolution of the wheel
-inline constexpr float rev_per_tick {360.0};
+inline constexpr double rev_per_tick {360.0};
 inline constexpr float rev_per_tick_mtr {900.0};
 
 // Circumference of 2.75 (tracking) and 4.125" (regular) wheels
