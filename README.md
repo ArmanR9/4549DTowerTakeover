@@ -1,9 +1,8 @@
 # 4549DTowerTakeover
-4549D Tower Takeover repository
 
-4549D's code for the Tower Takeover 2019-2020 season. Includes 
+4549D's code for the Tower Takeover 2019-2020 season.
 
-Created with PROS and C++
+Created with PROS using C++
 
 - `src/auto_drive` Motion Algorithims
 - `src/controller_printing` Printing uitility for the controller to update data relating to the Robot
