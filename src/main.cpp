@@ -13,6 +13,7 @@
 #include "okapi/api.hpp"
 #include "tasks.hpp"
 #include "auto_drive.hpp"
+#include <algorithm>
 
 
 /**
@@ -295,7 +296,10 @@ intake_set(-127);
 
 else if(light_sensor.get_value() > light_sensor_threshold2 && tilter::g_clearTray && pros::millis() < tilter::g_timeout){
 tilter::g_readyToStack = false;// && g_clearTray){ //&& pros::millis() < g_timeout){
-intake_set(-50);
+int ispeed = -1	* exp(light_sensor.get_value());
+ispeed = std::clamp(ispeed, -50, -25);
+
+intake_set(ispeed);
 }
 
 else{
