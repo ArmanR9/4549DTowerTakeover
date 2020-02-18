@@ -21,7 +21,8 @@ extern bool g_opc_flag;
 
 void set_targetAsync(States voltage, uint32_t give_time);
 void setTarget(int voltage, uint32_t give_time);
-void deploy(uint32_t give_time);
+void deploy(std::uint32_t timeout);
+void deployOff();
 
 States getTarget();
 

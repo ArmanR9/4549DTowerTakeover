@@ -2,6 +2,7 @@
 #include "main.h"
 #include "motors.hpp"
 #include "sensors.hpp"
+#include "utilities.hpp"
 
 //TilterPID tilt(0,0,0,0,0,0);
 namespace intake{
@@ -9,7 +10,19 @@ namespace intake{
   int g_target;
   uint32_t g_set_time;
   States current_state;
+  bool g_readyToStack = false;;
+  std::uint32_t g_timeout;
 
+
+  void deploy(std::uint32_t timeout){
+  g_target = -80;
+  g_readyToStack = true;
+  g_timeout = pros::millis() + timeout;
+  }
+
+  void deployOff(){
+  g_readyToStack = false;
+  }
 
   void setTarget(int voltage, uint32_t give_time){
       intake_set(voltage);
@@ -36,7 +49,7 @@ namespace intake{
 
                 case(States::E_DEPLOY):
 
-                g_target = -50;
+                g_target = -80;
                 break;
 
                 case(States::E_OFF):
@@ -69,6 +82,13 @@ namespace intake{
         intake_set(g_target);
           }
       else intake_set(0);
+
+        if(light_sensor.get_value() > light_sensor_threshold && g_readyToStack && pros::millis() < g_timeout){
+        intake_set(g_target);
+        }
+        else { intake_set(0);
+        g_readyToStack = false;
+        }
 
         pros::delay(10);
       }

@@ -180,7 +180,7 @@ bin/lift.cpp.o: src/lift.cpp include/lift.hpp include/main.h \
  include/okapi/api/units/QPressure.hpp \
  include/okapi/api/units/QTorque.hpp include/okapi/api/units/QVolume.hpp \
  include/okapi/impl/util/rate.hpp include/tilter.hpp include/motors.hpp \
- include/tasks.hpp
+ include/tasks.hpp include/PID.hpp
 
 include/lift.hpp:
 
@@ -693,3 +693,5 @@ include/tilter.hpp:
 include/motors.hpp:
 
 include/tasks.hpp:
+
+include/PID.hpp:

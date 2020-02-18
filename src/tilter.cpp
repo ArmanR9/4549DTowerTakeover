@@ -18,19 +18,26 @@ namespace tilter{
   int g_settle;
   int g_failsafe = 0;
 
+  bool g_clearTray = false;
+  bool g_readyToStack = true;
+  bool g_liftIsReady = false;
+  std::uint32_t g_timeout;
+
   void setTarget(State_Machine setTarget){
-      g_failsafe = pros::millis() + 5000;
+      g_failsafe = pros::millis() + 10000;
 
       switch(setTarget){
 
             case(State_Machine::E_OFF):
 
-                g_target = 0;
+                g_target = -200;
                 break;
 
                 case(State_Machine::E_STACK):
 
-                g_target = 4950;
+                g_target = 4900;
+                g_clearTray = true;
+                g_timeout = pros::millis() + 1000;
                 break;
 
                 case(State_Machine::E_LIFT):
@@ -53,6 +60,7 @@ namespace tilter{
       pros::delay(500);
       return true;
     }
+    else
     return false;
    }
 
@@ -68,8 +76,8 @@ namespace tilter{
 
   void tilter_task(void * param){
      int iterator2;
-     	okapi::ControllerButton b(okapi::ControllerDigital::B);
-      okapi::ControllerButton a(okapi::ControllerDigital::A);
+     okapi::ControllerButton b(okapi::ControllerDigital::B);
+     okapi::ControllerButton a(okapi::ControllerDigital::A);
      okapi::ControllerButton l1(okapi::ControllerDigital::L1);
      okapi::ControllerButton l2(okapi::ControllerDigital::L2);
      okapi::ControllerButton up(okapi::ControllerDigital::up);
@@ -83,13 +91,13 @@ namespace tilter{
 
       float final_power;
 
-      float kP = 0.03;
-      float kD = 0.06; // 0.6
+      float kP = 0.07425; // 0.03
+      float kD = 0.07715; // 0.6
       float kI = 0.0;
 
-      float kP_a = 0.125;
-      float kD_a = 0.105;
-      float kI_a = 0.2;
+      float kP_a = 0.07425;
+      float kD_a = 0.07715;
+      float kI_a = 0.0;
 
       float position{0.0};
       float last_position{0.0};
@@ -156,9 +164,12 @@ namespace tilter{
         tilter_set(final_power);
         }
 
+
       else {
         tilter_set(0);
       }
+
+
 
         last_error = error;
         last_position = position;
@@ -170,11 +181,14 @@ namespace tilter{
 
         if(tilter_mtr.get_position() > 1000 && tilter_mtr.get_position() < 4000){
             state = State_Machine::E_LIFT;
+            g_liftIsReady = true;
           }
           else if(tilter_mtr.get_position() > 4001){
               state = State_Machine::E_STACK;
             }
-            else { state = State_Machine::E_OFF; }
+            else { state = State_Machine::E_OFF;
+            g_liftIsReady = false;
+          }
 
 
 
@@ -186,22 +200,27 @@ namespace tilter{
           tilter::setTarget(tilter::State_Machine::E_OFF);
           }
 
+
           if(l1.changedToPressed()){
-            tilter_mtr.move_absolute(2000, 100);
-            pros::delay(1000);
+            tilter::setTarget(tilter::State_Machine::E_LIFT);
+          //  pros::delay(1000);
         //    lift_mtr.move_absolute(2750, 200);
           }
 
           if(l2.changedToPressed()){
           //  lift_mtr.move_absolute(0, 200);
-            pros::delay(1000);
-            tilter_mtr.move_absolute(0, 100);
-            pros::delay(500);
+          //  pros::delay(1000);
+          pros::delay(500);
+            tilter::setTarget(tilter::State_Machine::E_OFF);
+      //      pros::delay(500);
+        //    g_liftIsReady = false;
           }
 
           if(up.changedToPressed()){
-            tilter_mtr.move_absolute(2000, 100);
+            tilter::setTarget(tilter::State_Machine::E_LIFT);
+          //  tilter_mtr.move_absolute(2000, 100);
             pros::delay(1000);
+            g_liftIsReady = true;
 
           }
 
@@ -295,12 +314,21 @@ namespace tilter{
 
       if(!invoke_timer){ timer = pros::millis() + settle;}
 
-        if(pros::millis() < timer && pros::millis() < failsafe){
+        if(pros::millis() < g_failsafe && g_readyToStack){
         tilter_set(final_power);
         }
 
       else { tilter_set(0); }
 
+
+
+  //    if(light_sensor.get_value() > light_sensor_threshold){// && g_clearTray){ //&& pros::millis() < g_timeout){
+  //    intake_set(-80);
+    //  }
+    //  else { intake_set(0);
+  //    g_clearTray = false;
+  //    }
+//
         last_error = error;
         last_position = position;
         // tilter_mtr.move_absolute(g_target, 75);

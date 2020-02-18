@@ -19,6 +19,7 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction = _TurnDir::CH ,
 
 void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float maxVel, bool enableCorrect, bool forward, bool harshStop);
 
+void position_sweep(double y, double x, double ys, double xs, bool forward);
 
 void drive_lineup(int voltage, uint32_t give_time);
 void drive_outtake(int drive, int intake, uint32_t give_time);

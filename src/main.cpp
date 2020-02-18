@@ -44,7 +44,8 @@ std::shared_ptr<pros::Task> lift_task_ctor(nullptr);
 
 void initialize() {
 	pros::delay(1000);
-  	gui_init();
+	brake_mode_init();
+  gui_init();
 	gui();
 	encoder360B.reset();
 	encoder360L.reset();
@@ -109,10 +110,25 @@ void competition_initialize() {}
  */
 
 void autonomous(){
+	bool readyToStack = false;
 	using namespace okapi;
 	using namespace okapi::literals;
+	//	intake::set_targetAsync(intake::States::E_INTAKE, 15000);
+//		pros::delay(10000);
+		position_sweep(6.0, 6.0, pos.get_y(), pos.get_x(), true);
+/*
+		lift::setTargetAutonAsync(lift::heightsAUTO::E_CUBES, 700);
+		pros::delay(700);
+		lift::setTargetAutonAsync(lift::heightsAUTO::E_OFF, 700);
+		*/
 
-   driveToPosition(12.0, 0.0, pos.get_y(), pos.get_x(), 0.1, 50.0, true, true, false);
+	//	tilter::setTarget(tilter::State_Machine::E_STACK);
+//	readyToStack = true;
+   //driveToPosition(8.0, 0.0, pos.get_y(), pos.get_x(), 0.1, 120.0, false, true, false);
+//intake::deploy(1500);
+	// if(light_sensor.get_value() > light_sensor_threshold){
+		// intake_set(50);
+	// }
 /*
 	auto chassis =
 	ChassisControllerBuilder()
@@ -277,12 +293,24 @@ else if (r2.isPressed()){
 intake_set(-127);
 }
 
-else { intake_set(0);}
+else if(light_sensor.get_value() > light_sensor_threshold2 && tilter::g_clearTray && pros::millis() < tilter::g_timeout){
+tilter::g_readyToStack = false;// && g_clearTray){ //&& pros::millis() < g_timeout){
+intake_set(-50);
+}
+
+else{
+tilter::g_clearTray = false;
+tilter::g_readyToStack = true;
+intake_set(0);
+}
 
 if(master_controller.get_digital(DIGITAL_Y)){
 drive_set(-35);
 intake_set(-50);
 }
+
+std::cout << tilter_mtr.get_position() << std::endl << std::endl;
+
 
 //if(master_controller.get_digital_new_press(DIGITAL_DOWN)){
 //bool prezzed = !prezzed;
@@ -325,6 +353,9 @@ tilter::setTarget(tilter::State_Machine::E_OFF);
 		 //std::cout << "hi\n";
 	 //	std::cout << master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A) << '\n';
 	 //std::cout<<encoder360L.get() << "L " << encoder360R.get() << "R " << encoder360B.get() << "B " << std::endl;
+	 std::cout << "LIGHT  " << light_sensor.get_value() << std::endl << std::endl;
+	 std::cout << "L  " << encoder360L.get_value() << std::endl << std::endl;
+	 std::cout << "R  " << encoder360R.get_value() << std::endl << std::endl;
 		pros::delay(10);
 
 

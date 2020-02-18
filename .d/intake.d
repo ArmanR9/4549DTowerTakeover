@@ -179,7 +179,7 @@ bin/intake.cpp.o: src/intake.cpp include/intake.hpp include/main.h \
  include/okapi/api/units/QMass.hpp include/okapi/api/units/QJerk.hpp \
  include/okapi/api/units/QPressure.hpp \
  include/okapi/api/units/QTorque.hpp include/okapi/api/units/QVolume.hpp \
- include/okapi/impl/util/rate.hpp
+ include/okapi/impl/util/rate.hpp include/utilities.hpp
 
 include/intake.hpp:
 
@@ -686,3 +686,5 @@ include/okapi/api/units/QTorque.hpp:
 include/okapi/api/units/QVolume.hpp:
 
 include/okapi/impl/util/rate.hpp:
+
+include/utilities.hpp:

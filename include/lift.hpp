@@ -15,6 +15,18 @@ namespace heights
     };
 }
 
+namespace heightsAUTO{
+
+  enum auton
+  {
+  E_OFF, // 0
+  E_CUBES, // 1
+  E_LOW, // 2
+  E_MED, // 3
+  E_NUM_OF_HEIGHTS // 4
+  };
+}
+
 
 extern bool g_auton_flag;
 extern bool g_opc_flag;
@@ -23,6 +35,9 @@ extern bool g_opc_flag;
 extern const int points[];
 
 void setTarget(int setTarget);
+void setTargetAuton(int setTarget, std::uint32_t failsafe);
+void setTargetAutonAsync(int setTarget, std::uint32_t failsafe);
+
 
 heights::lift getTarget();
 

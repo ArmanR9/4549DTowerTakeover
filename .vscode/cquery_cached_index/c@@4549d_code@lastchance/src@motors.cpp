@@ -35,8 +35,22 @@ LB_mtr.tare_position();
 RB_mtr.tare_position();
 }
 
+void brake_mode_init(){
+LB_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+LF_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+RB_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+RF_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+
+tilter_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+
+LIntake_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+RIntake_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+
+lift_mtr.set_brake_mode(MOTOR_BRAKE_HOLD);
+}
+
 void driveLR_vel_set(int velL, int velR){
-  LF_mtr.move_velocity(velR);
+  LF_mtr.move_velocity(velL);
   RF_mtr.move_velocity(velR);
   LB_mtr.move_velocity(velL);
   RB_mtr.move_velocity(velR);

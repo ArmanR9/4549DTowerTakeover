@@ -4,9 +4,16 @@
 #include "sensors.hpp"
 #include "tilter.hpp"
 #include "tasks.hpp"
+#include "PID.hpp"
 
 pros::Mutex lift_mutex;
 pros::Mutex off_mutex;
+
+
+PID liftAUTO(0.187, 0.125, 0.0, 100, 127, 200, 3000);
+PID liftDRIVER(0.2235, 0.465, 0.0, 100, 127, 200, 3000);
+
+
 //TilterPID tilt(0,0,0,0,0,0);
 namespace lift{
 
@@ -17,15 +24,17 @@ namespace lift{
   int g_target;
 
   heights::lift lift_state = heights::E_OFF;
+  heightsAUTO::auton lift_stateAUTO = heightsAUTO::E_OFF;
 
 
-const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2000, 2000 };
+const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2000, 2300 };
+const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
 
   void deploy(){
   deployMacro = false;
   }
 
-  void setTarget(int setTarget){
+  void setTarget(int setTarget, std::uint32_t failsafe){
 
       switch(setTarget){
 
@@ -48,7 +57,94 @@ const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2000, 2000 };
                 break;
               }
 
+              liftDRIVER.setMaxVel(127);
+              liftDRIVER.setInvoke(false);
+              liftDRIVER.setSettle(250);
+              liftDRIVER.setThreshold(200);
+              liftDRIVER.calculateFailsafe(failsafe);
+
       }
+
+    void setTargetAutonAsync(int setTarget, std::uint32_t failsafe){
+
+        switch(setTarget){
+
+          case(heightsAUTO::E_OFF):
+          g_target = auton_points[heightsAUTO::E_OFF];
+          lift_stateAUTO = heightsAUTO::E_OFF;
+          break;
+
+          case(heightsAUTO::E_CUBES):
+          g_target = auton_points[heightsAUTO::E_CUBES];
+          lift_stateAUTO = heightsAUTO::E_CUBES;
+          break;
+
+          case(heightsAUTO::E_LOW):
+
+          g_target = auton_points[heightsAUTO::E_LOW];
+          lift_stateAUTO = heightsAUTO::E_LOW;
+          break;
+
+          case(heightsAUTO::E_MED):
+
+          g_target = auton_points[heightsAUTO::E_MED];
+          lift_stateAUTO = heightsAUTO::E_MED;
+          break;
+        }
+
+        liftAUTO.setMaxVel(127);
+        liftAUTO.setInvoke(false);
+        liftAUTO.setSettle(250);
+        liftAUTO.setThreshold(200);
+        liftAUTO.calculateFailsafe(failsafe);
+    }
+
+
+    void setTargetAuton(int setTarget, std::uint32_t failsafe){
+      switch(setTarget){
+
+        case(heightsAUTO::E_OFF):
+        g_target = auton_points[heightsAUTO::E_OFF];
+        lift_stateAUTO = heightsAUTO::E_OFF;
+        break;
+
+        case(heightsAUTO::E_CUBES):
+        g_target = auton_points[heightsAUTO::E_CUBES];
+        lift_stateAUTO = heightsAUTO::E_CUBES;
+        break;
+
+        case(heightsAUTO::E_LOW):
+
+        g_target = auton_points[heightsAUTO::E_LOW];
+        lift_stateAUTO = heightsAUTO::E_LOW;
+        break;
+
+        case(heightsAUTO::E_MED):
+
+        g_target = auton_points[heightsAUTO::E_MED];
+        lift_stateAUTO = heightsAUTO::E_MED;
+        break;
+
+        std::uint32_t initial_time = pros::millis();
+
+        liftAUTO.setMaxVel(120);
+        liftAUTO.setInvoke(false);
+        liftAUTO.setSettle(250);
+        liftAUTO.setThreshold(200);
+        liftAUTO.calculateFailsafe(failsafe);
+
+        while(pros::millis() < liftAUTO.getFailsafe()){ //&& pros::millis() < liftAUTO.getTimer()){
+
+          float final_power = liftAUTO.calculate(g_target, lift_mtr.get_position());
+          lift_set(final_power);
+
+          liftAUTO.calculateTimer(liftAUTO.getSettle(), liftAUTO.getError());
+
+          pros::delay(10);
+        }
+
+      }
+    }
 
 
 
@@ -66,11 +162,26 @@ const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2000, 2000 };
 
     while(true){
 
-    while(pros::competition::is_autonomous()){
 
-    }
+
+      while(pros::competition::is_autonomous()){
+
+        float final_power = liftAUTO.calculate(g_target, lift_mtr.get_position());
+
+        if(pros::millis() < liftAUTO.getFailsafe()){ //&& pros::millis() < liftAUTO.getTimer()){
+        lift_set(final_power);
+       }
+       else{
+        lift_mtr.move_absolute(0, 180);
+        lift_mtr.move_velocity(0); // hold and break
+        }
+
+        pros::delay(10);
+
+      }
 
      while(!pros::competition::is_autonomous()){
+       float final_power = 0.0;
 
         if(lift_mtr.get_position() > 500 && lift_mtr.get_position() < 1500){
             lift_state = heights::E_LOW;
@@ -82,12 +193,23 @@ const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2000, 2000 };
 
                if(l1.changedToPressed()){ //&& iterator < 1){
                 ++iterator;
-
-                if(tilter_mtr.get_position() > 1000 && tilter_mtr.get_position() < 2750){
+                pros::delay(500);
+            //    if(tilter_mtr.get_position() > 1000 && tilter_mtr.get_position() < 2750){
                 //  tilter_mtr.move_absolute(2000, 100);
-                  pros::delay(1000);
+            //      pros::delay(1000);
+            //    }
+                lift::setTarget(heights::E_MED, 3000);
+                final_power = liftDRIVER.calculate(g_target, lift_mtr.get_position());
+
+                if(pros::millis() < liftDRIVER.getFailsafe() && tilter::g_liftIsReady){
+                lift_set(final_power);
+              }
+
+                else {
+                //  lift_mtr.set_brake_mode(MOTOR_BRAKE_HOLD);
+                  lift_mtr.move_velocity(0);
                 }
-                lift_mtr.move_absolute(2300, 200);
+
           }
 
 
@@ -102,7 +224,7 @@ const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2000, 2000 };
 
             if(up.changedToPressed()){
 
-                              if(tilter_mtr.get_position() > 1000 && tilter_mtr.get_position() < 2750){
+                              if(tilter::g_liftIsReady){//tilter_mtr.get_position() > 1000 && tilter_mtr.get_position() < 2750){
                               //  tilter_mtr.move_absolute(2000, 100);
                                 pros::delay(1000);
                               }

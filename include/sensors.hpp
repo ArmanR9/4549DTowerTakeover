@@ -10,8 +10,8 @@
 // *                                             *
 // *---------------------------------------------*
 
-extern pros::ADIPort lift_pot;
-extern pros::ADIPort tilter_pot;
+//extern pros::ADIPort lift_pot;
+//extern pros::ADIPort tilter_pot;
 //extern pros::ADIEncoder encoder360R;
 //extern pros::ADIEncoder encoder360L;
 //extern pros::ADIEncoder encoder360B;
@@ -20,6 +20,7 @@ extern pros::Controller master_controller;
 extern pros::ADIEncoder encoder360L;
 extern pros::ADIEncoder encoder360R;
 extern pros::ADIEncoder encoder360B;
+extern pros::ADIAnalogIn light_sensor;
 
 // *--------------------------------------*
 // *                                      *

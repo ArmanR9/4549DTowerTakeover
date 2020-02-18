@@ -880,7 +880,7 @@ rightdrive_set(0);
 void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float maxVel, bool enableCorrect, bool forward, bool harshStop){
 
 // Initialize PID
-  PID pos_drive(7.5, 0.0, 0.0, 2.0, 100, 200, 5000);
+  PID pos_drive(3.72, 0.0, 0.0, 2.0, 100, 200, 5000);
 
 // Our current x/y within the motion alg
   Vector cur_pos_vector;
@@ -948,7 +948,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
            errorX = cur_pos_vector.x + cur_pos_vector.y * sin(errorA) / cos(errorA);
            correctA = atan2(x - pos.get_x(), y - pos.get_y());
 
-            correction = std::abs(errorX) > maxErrX ? kP_c * nearAngle(correctA, pos.get_alpha() - pos.get_alpha()) : 0.0;
+            correction = std::abs(errorX) > maxErrX ? kP_c * correctA : 0.0;//nearAngle(correctA, pos.get_alpha() - pos.get_alpha()) : 0.0;
 
 
             if(direction == _Dir::BWD){
@@ -964,7 +964,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
          switch(sgn_(correction)){
 
          case(1):
-         driveLR_set(final_power + correction, final_power );//+ correction);
+         driveLR_set(final_power, final_power); //* exp(-correction) );//+ correction);
          break;
 
          case(-1):
@@ -1011,6 +1011,14 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
 
 
 
+void driveToDistance(float d, float a, float ys, float xs, float maxErrX, float maxVel, bool enableCorrect, bool forward, bool harshStop){
+
+// Calculate the x and y positons using the hypotenuse and angle of the global ending triangle
+driveToPosition(ys + d * cos(a), xs + d * sin(a), ys, xs, maxErrX, maxVel, enableCorrect, forward, harshStop);
+
+}
+
+
 
 
 void position_sweep(double y, double x, double ys, double xs, bool forward){
@@ -1028,7 +1036,7 @@ void position_sweep(double y, double x, double ys, double xs, bool forward){
   double r = (l*l) / (2*dX);
 
   // Angular velocity of the robot
-  double w = pos.get_angularV();
+  double w = M_PI/6;//pos.get_angularV();
 
   // Curvature = 1 / r
   double c = 2*dX/(l*l);
@@ -1046,8 +1054,8 @@ void position_sweep(double y, double x, double ys, double xs, bool forward){
 
   // Feedforward and Feedback gains
 
-  double kV; // Feedforward velocity constant
-  double kA; // Feedforward acceleration constant
+  double kV = 15.5; // Feedforward velocity constant
+  double kA = 20.25; // Feedforward acceleration constant
 
   double kP, kD; // Normal feedback proportional/derivative gains
 
@@ -1078,16 +1086,21 @@ void position_sweep(double y, double x, double ys, double xs, bool forward){
         dY = y - ys;
 
         c = 2*dX/(l*l);
-        w = pos.get_angularV();
+        w = M_PI/10.0;//pos.get_angularV();
         targetV = w / c;
 
 
 
         double lMeasured_Vel = wheel_vel.get_vel_L();
         double rMeasured_Vel = wheel_vel.get_vel_R();
-
+        if(w){
         lVelocity = targetV * (2 + c * robotTrack)/2;
         rVelocity = targetV * (2 - c * robotTrack)/2;
+      }
+      else{
+        lVelocity =  (2 + c * robotTrack)/2;
+        rVelocity =  (2 - c * robotTrack)/2;
+      }
 
         if(dT){ // To prevent divide by zero error
         lAcceleration = lVelocity / dT;
@@ -1100,8 +1113,8 @@ void position_sweep(double y, double x, double ys, double xs, bool forward){
         lFeedback = kP * (lVelocity - lMeasured_Vel);
         rFeedback = kP * (rVelocity - rMeasured_Vel);
 
-        lFinal_Power = lFeedforward + lFeedback;
-        rFinal_Power = rFeedforward + rFeedback;
+        lFinal_Power = lFeedforward;
+        rFinal_Power = rFeedforward;
 
 
 
@@ -1119,15 +1132,20 @@ void position_sweep(double y, double x, double ys, double xs, bool forward){
         }
 
 
-
+      std::cout << "final_pwr:  " <<lFinal_Power << std::endl << std::endl;
+      std::cout << "other:  " << rFinal_Power << std::endl << std::endl;
       last_time = current_time;
       pros::delay(10);
     }
 
 
-  driveLR_set(0,0);
+  driveLR_vel_set(0,0);
 }
 
+
+void driveDistance(){
+
+}
 
 
 
