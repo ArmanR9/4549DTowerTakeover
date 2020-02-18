@@ -909,7 +909,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
   pos_drive.calculateFailsafe(2000);
 
   //Correction constant
-  float kP_c = 9.0;
+  float kP_c = 7.0;
 
   // Correction value
   float correction = 0.0;
@@ -934,6 +934,8 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
 
         do{
            std::cout << "get x: " << pos.get_x()  << std::endl << std::endl;
+           std::cout << "vector x: " << cur_pos_vector.x  << std::endl << std::endl;
+           std::cout << "error x: " << errorX << std::endl << std::endl;
 
 
           cur_pos_vector.x = pos.get_x() - x;
@@ -958,23 +960,29 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
 
         final_power = pos_drive.calculate(y, cur_pos_vector.y);
 
-        direction = sgn_(final_power) > 0 ? _Dir::FWD : _Dir::BWD;
+       // direction = sgn_(final_power) > 0 ? _Dir::FWD : _Dir::BWD;
 
 
+          if(errorA > degrees_to_radians(5.0))  {
+            turn2ang(lineAngle, 100, _TurnDir::CH, 300, 5000);                
+          }
+
+         else{
          switch(sgn_(correction)){
 
          case(1):
-         driveLR_set(final_power, final_power); //* exp(-correction) );//+ correction);
+         driveLR_set(final_power, final_power * exp(-correction)); //* exp(-correction) );//+ correction);
          break;
 
          case(-1):
-         driveLR_set(final_power + correction, final_power);
+         driveLR_set(final_power + exp(correction), final_power);
          break;
 
          case(0):
          driveLR_set(final_power, final_power);
          break;
-       }
+            }
+         }
          pros::delay(10);
 
          std::cout << "Cur Pos Vec Y: " << cur_pos_vector.y << std::endl << std::endl;

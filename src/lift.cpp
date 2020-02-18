@@ -20,6 +20,9 @@ namespace lift{
   bool g_auton_flag;
   bool g_opc_flag;
   bool deployMacro;
+  bool g_clearTray = false;
+  bool g_readyToLift = true;
+  std::uint32_t g_timeout;
 
   int g_target;
 
@@ -48,12 +51,16 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
 
                 g_target = points[heights::E_LOW];
                 lift_state = heights::E_LOW;
+                g_clearTray = true;
+                g_timeout = pros::millis() + 1000;
                 break;
 
                 case(heights::E_MED):
 
                 g_target = points[heights::E_MED];
                 lift_state = heights::E_MED;
+                g_clearTray = true;
+                g_timeout = pros::millis() + 1000;
                 break;
               }
 
@@ -201,7 +208,7 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
                 lift::setTarget(heights::E_MED, 3000);
                 final_power = liftDRIVER.calculate(g_target, lift_mtr.get_position());
 
-                if(pros::millis() < liftDRIVER.getFailsafe() && tilter::g_liftIsReady){
+                if(pros::millis() < liftDRIVER.getFailsafe() && tilter::g_liftIsReady && g_readyToLift){
                 lift_set(final_power);
               }
 

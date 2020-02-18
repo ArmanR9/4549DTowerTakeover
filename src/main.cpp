@@ -116,7 +116,8 @@ void autonomous(){
 	using namespace okapi::literals;
 	//	intake::set_targetAsync(intake::States::E_INTAKE, 15000);
 //		pros::delay(10000);
-		position_sweep(6.0, 6.0, pos.get_y(), pos.get_x(), true);
+		driveToPosition(12.0, 0.0, pos.get_y(), pos.get_x(), 1.0, 100, true, true, false);
+	//	position_sweep(6.0, 6.0, pos.get_y(), pos.get_x(), true);
 /*
 		lift::setTargetAutonAsync(lift::heightsAUTO::E_CUBES, 700);
 		pros::delay(700);
@@ -302,9 +303,19 @@ ispeed = std::clamp(ispeed, -50, -25);
 intake_set(ispeed);
 }
 
+else if(light_sensor.get_value() > light_sensor_threshold2 && lift::g_clearTray && pros::millis() < lift::g_timeout){
+lift::g_readyToLift = false;// && g_clearTray){ //&& pros::millis() < g_timeout){
+int ispeed = -1	* exp(light_sensor.get_value());
+ispeed = std::clamp(ispeed, -50, -25);
+
+intake_set(ispeed);
+}
+
 else{
 tilter::g_clearTray = false;
 tilter::g_readyToStack = true;
+lift::g_clearTray = false;
+lift::g_readyToLift = true;
 intake_set(0);
 }
 
