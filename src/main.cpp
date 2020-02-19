@@ -297,7 +297,7 @@ intake_set(-127);
 
 else if(light_sensor.get_value() > light_sensor_threshold2 && tilter::g_clearTray && pros::millis() < tilter::g_timeout){
 tilter::g_readyToStack = false;// && g_clearTray){ //&& pros::millis() < g_timeout){
-int ispeed = -1	* exp(light_sensor.get_value());
+int ispeed = pow(light_sensor.get_value()*0.01, 1.25); 
 ispeed = std::clamp(ispeed, -50, -25);
 
 intake_set(ispeed);
@@ -305,7 +305,7 @@ intake_set(ispeed);
 
 else if(light_sensor.get_value() > light_sensor_threshold2 && lift::g_clearTray && pros::millis() < lift::g_timeout){
 lift::g_readyToLift = false;// && g_clearTray){ //&& pros::millis() < g_timeout){
-int ispeed = -1	* exp(light_sensor.get_value());
+int ispeed = pow(light_sensor.get_value()*0.01, 1.25); 
 ispeed = std::clamp(ispeed, -50, -25);
 
 intake_set(ispeed);

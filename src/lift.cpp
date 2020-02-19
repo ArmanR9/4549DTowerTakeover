@@ -30,7 +30,7 @@ namespace lift{
   heightsAUTO::auton lift_stateAUTO = heightsAUTO::E_OFF;
 
 
-const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2000, 2300 };
+const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2000, 2200 };
 const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
 
   void deploy(){
