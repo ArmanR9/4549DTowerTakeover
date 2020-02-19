@@ -900,7 +900,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
   // The angle of the line to rotate our local position to.
   float lineAngle = getLineAngle(followLine);
   // nearest angle to the line (Flip the angle by 180 degrees if moving backwards)
-  float pidAngle = nearAngle((lineAngle - (forward == false ? PI : 0)), pos.get_alpha());
+  float pidAngle = nearAngle((lineAngle - (forward == false ? M_PI : 0)), pos.get_alpha());
 
   pos_drive.setMaxVel(maxVel);
   pos_drive.setInvoke(false);
@@ -922,7 +922,20 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
 
    _Dir direction = forward == true ? _Dir::FWD : _Dir::BWD;
 
+           errorA = pos.get_alpha() - pidAngle;
+           errorX = cur_pos_vector.x + cur_pos_vector.y * sin(errorA) / cos(errorA);
+           correctA = atan2(x - pos.get_x(), y - pos.get_y());
 
+            correction = std::abs(errorX) > maxErrX ? kP_c * correctA : 0.0;//nearAngle(correctA, pos.get_alpha() - pos.get_alpha()) : 0.0;
+            if(direction == _Dir::BWD){
+             correctA += M_PI; 
+            }
+      
+
+  //    if(radians_to_degrees(std::abs(correctA)) > 7.5){
+      //  turn2ang(correctA, 100, _TurnDir::CH, 300, 5000);
+      //  pros::delay(500);
+    //  }
 
       while(pros::millis() < pos_drive.getFailsafe()){
 
@@ -946,28 +959,25 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
 
           if(enableCorrect){
 
-           errorA = pos.get_alpha() - lineAngle;
+           errorA = pos.get_alpha() - pidAngle;
            errorX = cur_pos_vector.x + cur_pos_vector.y * sin(errorA) / cos(errorA);
            correctA = atan2(x - pos.get_x(), y - pos.get_y());
 
             correction = std::abs(errorX) > maxErrX ? kP_c * correctA : 0.0;//nearAngle(correctA, pos.get_alpha() - pos.get_alpha()) : 0.0;
-
-
             if(direction == _Dir::BWD){
-            correction *= -1;
+             correctA += M_PI; 
             }
           }
+          
 
         final_power = pos_drive.calculate(y, cur_pos_vector.y);
 
        // direction = sgn_(final_power) > 0 ? _Dir::FWD : _Dir::BWD;
 
 
-          if(errorA > degrees_to_radians(5.0))  {
-            turn2ang(lineAngle, 100, _TurnDir::CH, 300, 5000);                
-          }
+        
 
-         else{
+  
          switch(sgn_(correction)){
 
          case(1):
@@ -982,7 +992,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
          driveLR_set(final_power, final_power);
          break;
             }
-         }
+         
          pros::delay(10);
 
          std::cout << "Cur Pos Vec Y: " << cur_pos_vector.y << std::endl << std::endl;

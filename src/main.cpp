@@ -116,7 +116,7 @@ void autonomous(){
 	using namespace okapi::literals;
 	//	intake::set_targetAsync(intake::States::E_INTAKE, 15000);
 //		pros::delay(10000);
-		driveToPosition(12.0, 0.0, pos.get_y(), pos.get_x(), 1.0, 100, true, true, false);
+		driveToPosition(12.0, 0.0, pos.get_y(), pos.get_x(), 0.1, 100, true, true, false);
 	//	position_sweep(6.0, 6.0, pos.get_y(), pos.get_x(), true);
 /*
 		lift::setTargetAutonAsync(lift::heightsAUTO::E_CUBES, 700);

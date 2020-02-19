@@ -19,7 +19,7 @@ inline constexpr double chassis_width {4.4575};
 // The distance between the tracking wheels and the centre of the robot in inches
 inline constexpr double l_distance_in {2.22875};
 inline constexpr double r_distance_in {2.22875};
-inline constexpr float b_distance_in {0.01};
+inline constexpr float b_distance_in {0.05};
 
 // Ticks for one full revolution of the wheel
 inline constexpr double rev_per_tick {360.0};
