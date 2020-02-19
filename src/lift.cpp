@@ -235,7 +235,7 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
                               //  tilter_mtr.move_absolute(2000, 100);
                                 pros::delay(1000);
                               }
-                              lift_mtr.move_absolute(1800, 200);
+                            //  lift_mtr.move_absolute(1800, 200);
             }
 /*
         if(l1.changedToPressed() && iterator == 0){
