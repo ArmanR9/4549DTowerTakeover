@@ -127,15 +127,19 @@ void autonomous(){
 	//	driveToPosition(12.0, 0.0, pos.get_y(), pos.get_x(), 0.1, 100, true, true, false);
 	//	position_sweep(6.0, 6.0, pos.get_y(), pos.get_x(), trueS);
 
-
-	  tilter::setTarget(tilter::State_Machine::E_LIFT);
-		pros::delay(500);
-		lift::setTargetAutonAsync(lift::heightsAUTO::E_CUBES, 700);
-		pros::delay(700);
-		tilter::setTarget(tilter::State_Machine::E_OFF);
-		pros::delay(500);
+//
+	  //  tilter::setTarget(tilter::State_Machine::E_LIFT);
+		//pros::delay(500);
+	//	lift::setTargetAutonAsync(lift::heightsAUTO::E_CUBES, 700);
+	//	pros::delay(700);
+	//	tilter::setTarget(tilter::State_Machine::E_OFF);
+	//	pros::delay(500);
 		intake::set_targetAsync(intake::States::E_INTAKE, 5000);
-	  driveToPosition(32.0, 0.0, 0.0, 0.0, 0.1, 100, 5000, true, true, false);
+	    driveToPosition(25.0, 0.0, 0.0, 0.0, 0.25, 90, 3000, true, true, false);
+		turn2ang(30.0, 80, _TurnDir::CCW, 300, 2000);
+		driveToPosition(0.0, 18.0, pos.get_y(), pos.get_x(), 0.25, 90, 5000, true, false, false);
+		turn2ang(0.0, 80, _TurnDir::CW, 300, 1000);
+		
 
 
 
