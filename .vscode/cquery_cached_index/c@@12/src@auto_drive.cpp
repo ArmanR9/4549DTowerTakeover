@@ -877,10 +877,10 @@ rightdrive_set(0);
 
 
 // double kP, double kD, double kI, double threshold, double maxVel, uint32_t settle, uint32_t max_time
-void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float maxVel, bool enableCorrect, bool forward, bool harshStop){
+void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop){
 
 // Initialize PID
-  PID pos_drive(3.72, 0.0, 0.0, 2.0, 100, 200, 5000);
+  PID pos_drive(3.35, 1.25, 0.0, 2.0, 100, 200, 5000);
 
 // Our current x/y within the motion alg
   Vector cur_pos_vector;
@@ -900,16 +900,16 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
   // The angle of the line to rotate our local position to.
   float lineAngle = getLineAngle(followLine);
   // nearest angle to the line (Flip the angle by 180 degrees if moving backwards)
-  float pidAngle = nearAngle((lineAngle - (forward == false ? PI : 0)), pos.get_alpha());
+  float pidAngle = nearAngle((lineAngle - (forward == false ? M_PI : 0)), pos.get_alpha());
 
   pos_drive.setMaxVel(maxVel);
   pos_drive.setInvoke(false);
   pos_drive.setSettle(250);
   pos_drive.setThreshold(2.0);
-  pos_drive.calculateFailsafe(2000);
+  pos_drive.calculateFailsafe(ifailsafe);
 
   //Correction constant
-  float kP_c = 7.0;
+  float kP_c = 6.0;
 
   // Correction value
   float correction = 0.0;
@@ -918,21 +918,41 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
   float errorX = 0.0;
   float correctA = 0.0;
 
+  float targetVar = 0.0;
+
   float final_power;
 
    _Dir direction = forward == true ? _Dir::FWD : _Dir::BWD;
 
+           errorA = pos.get_alpha() - pidAngle;
+           errorX = cur_pos_vector.x + cur_pos_vector.y * sin(errorA) / cos(errorA);
+           correctA = atan2(x - pos.get_x(), y - pos.get_y());
+
+            correction = std::abs(errorX) > maxErrX ? kP_c * correctA : 0.0;//nearAngle(correctA, pos.get_alpha() - pos.get_alpha()) : 0.0;
+            if(direction == _Dir::BWD){
+             correctA += M_PI;
+            }
 
 
-      while(pros::millis() < pos_drive.getFailsafe()){
+  //    if(radians_to_degrees(std::abs(correctA)) > 7.5){
+      //  turn2ang(correctA, 100, _TurnDir::CH, 300, 5000);
+      //  pros::delay(500);
+    //  }
+
+//      while(pros::millis() < pos_drive.getFailsafe()){
 
 
-        std::cout << "LINE A: " << lineAngle  << std::endl << std::endl;
+      //  std::cout << "LINE A: " << lineAngle  << std::endl << std::endl;
 
 
-        pos_drive.calculateTimer(pos_drive.getSettle(), pos_drive.getError());
+      //  pos_drive.calculateTimer(pos_drive.getSettle(), pos_drive.getError());
 
         do{
+          std::cout << "LINE A: " << lineAngle  << std::endl << std::endl;
+
+
+          pos_drive.calculateTimer(pos_drive.getSettle(), pos_drive.getError());
+
            std::cout << "get x: " << pos.get_x()  << std::endl << std::endl;
            std::cout << "vector x: " << cur_pos_vector.x  << std::endl << std::endl;
            std::cout << "error x: " << errorX << std::endl << std::endl;
@@ -946,28 +966,30 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
 
           if(enableCorrect){
 
-           errorA = pos.get_alpha() - lineAngle;
+           errorA = pos.get_alpha() - pidAngle;
            errorX = cur_pos_vector.x + cur_pos_vector.y * sin(errorA) / cos(errorA);
            correctA = atan2(x - pos.get_x(), y - pos.get_y());
 
             correction = std::abs(errorX) > maxErrX ? kP_c * correctA : 0.0;//nearAngle(correctA, pos.get_alpha() - pos.get_alpha()) : 0.0;
-
-
             if(direction == _Dir::BWD){
-            correction *= -1;
+             correctA += M_PI;
             }
           }
 
-        final_power = pos_drive.calculate(y, cur_pos_vector.y);
+          if(direction == _Dir::FWD)
+          targetVar = -1 * cur_pos_vector.y;
+
+          else targetVar = cur_pos_vector.y;
+
+
+        final_power = pos_drive.calculate(targetVar, cur_pos_vector.y);
 
        // direction = sgn_(final_power) > 0 ? _Dir::FWD : _Dir::BWD;
 
 
-          if(errorA > degrees_to_radians(5.0))  {
-            turn2ang(lineAngle, 100, _TurnDir::CH, 300, 5000);                
-          }
 
-         else{
+
+
          switch(sgn_(correction)){
 
          case(1):
@@ -982,22 +1004,22 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
          driveLR_set(final_power, final_power);
          break;
             }
-         }
-         pros::delay(10);
+
+      //  pros::delay(10);
 
          std::cout << "Cur Pos Vec Y: " << cur_pos_vector.y << std::endl << std::endl;
          std::cout << "Alpha in Rads: " << pos.get_alpha() << std::endl << std::endl;
          std::cout << "Correct A: " << correctA << std::endl << std::endl;
+          pros::delay(10);
 
+       } while(cur_pos_vector.y < 0.0 && pros::millis() < pos_drive.getFailsafe());
 
-       } while(cur_pos_vector.y < 0.0);
-
-      if(harshStop){
-      applyHarshStop();
-      }
-       else{
-         driveLR_set(0,0);
-       }
+  //    if(harshStop){
+    //  applyHarshStop();
+    //  }
+    //   else{
+      //   driveLR_set(0,0);
+       //}
 
       //   std::cout << "final_power" << final_power << std::endl << std::endl;
           // std::cout << "cur pos vec y" << cur_pos_vector.y << std::endl << std::endl;
@@ -1011,18 +1033,18 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
     //     std::cout << "CURRENT X " << cur_pos_vector.x  << std::endl << std::endl;
          //pos_drive.logTimer();
 
-         pros::delay(10);
+      //   pros::delay(10);
 
-         }
+
   driveLR_set(0, 0);
 }
 
 
 
-void driveToDistance(float d, float a, float ys, float xs, float maxErrX, float maxVel, bool enableCorrect, bool forward, bool harshStop){
+void driveToDistance(float d, float a, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop){
 
 // Calculate the x and y positons using the hypotenuse and angle of the global ending triangle
-driveToPosition(ys + d * cos(a), xs + d * sin(a), ys, xs, maxErrX, maxVel, enableCorrect, forward, harshStop);
+driveToPosition(ys + d * cos(a), xs + d * sin(a), ys, xs, maxErrX, maxVel, ifailsafe, enableCorrect, forward, harshStop);
 
 }
 

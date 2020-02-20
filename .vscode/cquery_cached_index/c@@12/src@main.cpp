@@ -116,13 +116,30 @@ void autonomous(){
 	using namespace okapi::literals;
 	//	intake::set_targetAsync(intake::States::E_INTAKE, 15000);
 //		pros::delay(10000);
-		driveToPosition(12.0, 0.0, pos.get_y(), pos.get_x(), 1.0, 100, true, true, false);
-	//	position_sweep(6.0, 6.0, pos.get_y(), pos.get_x(), true);
-/*
+	//	tilter::setTarget(tilter::State_Machine::E_LIFT);
+	//	pros::delay(500);
+	//	lift::setTargetAutonAsync(lift::heightsAUTO::E_DEPLOY, 700);
+	//	pros::delay(700);
+//		tilter::setTarget(tilter::State_Machine::E_OFF);
+	//	pros::delay(500);
+	//	lift::setTargetAutonAsync(lift::heightsAUTO::E_OFF, 700);
+
+	//	driveToPosition(12.0, 0.0, pos.get_y(), pos.get_x(), 0.1, 100, true, true, false);
+	//	position_sweep(6.0, 6.0, pos.get_y(), pos.get_x(), trueS);
+
+
+	  tilter::setTarget(tilter::State_Machine::E_LIFT);
+		pros::delay(500);
 		lift::setTargetAutonAsync(lift::heightsAUTO::E_CUBES, 700);
 		pros::delay(700);
-		lift::setTargetAutonAsync(lift::heightsAUTO::E_OFF, 700);
-		*/
+		tilter::setTarget(tilter::State_Machine::E_OFF);
+		pros::delay(500);
+		intake::set_targetAsync(intake::States::E_INTAKE, 5000);
+	  driveToPosition(32.0, 0.0, 0.0, 0.0, 0.1, 100, 5000, true, true, false);
+
+
+
+
 
 	//	tilter::setTarget(tilter::State_Machine::E_STACK);
 //	readyToStack = true;
@@ -298,18 +315,21 @@ intake_set(-127);
 else if(light_sensor.get_value() > light_sensor_threshold2 && tilter::g_clearTray && pros::millis() < tilter::g_timeout){
 tilter::g_readyToStack = false;// && g_clearTray){ //&& pros::millis() < g_timeout){
 int ispeed = pow(light_sensor.get_value()*0.01, 1.25);
-ispeed = std::clamp(ispeed, -80, -50);
+ispeed = std::clamp(ispeed, -100, -80);
 
 intake_set(ispeed);
+pros::delay(50);
 }
 
-else if(light_sensor.get_value() > light_sensor_threshold2 && lift::g_clearTray){ //&& pros::millis() < lift::g_timeout){
+
+/*else if(light_sensor.get_value() > light_sensor_threshold2 && lift::g_clearTray){ //&& pros::millis() < lift::g_timeout){
 lift::g_readyToLift = false;// && g_clearTray){ //&& pros::millis() < g_timeout){
 int ispeed = pow(light_sensor.get_value()*0.01, 1.25);
 ispeed = std::clamp(ispeed, -40, -80);
 
 intake_set(ispeed);
 }
+*/
 
 else{
 tilter::g_clearTray = false;

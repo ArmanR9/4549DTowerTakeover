@@ -31,7 +31,7 @@ namespace lift{
 
 
 const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2000, 2200 };
-const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
+const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 1500, 2000, 3000};
 
   void deploy(){
   deployMacro = false;
@@ -120,6 +120,7 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
         lift_stateAUTO = heightsAUTO::E_CUBES;
         break;
 
+
         case(heightsAUTO::E_LOW):
 
         g_target = auton_points[heightsAUTO::E_LOW];
@@ -180,7 +181,7 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
        }
        else{
         lift_mtr.move_absolute(0, 180);
-        lift_mtr.move_velocity(0); // hold and break
+      //  lift_mtr.move_velocity(0); // hold and break
         }
 
         pros::delay(10);

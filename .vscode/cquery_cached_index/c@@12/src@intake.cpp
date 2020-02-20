@@ -83,12 +83,12 @@ namespace intake{
           }
       else intake_set(0);
 
-        if(light_sensor.get_value() > light_sensor_threshold && g_readyToStack && pros::millis() < g_timeout){
-        intake_set(g_target);
-        }
-        else { intake_set(0);
-        g_readyToStack = false;
-        }
+      //  if(light_sensor.get_value() > light_sensor_threshold && g_readyToStack && pros::millis() < g_timeout){
+      //  intake_set(g_target);
+      //  }
+      //  else { intake_set(0);
+    //    g_readyToStack = false;
+
 
         pros::delay(10);
       }
