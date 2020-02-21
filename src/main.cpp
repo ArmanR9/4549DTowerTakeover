@@ -128,18 +128,33 @@ void autonomous(){
 	//	position_sweep(6.0, 6.0, pos.get_y(), pos.get_x(), trueS);
 
 //
-	  //  tilter::setTarget(tilter::State_Machine::E_LIFT);
-		//pros::delay(500);
-	//	lift::setTargetAutonAsync(lift::heightsAUTO::E_CUBES, 700);
-	//	pros::delay(700);
-	//	tilter::setTarget(tilter::State_Machine::E_OFF);
-	//	pros::delay(500);
-		intake::set_targetAsync(intake::States::E_INTAKE, 5000);
-	    driveToPosition(25.0, 0.0, 0.0, 0.0, 0.25, 90, 3000, true, true, false);
-		turn2ang(30.0, 80, _TurnDir::CCW, 300, 2000);
-		driveToPosition(0.0, 18.0, pos.get_y(), pos.get_x(), 0.25, 90, 5000, true, false, false);
-		turn2ang(0.0, 80, _TurnDir::CW, 300, 1000);
-		
+	  tilter::setTarget(tilter::State_Machine::E_LIFT);
+		pros::delay(250);
+		lift::setTargetAutonAsync(lift::heightsAUTO::E_CUBES, 500);
+		pros::delay(500);
+		tilter::setTarget(tilter::State_Machine::E_OFF);
+		pros::delay(300);
+		intake::set_targetAsync(intake::States::E_INTAKE, 10000);
+    driveToPosition(30.0, 0.0, 0.0, 0.0, 0.25, 90, 1800, true, true, false);
+    driveToPosition(7.50, -25.0, 30.0, 0.0, 0.5, 90, 2000, true, false, false);
+		turn2ang(-1.0, 90, _TurnDir::CW, 500, 550);
+		driveToPosition(46.5, -25.0, 7.50, -25.0, 0.5, 85, 1950, true, true, false);
+		driveToPosition(25.0, -25.0, 46.5, -25.0, 0.5, 90, 1500, true, false, false);
+		turn2ang(125.0, 75, _TurnDir::CCW, 500, 1250);
+		driveToPosition(21.0, -29.0, 25, -25.0, 0.5, 90, 2550, true, true, false);
+		pros::delay(2550);
+		intake::light_sen(250);
+		tilter::setTarget(tilter::State_Machine::E_STACK);
+		pros::delay(2500);
+		drive_lineup(-127, 500);
+
+
+	//	turn2ang()
+	//	drive_lineup(-50, 1000);
+		//turn2ang(0.0, 80, _TurnDir::CW, 300, 1000);
+
+
+
 
 
 
@@ -316,28 +331,18 @@ else if (r2.isPressed()){
 intake_set(-127);
 }
 
-else if(light_sensor.get_value() > light_sensor_threshold2 && tilter::g_clearTray && pros::millis() < tilter::g_timeout){
-tilter::g_readyToStack = false;// && g_clearTray){ //&& pros::millis() < g_timeout){
-int ispeed = pow(light_sensor.get_value()*0.01, 1.25);
-ispeed = std::clamp(ispeed, -100, -80);
 
-intake_set(ispeed);
-pros::delay(50);
-}
-
-
-/*else if(light_sensor.get_value() > light_sensor_threshold2 && lift::g_clearTray){ //&& pros::millis() < lift::g_timeout){
+else if(light_sensor.get_value() > light_sensor_threshold2 && lift::g_clearTray &&  pros::millis() < lift::g_timeout){
 lift::g_readyToLift = false;// && g_clearTray){ //&& pros::millis() < g_timeout){
 int ispeed = pow(light_sensor.get_value()*0.01, 1.25);
-ispeed = std::clamp(ispeed, -40, -80);
+ispeed = std::clamp(ispeed, -80, -60);
 
 intake_set(ispeed);
 }
-*/
+
+
 
 else{
-tilter::g_clearTray = false;
-tilter::g_readyToStack = true;
 lift::g_clearTray = false;
 lift::g_readyToLift = true;
 intake_set(0);

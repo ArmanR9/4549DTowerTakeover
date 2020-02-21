@@ -30,7 +30,7 @@ namespace lift{
   heightsAUTO::auton lift_stateAUTO = heightsAUTO::E_OFF;
 
 
-const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2000, 2200 };
+const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2575, 2950};
 const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 1500, 2000, 3000};
 
   void deploy(){
@@ -201,23 +201,34 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 1500, 2000, 3000};
 
                if(l1.changedToPressed()){ //&& iterator < 1){
                 ++iterator;
+                lift::setTarget(heights::E_MED, 3000);
                 pros::delay(500);
+
             //    if(tilter_mtr.get_position() > 1000 && tilter_mtr.get_position() < 2750){
                 //  tilter_mtr.move_absolute(2000, 100);
             //      pros::delay(1000);
             //    }
-                lift::setTarget(heights::E_MED, 3000);
-                final_power = liftDRIVER.calculate(g_target, lift_mtr.get_position());
+            //    lift::setTarget(heights::E_MED, 3000);
+              //  final_power = liftDRIVER.calculate(1000, lift_mtr.get_position());
+                std::cout << "position " << lift_mtr.get_position() << std::endl << std::endl;
 
-                if(pros::millis() < liftDRIVER.getFailsafe() && tilter::g_liftIsReady && lift::g_readyToLift == true){
-                lift_set(final_power);
               }
 
-                else {
-                  lift_set(0);
-                }
+              final_power = liftDRIVER.calculate(g_target, lift_mtr.get_position());
 
-          }
+              if(pros::millis() < liftDRIVER.getFailsafe() && tilter::g_liftIsReady && lift::g_readyToLift == true){
+              lift_set(final_power);
+              }
+              else {
+                lift_set(0);
+                lift_mtr.move_velocity(0);
+              }
+
+              std::cout << "position " << lift_mtr.get_position() << std::endl << std::endl;
+
+
+
+
 
 
 

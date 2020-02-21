@@ -909,7 +909,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
   pos_drive.calculateFailsafe(ifailsafe);
 
   //Correction constant
-  float kP_c = 6.0;
+  float kP_c = 5.4;
 
   // Correction value
   float correction = 0.0;
@@ -924,14 +924,6 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
 
    _Dir direction = forward == true ? _Dir::FWD : _Dir::BWD;
 
-           errorA = pos.get_alpha() - pidAngle;
-           errorX = cur_pos_vector.x + cur_pos_vector.y * sin(errorA) / cos(errorA);
-           correctA = atan2(x - pos.get_x(), y - pos.get_y());
-
-            correction = std::abs(errorX) > maxErrX ? kP_c * correctA : 0.0;//nearAngle(correctA, pos.get_alpha() - pos.get_alpha()) : 0.0;
-            if(direction == _Dir::BWD){
-             correctA += M_PI;
-            }
 
 
   //    if(radians_to_degrees(std::abs(correctA)) > 7.5){
@@ -970,7 +962,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
            errorX = cur_pos_vector.x + cur_pos_vector.y * sin(errorA) / cos(errorA);
            correctA = atan2(x - pos.get_x(), y - pos.get_y());
 
-            correction = std::abs(errorX) > maxErrX ? kP_c * correctA : 0.0;//nearAngle(correctA, pos.get_alpha() - pos.get_alpha()) : 0.0;
+            correction = std::abs(errorX) > maxErrX ? kP_c * (nearAngle(correctA, pos.get_alpha()) - pos.get_alpha()) : 0.0;//nearAngle(correctA, pos.get_alpha() - pos.get_alpha()) : 0.0;
             if(direction == _Dir::BWD){
              correctA += M_PI;
             }
@@ -980,7 +972,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
           targetVar = -1 * cur_pos_vector.y;
           }
 
-          else if(direction == _Dir::BWD){ targetVar = -1 * cur_pos_vector.y; } 
+          else if(direction == _Dir::BWD){ targetVar = -1 * cur_pos_vector.y; }
 
         if(direction == _Dir::FWD)
         final_power = pos_drive.calculate(targetVar, cur_pos_vector.y);
@@ -997,11 +989,26 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
          switch(sgn_(correction)){
 
          case(1):
-         driveLR_set(final_power, final_power * exp(-correction)); //* exp(-correction) );//+ correction);
+         driveLR_set(final_power, final_power * exp(-correction));
+         /*
+         if(direction == _Dir::FWD){
+         driveLR_set(final_power * exp(correction), final_power);
+       }
+          else if(direction == _Dir::BWD){
+           driveLR_set((-1*final_power), ((-1*(final_power * (exp(-correction))))));
+         }
+         */
          break;
 
          case(-1):
          driveLR_set(final_power * exp(correction), final_power);
+
+        // if(direction == _Dir::FWD){
+        // driveLR_set(final_power * exp(correction), final_power);
+      //___int64_t_defined }
+      //    else{
+      //    driveLR_set(-final_power * (-1*exp(correction)), -final_power);
+      //  }S
          break;
 
          case(0):
@@ -1013,6 +1020,8 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
 
            std::cout << "Cur Pos Vec Y: " << cur_pos_vector.y << std::endl << std::endl;
            std::cout << "target var" << targetVar << std::endl << std::endl;
+           std::cout << "final_power" << final_power << std::endl << std::endl;
+           std::cout << "correction" << correction << std::endl << std::endl;
      //    std::cout << "Alpha in Rads: " << pos.get_alpha() << std::endl << std::endl;
        //  std::cout << "Correct A: " << correctA << std::endl << std::endl;
         //std::cout << "failsafe : " << pos_drive.getFailsafe() << std::endl << std::endl;

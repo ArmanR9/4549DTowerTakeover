@@ -14,7 +14,7 @@ inline constexpr double wheel_diam_in {2.9883}; // 2.75" tracking wheels // 2.83
 inline constexpr float wheel_diam_in_mtr {4.125}; // 4.125" wheels
 
 // The wheel track of the robot (distance between 2 tracking wheels)
-inline constexpr double chassis_width {4.4575};
+inline constexpr double chassis_width {4.23252721};
 
 // The distance between the tracking wheels and the centre of the robot in inches
 inline constexpr double l_distance_in {2.22875};
@@ -30,7 +30,7 @@ inline constexpr double circ {2.843 * M_PI}; // 2.783" tracking wheels
 inline constexpr double circ_mtr {4.125 * M_PI}; // 4.125" regular wheels
 
 // Comverting raw encoder ticks into inches travelled
-inline constexpr double ticks_to_in { (2.25 * M_PI) / 360.0};
+inline constexpr double ticks_to_in { (2.611125 * M_PI) / 360.0};
 inline constexpr double ticks_to_in_mtr {circ_mtr / rev_per_tick_mtr};
 
 inline constexpr int light_sensor_threshold {1800}; // When lower than 1800 cube is

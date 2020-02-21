@@ -21,15 +21,15 @@ double PID::calculateErr(double ierror){//double target, double pv){
   m_error = ierror;
 
   //calculate delta time
-  double dT = pros::millis() - m_lastTime;
+//  double dT = pros::millis() - m_lastTime;
   //abort if dt is too small
-  if(dT < m_minDt) return m_final_power;
+//  if(dT < m_minDt) return m_final_power;
 
   //calculate proportional
   m_proportional = m_error * m_kP;
 
   //calculate derivative
-  m_derivative = m_kD * ((m_error - m_lastError) / dT);
+  m_derivative = m_kD * ((m_error - m_lastError)); /// dT);
 
   //calculate integral
   if(std::abs(m_error) < m_integral_active_zone && std::abs(m_error) > m_threshold){
@@ -59,7 +59,7 @@ double PID::calculateErr(double ierror){//double target, double pv){
 
 double PID::calculateFailsafe(std::uint32_t i_max_time){
 m_max_time = i_max_time;
-m_failsafe = pros::millis() + m_max_time;
+m_failsafe = pros::millis() + i_max_time;
 return m_failsafe;
 }
 
