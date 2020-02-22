@@ -285,6 +285,11 @@
                 "version": "4.0.2"
             }
         },
-        "upload_options": {}
+        "upload_options": {
+            "compress_bin": true,
+            "description": "why are you using this program?",
+            "remote_name": "backup",
+            "slot": 3
+        }
     }
 }
