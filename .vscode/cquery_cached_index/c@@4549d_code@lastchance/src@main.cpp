@@ -116,12 +116,137 @@ void autonomous(){
 	using namespace okapi::literals;
 	//	intake::set_targetAsync(intake::States::E_INTAKE, 15000);
 //		pros::delay(10000);
-		position_sweep(6.0, 6.0, pos.get_y(), pos.get_x(), true);
+	//	tilter::setTarget(tilter::State_Machine::E_LIFT);
+	//	pros::delay(500);
+	//	lift::setTargetAutonAsync(lift::heightsAUTO::E_DEPLOY, 700);
+	//	pros::delay(700);
+//		tilter::setTarget(tilter::State_Machine::E_OFF);
+	//	pros::delay(500);
+	//	lift::setTargetAutonAsync(lift::heightsAUTO::E_OFF, 700);
+
+	//	driveToPosition(12.0, 0.0, pos.get_y(), pos.get_x(), 0.1, 100, true, true, false);
+	//	position_sweep(6.0, 6.0, pos.get_y(), pos.get_x(), trueS);
+
+//
+ 	switch(auton_sel){
+
+					case(1): // Blue
+					tilter::setTarget(tilter::State_Machine::E_LIFT);
+				//	pros::delay(10);
+					lift::setTargetAutonAsync(lift::heightsAUTO::E_LOW, 750);
+					pros::delay(200);
+					intake::set_targetAsync(intake::States::E_OUTTAKE, 300);
+					pros::delay(675);
+					tilter::setTarget(tilter::State_Machine::E_OFF);
+					pros::delay(1700);
+					intake::set_targetAsync(intake::States::E_INTAKE, 10000);
+			    driveToPosition(29.25, 0.0, 0.0, 0.0, 0.25, 90, 1800, true, true, false);
+			    driveToPosition(7.50, -25.0, 29.25, 0.0, 0.5, 90, 2000, true, false, false);
+					turn2ang(0.0, 90, _TurnDir::CW, 500, 300);
+					driveToPosition(50.0, -25.0, 7.50, -25.0, 0.5, 75, 2050, true, true, false);
+					driveToPosition(25.0, -25.0, 50.0, -25.0, 0.5, 90, 1100, true, false, false);
+					turn2ang(122.0, 75, _TurnDir::CCW, 500, 1050);
+
+					driveToPosition(0.5, -47.0, 25.0, -25.0, 0.5, 100, 1000, true, true, false);
+				//	driveToDistance(22.5, pos.get_alpha(), 25.0, -24.0, 0.5, 100, 1050, true, true, false);
+					//straight_line_drive(22.0,, float kP_correction, float maxErrA, int max_velocity, uint32_t settle, uint32_t max_time)
+				//	float d, float a, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop
+					intake::light_sen(285);
+					tilter::setTarget(tilter::State_Machine::E_STACK);
+					pros::delay(2600);
+					intake::set_targetAsync(intake::States::E_OUTTAKE, 500);
+					pros::delay(10);
+					drive_lineup(-127, 500);
+					break;
+
+					case(2): // Red
+					tilter::setTarget(tilter::State_Machine::E_LIFT);
+				//	pros::delay(10);
+					lift::setTargetAutonAsync(lift::heightsAUTO::E_LOW, 750);
+					pros::delay(200);
+					intake::set_targetAsync(intake::States::E_OUTTAKE, 300);
+					pros::delay(675);
+					tilter::setTarget(tilter::State_Machine::E_OFF);
+					pros::delay(1700);
+					intake::set_targetAsync(intake::States::E_INTAKE, 10000);
+					driveToPosition(29.25, 0.0, 0.0, 0.0, 0.25, 90, 1800, true, true, false);
+					driveToPosition(7.50, 25.0, 29.25, 0.0, 0.5, 90, 2000, true, false, false);
+					turn2ang(0.0, 90, _TurnDir::CCW, 500, 300);
+					driveToPosition(50.0, 25.0, 7.50, 25.0, 0.5, 75, 2050, true, true, false);
+					driveToPosition(25.0, 25.0, 50.0, 25.0, 0.5, 90, 1100, true, false, false);
+					turn2ang(122.0, 75, _TurnDir::CW, 500, 1050);
+
+					driveToPosition(0.5, 47.0, 25.0, 25.0, 0.5, 100, 1000, true, true, false);
+				//	driveToDistance(22.5, pos.get_alpha(), 25.0, -24.0, 0.5, 100, 1050, true, true, false);
+					//straight_line_drive(22.0,, float kP_correction, float maxErrA, int max_velocity, uint32_t settle, uint32_t max_time)
+				//	float d, float a, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop
+					intake::light_sen(285);
+					tilter::setTarget(tilter::State_Machine::E_STACK);
+					pros::delay(2600);
+					intake::set_targetAsync(intake::States::E_OUTTAKE, 500);
+					pros::delay(10);
+					drive_lineup(-127, 500);
+
+					break;
+
+					case(3): // 1 point
+					drive_relative(25.0, 50.0);
+					pros::delay(5000);
+					drive_relative(-30.0, 50.0);
+					pros::delay(3750);
+					break;
+
+					default:
+					break;
+
+}
+
+
+//intake::set_targetAsync(intake::States::E_OUTTAKE, 1000);
+//pros::delay(1000);
+//	intake::light_sen(250);
 /*
-		lift::setTargetAutonAsync(lift::heightsAUTO::E_CUBES, 700);
-		pros::delay(700);
-		lift::setTargetAutonAsync(lift::heightsAUTO::E_OFF, 700);
+    tilter::setTarget(tilter::State_Machine::E_LIFT);
+	//	pros::delay(10);
+		lift::setTargetAutonAsync(lift::heightsAUTO::E_LOW, 750);
+		pros::delay(200);
+		intake::set_targetAsync(intake::States::E_OUTTAKE, 300);
+		pros::delay(675);
+		tilter::setTarget(tilter::State_Machine::E_OFF);
+		pros::delay(1700);
+		intake::set_targetAsync(intake::States::E_INTAKE, 10000);
+    driveToPosition(29.25, 0.0, 0.0, 0.0, 0.25, 90, 1800, true, true, false);
+    driveToPosition(7.50, -25.0, 29.25, 0.0, 0.5, 90, 2000, true, false, false);
+		turn2ang(0.0, 90, _TurnDir::CW, 500, 300);
+		driveToPosition(50.0, -25.0, 7.50, -25.0, 0.5, 75, 2050, true, true, false);
+		driveToPosition(25.0, -25.0, 50.0, -25.0, 0.5, 90, 1100, true, false, false);
+		turn2ang(123.5, 75, _TurnDir::CCW, 500, 1050);
+
+		driveToPosition(0.5, -47.0, 25.0, -25.0, 0.5, 100, 1000, true, true, false);
+	//	driveToDistance(22.5, pos.get_alpha(), 25.0, -24.0, 0.5, 100, 1050, true, true, false);
+		//straight_line_drive(22.0,, float kP_correction, float maxErrA, int max_velocity, uint32_t settle, uint32_t max_time)
+	//	float d, float a, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop
+		intake::light_sen(285);
+		tilter::setTarget(tilter::State_Machine::E_STACK);
+		pros::delay(2600);
+		intake::set_targetAsync(intake::States::E_OUTTAKE, 500);
+		pros::delay(10);
+		drive_lineup(-127, 500);
 		*/
+
+
+
+
+	//	turn2ang()
+	//	drive_lineup(-50, 1000);
+		//turn2ang(0.0, 80, _TurnDir::CW, 300, 1000);
+
+
+
+
+
+
+
 
 	//	tilter::setTarget(tilter::State_Machine::E_STACK);
 //	readyToStack = true;
@@ -294,17 +419,20 @@ else if (r2.isPressed()){
 intake_set(-127);
 }
 
-else if(light_sensor.get_value() > light_sensor_threshold2 && tilter::g_clearTray && pros::millis() < tilter::g_timeout){
-tilter::g_readyToStack = false;// && g_clearTray){ //&& pros::millis() < g_timeout){
-int ispeed = -1	* exp(light_sensor.get_value());
-ispeed = std::clamp(ispeed, -50, -25);
+
+else if(light_sensor.get_value() > light_sensor_threshold2 && lift::g_clearTray &&  pros::millis() < lift::g_timeout){
+lift::g_readyToLift = false;// && g_clearTray){ //&& pros::millis() < g_timeout){
+int ispeed = pow(light_sensor.get_value()*0.01, 1.25);
+ispeed = std::clamp(ispeed, -80, -60);
 
 intake_set(ispeed);
 }
 
+
+
 else{
-tilter::g_clearTray = false;
-tilter::g_readyToStack = true;
+lift::g_clearTray = false;
+lift::g_readyToLift = true;
 intake_set(0);
 }
 

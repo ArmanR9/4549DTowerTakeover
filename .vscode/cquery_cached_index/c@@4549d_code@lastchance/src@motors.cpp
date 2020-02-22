@@ -5,7 +5,7 @@
 pros::Motor LF_mtr (8, pros::E_MOTOR_GEARSET_18, false , pros::E_MOTOR_ENCODER_COUNTS); //false  10 10
 pros::Motor RF_mtr (7, pros::E_MOTOR_GEARSET_18, true , pros::E_MOTOR_ENCODER_COUNTS); // port 12 true
 pros::Motor RIntake_mtr (3, pros::E_MOTOR_GEARSET_36, true, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor LIntake_mtr (10, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor LIntake_mtr (9, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor tilter_mtr (12, pros::E_MOTOR_GEARSET_36, true, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor RB_mtr (6, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS); // [port 4] true
 pros::Motor LB_mtr (5, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);// port 5 false

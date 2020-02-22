@@ -22,7 +22,7 @@ Velocity wheel_vel;
 void tracking_update(void * ign){
 std::uint32_t timer = pros::millis();
 PosUtils odom;
-
+pos.reset_pos();
 
 while(true){
 
@@ -100,9 +100,9 @@ odom.dAlpha = ((odom.dL - odom.dR) / (chassis_width));
  // std::cout << "L" << encoder360L.get_value() << std::endl;
 // std::cout << "R" << encoder360R.get_value() << std::endl;
 
-  pros::delay(10);
+  //pros::delay(10);
 
-//  pros::Task::delay_until(&timer, 10);
+ pros::Task::delay_until(&timer, 10);
   }
 }
 

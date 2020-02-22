@@ -795,7 +795,7 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle
 
       //error = pos.get_alpha() + fmod(degrees_to_radians(angle) - pos.get_alpha(), M_PI * 2);
 
-      while(pros::millis() < timer && pros::millis() < failsafe){//pros::millis() < timer && pros::millis() < failsafe){
+      while(pros::millis() < failsafe){//pros::millis() < timer && pros::millis() < failsafe){
 
         //error = degrees_to_radians(angle) - pos.get_alpha();
        // final_error = atan2(sin(error), cos(error));
@@ -1220,6 +1220,7 @@ void driveDistance(){
 void drive_lineup(int voltage, uint32_t give_time){
 drive_set(voltage);
 pros::delay(give_time);
+drive_set(0);
 }
 
 void while_drive(int voltage, uint32_t give_time){
@@ -1250,4 +1251,15 @@ void lineup_right(int voltage, uint32_t give_time){
 leftdrive_set(-voltage * 0.5);
 rightdrive_set(voltage);
 pros::delay(give_time);
+}
+
+void drive_relative(double position, int voltage){
+
+position = position / (4.125 * M_PI / 900.0);
+
+LB_mtr.move_relative(position, voltage);
+LF_mtr.move_relative(position, voltage);
+RB_mtr.move_relative(position, voltage);
+RF_mtr.move_relative(position, voltage);
+
 }

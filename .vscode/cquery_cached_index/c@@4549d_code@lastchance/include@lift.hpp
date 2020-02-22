@@ -30,6 +30,9 @@ namespace heightsAUTO{
 
 extern bool g_auton_flag;
 extern bool g_opc_flag;
+extern bool g_readyToLift;
+extern bool g_clearTray;
+extern std::uint32_t g_timeout;
 
 
 extern const int points[];

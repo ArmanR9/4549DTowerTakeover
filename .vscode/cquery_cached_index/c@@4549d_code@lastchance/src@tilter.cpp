@@ -23,6 +23,8 @@ namespace tilter{
   bool g_liftIsReady = false;
   std::uint32_t g_timeout;
 
+  bool bro;
+
   void setTarget(State_Machine setTarget){
       g_failsafe = pros::millis() + 10000;
 
@@ -35,7 +37,7 @@ namespace tilter{
 
                 case(State_Machine::E_STACK):
 
-                g_target = 4900;
+                g_target = 4950;
                 g_clearTray = true;
                 g_timeout = pros::millis() + 1000;
                 break;
@@ -81,6 +83,7 @@ namespace tilter{
      okapi::ControllerButton l1(okapi::ControllerDigital::L1);
      okapi::ControllerButton l2(okapi::ControllerDigital::L2);
      okapi::ControllerButton up(okapi::ControllerDigital::up);
+     okapi::ControllerButton x(okapi::ControllerDigital::X);
 
       float error;
       float last_error;
@@ -91,12 +94,12 @@ namespace tilter{
 
       float final_power;
 
-      float kP = 0.07425; // 0.03
-      float kD = 0.07715; // 0.6
+      float kP = 0.075; // 0.03
+      float kD = 0.076; // 0.6
       float kI = 0.0;
 
-      float kP_a = 0.07425;
-      float kD_a = 0.07715;
+      float kP_a = 0.0732;
+      float kD_a = 0.077;
       float kI_a = 0.0;
 
       float position{0.0};
@@ -198,6 +201,15 @@ namespace tilter{
 
           if(b.changedToPressed()){
           tilter::setTarget(tilter::State_Machine::E_OFF);
+          }
+
+          if(x.isPressed()){
+          bro = true;
+        //  tilter_mtr.move(60);
+          }
+
+          else{
+          bro = false;
           }
 
 
@@ -314,12 +326,16 @@ namespace tilter{
 
       if(!invoke_timer){ timer = pros::millis() + settle;}
 
-        if(pros::millis() < g_failsafe && g_readyToStack){
+        if(bro){
+        final_power = 60;
+        }
+
+        if(pros::millis() < g_failsafe || bro){ //&& g_readyToStack){
         tilter_set(final_power);
         }
 
-      else { tilter_set(0); }
 
+        else { tilter_set(0); }
 
 
   //    if(light_sensor.get_value() > light_sensor_threshold){// && g_clearTray){ //&& pros::millis() < g_timeout){

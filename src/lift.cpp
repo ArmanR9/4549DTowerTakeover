@@ -31,7 +31,7 @@ namespace lift{
 
 
 const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2575, 2950};
-const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 1500, 2000, 3000};
+const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 1850, 2000, 3000};
 
   void deploy(){
   deployMacro = false;
@@ -177,10 +177,10 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 1500, 2000, 3000};
         float final_power = liftAUTO.calculate(g_target, lift_mtr.get_position());
 
         if(pros::millis() < liftAUTO.getFailsafe()){ //&& pros::millis() < liftAUTO.getTimer()){
-        lift_set(final_power);
+        lift_mtr.move(final_power);
        }
        else{
-        lift_mtr.move_absolute(0, 180);
+        lift_mtr.move_absolute(0.0, 200);
       //  lift_mtr.move_velocity(0); // hold and break
         }
 

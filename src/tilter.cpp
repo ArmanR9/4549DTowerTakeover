@@ -98,7 +98,7 @@ namespace tilter{
       float kD = 0.076; // 0.6
       float kI = 0.0;
 
-      float kP_a = 0.0742;
+      float kP_a = 0.0732;
       float kD_a = 0.077;
       float kI_a = 0.0;
 

@@ -128,25 +128,113 @@ void autonomous(){
 	//	position_sweep(6.0, 6.0, pos.get_y(), pos.get_x(), trueS);
 
 //
-	  tilter::setTarget(tilter::State_Machine::E_LIFT);
-		pros::delay(250);
-		lift::setTargetAutonAsync(lift::heightsAUTO::E_CUBES, 500);
-		pros::delay(500);
+ 	switch(auton_sel){
+
+					case(1): // Blue
+					tilter::setTarget(tilter::State_Machine::E_LIFT);
+				//	pros::delay(10);
+					lift::setTargetAutonAsync(lift::heightsAUTO::E_LOW, 750);
+					pros::delay(200);
+					intake::set_targetAsync(intake::States::E_OUTTAKE, 300);
+					pros::delay(675);
+					tilter::setTarget(tilter::State_Machine::E_OFF);
+					pros::delay(1700);
+					intake::set_targetAsync(intake::States::E_INTAKE, 10000);
+			    driveToPosition(29.25, 0.0, 0.0, 0.0, 0.25, 90, 1800, true, true, false);
+			    driveToPosition(7.50, -25.0, 29.25, 0.0, 0.5, 90, 2000, true, false, false);
+					turn2ang(0.0, 90, _TurnDir::CW, 500, 300);
+					driveToPosition(50.0, -25.0, 7.50, -25.0, 0.5, 75, 2050, true, true, false);
+					driveToPosition(25.0, -25.0, 50.0, -25.0, 0.5, 90, 1100, true, false, false);
+					turn2ang(122.0, 75, _TurnDir::CCW, 500, 1050);
+
+					driveToPosition(0.5, -47.0, 25.0, -25.0, 0.5, 100, 1000, true, true, false);
+				//	driveToDistance(22.5, pos.get_alpha(), 25.0, -24.0, 0.5, 100, 1050, true, true, false);
+					//straight_line_drive(22.0,, float kP_correction, float maxErrA, int max_velocity, uint32_t settle, uint32_t max_time)
+				//	float d, float a, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop
+					intake::light_sen(285);
+					tilter::setTarget(tilter::State_Machine::E_STACK);
+					pros::delay(2600);
+					intake::set_targetAsync(intake::States::E_OUTTAKE, 500);
+					pros::delay(10);
+					drive_lineup(-127, 500);
+					break;
+
+					case(2): // Red
+					tilter::setTarget(tilter::State_Machine::E_LIFT);
+				//	pros::delay(10);
+					lift::setTargetAutonAsync(lift::heightsAUTO::E_LOW, 750);
+					pros::delay(200);
+					intake::set_targetAsync(intake::States::E_OUTTAKE, 300);
+					pros::delay(675);
+					tilter::setTarget(tilter::State_Machine::E_OFF);
+					pros::delay(1700);
+					intake::set_targetAsync(intake::States::E_INTAKE, 10000);
+					driveToPosition(29.25, 0.0, 0.0, 0.0, 0.25, 90, 1800, true, true, false);
+					driveToPosition(7.50, 25.0, 29.25, 0.0, 0.5, 90, 2000, true, false, false);
+					turn2ang(0.0, 90, _TurnDir::CCW, 500, 300);
+					driveToPosition(50.0, 25.0, 7.50, 25.0, 0.5, 75, 2050, true, true, false);
+					driveToPosition(25.0, 25.0, 50.0, 25.0, 0.5, 90, 1100, true, false, false);
+					turn2ang(122.0, 75, _TurnDir::CW, 500, 1050);
+
+					driveToPosition(0.5, 47.0, 25.0, 25.0, 0.5, 100, 1000, true, true, false);
+				//	driveToDistance(22.5, pos.get_alpha(), 25.0, -24.0, 0.5, 100, 1050, true, true, false);
+					//straight_line_drive(22.0,, float kP_correction, float maxErrA, int max_velocity, uint32_t settle, uint32_t max_time)
+				//	float d, float a, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop
+					intake::light_sen(285);
+					tilter::setTarget(tilter::State_Machine::E_STACK);
+					pros::delay(2600);
+					intake::set_targetAsync(intake::States::E_OUTTAKE, 500);
+					pros::delay(10);
+					drive_lineup(-127, 500);
+
+					break;
+
+					case(3): // 1 point
+					drive_relative(25.0, 50.0);
+					pros::delay(5000);
+					drive_relative(-30.0, 50.0);
+					pros::delay(3750);
+					break;
+
+					default:
+					break;
+
+}
+
+
+//intake::set_targetAsync(intake::States::E_OUTTAKE, 1000);
+//pros::delay(1000);
+//	intake::light_sen(250);
+/*
+    tilter::setTarget(tilter::State_Machine::E_LIFT);
+	//	pros::delay(10);
+		lift::setTargetAutonAsync(lift::heightsAUTO::E_LOW, 750);
+		pros::delay(200);
+		intake::set_targetAsync(intake::States::E_OUTTAKE, 300);
+		pros::delay(675);
 		tilter::setTarget(tilter::State_Machine::E_OFF);
-		pros::delay(300);
+		pros::delay(1700);
 		intake::set_targetAsync(intake::States::E_INTAKE, 10000);
-    driveToPosition(30.0, 0.0, 0.0, 0.0, 0.25, 90, 1800, true, true, false);
-    driveToPosition(7.50, -25.0, 30.0, 0.0, 0.5, 90, 2000, true, false, false);
-		turn2ang(-1.0, 90, _TurnDir::CW, 500, 550);
-		driveToPosition(46.5, -25.0, 7.50, -25.0, 0.5, 85, 1950, true, true, false);
-		driveToPosition(25.0, -25.0, 46.5, -25.0, 0.5, 90, 1500, true, false, false);
-		turn2ang(125.0, 75, _TurnDir::CCW, 500, 1250);
-		driveToPosition(21.0, -29.0, 25, -25.0, 0.5, 90, 2550, true, true, false);
-		pros::delay(2550);
-		intake::light_sen(250);
+    driveToPosition(29.25, 0.0, 0.0, 0.0, 0.25, 90, 1800, true, true, false);
+    driveToPosition(7.50, -25.0, 29.25, 0.0, 0.5, 90, 2000, true, false, false);
+		turn2ang(0.0, 90, _TurnDir::CW, 500, 300);
+		driveToPosition(50.0, -25.0, 7.50, -25.0, 0.5, 75, 2050, true, true, false);
+		driveToPosition(25.0, -25.0, 50.0, -25.0, 0.5, 90, 1100, true, false, false);
+		turn2ang(123.5, 75, _TurnDir::CCW, 500, 1050);
+
+		driveToPosition(0.5, -47.0, 25.0, -25.0, 0.5, 100, 1000, true, true, false);
+	//	driveToDistance(22.5, pos.get_alpha(), 25.0, -24.0, 0.5, 100, 1050, true, true, false);
+		//straight_line_drive(22.0,, float kP_correction, float maxErrA, int max_velocity, uint32_t settle, uint32_t max_time)
+	//	float d, float a, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop
+		intake::light_sen(285);
 		tilter::setTarget(tilter::State_Machine::E_STACK);
-		pros::delay(2500);
+		pros::delay(2600);
+		intake::set_targetAsync(intake::States::E_OUTTAKE, 500);
+		pros::delay(10);
 		drive_lineup(-127, 500);
+		*/
+
+
 
 
 	//	turn2ang()

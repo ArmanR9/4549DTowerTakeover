@@ -20,6 +20,9 @@ namespace lift{
   bool g_auton_flag;
   bool g_opc_flag;
   bool deployMacro;
+  bool g_clearTray = false;
+  bool g_readyToLift = false;
+  std::uint32_t g_timeout;
 
   int g_target;
 
@@ -27,8 +30,8 @@ namespace lift{
   heightsAUTO::auton lift_stateAUTO = heightsAUTO::E_OFF;
 
 
-const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2000, 2300 };
-const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
+const int points [heights::E_NUM_OF_HEIGHTS] = { 0, 2575, 2950};
+const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 1850, 2000, 3000};
 
   void deploy(){
   deployMacro = false;
@@ -48,12 +51,16 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
 
                 g_target = points[heights::E_LOW];
                 lift_state = heights::E_LOW;
+                g_clearTray = true;
+                g_timeout = pros::millis() + 1000;
                 break;
 
                 case(heights::E_MED):
 
                 g_target = points[heights::E_MED];
                 lift_state = heights::E_MED;
+                g_clearTray = true;
+                g_timeout = pros::millis() + 1000;
                 break;
               }
 
@@ -113,6 +120,7 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
         lift_stateAUTO = heightsAUTO::E_CUBES;
         break;
 
+
         case(heightsAUTO::E_LOW):
 
         g_target = auton_points[heightsAUTO::E_LOW];
@@ -169,11 +177,11 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
         float final_power = liftAUTO.calculate(g_target, lift_mtr.get_position());
 
         if(pros::millis() < liftAUTO.getFailsafe()){ //&& pros::millis() < liftAUTO.getTimer()){
-        lift_set(final_power);
+        lift_mtr.move(final_power);
        }
        else{
-        lift_mtr.move_absolute(0, 180);
-        lift_mtr.move_velocity(0); // hold and break
+        lift_mtr.move_absolute(0.0, 200);
+      //  lift_mtr.move_velocity(0); // hold and break
         }
 
         pros::delay(10);
@@ -193,24 +201,34 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
 
                if(l1.changedToPressed()){ //&& iterator < 1){
                 ++iterator;
+                lift::setTarget(heights::E_MED, 3000);
                 pros::delay(500);
+
             //    if(tilter_mtr.get_position() > 1000 && tilter_mtr.get_position() < 2750){
                 //  tilter_mtr.move_absolute(2000, 100);
             //      pros::delay(1000);
             //    }
-                lift::setTarget(heights::E_MED, 3000);
-                final_power = liftDRIVER.calculate(g_target, lift_mtr.get_position());
+            //    lift::setTarget(heights::E_MED, 3000);
+              //  final_power = liftDRIVER.calculate(1000, lift_mtr.get_position());
+                std::cout << "position " << lift_mtr.get_position() << std::endl << std::endl;
 
-                if(pros::millis() < liftDRIVER.getFailsafe() && tilter::g_liftIsReady){
-                lift_set(final_power);
               }
 
-                else {
-                //  lift_mtr.set_brake_mode(MOTOR_BRAKE_HOLD);
-                  lift_mtr.move_velocity(0);
-                }
+              final_power = liftDRIVER.calculate(g_target, lift_mtr.get_position());
 
-          }
+              if(pros::millis() < liftDRIVER.getFailsafe() && tilter::g_liftIsReady && lift::g_readyToLift == true){
+              lift_set(final_power);
+              }
+              else {
+                lift_set(0);
+                lift_mtr.move_velocity(0);
+              }
+
+              std::cout << "position " << lift_mtr.get_position() << std::endl << std::endl;
+
+
+
+
 
 
 
@@ -228,7 +246,7 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 750, 2000, 3000};
                               //  tilter_mtr.move_absolute(2000, 100);
                                 pros::delay(1000);
                               }
-                              lift_mtr.move_absolute(1800, 200);
+                            //  lift_mtr.move_absolute(1800, 200);
             }
 /*
         if(l1.changedToPressed() && iterator == 0){

@@ -132,11 +132,11 @@ static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt) {
 
   switch (btnm_num) {
   case 1:
-    lv_label_set_text(g_sb_label, "Red Right Auton");
+    lv_label_set_text(g_sb_label, "Blue Auton");
     auton_sel = 1;
     break;
   case 2:
-    lv_label_set_text(g_sb_label, "Red Left Auton");
+    lv_label_set_text(g_sb_label, "Red Auton");
     auton_sel = 2;
     break;
   case 3:

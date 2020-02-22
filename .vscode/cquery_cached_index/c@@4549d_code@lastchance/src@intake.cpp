@@ -10,9 +10,14 @@ namespace intake{
   int g_target;
   uint32_t g_set_time;
   States current_state;
-  bool g_readyToStack = false;;
+  bool g_readyToStack = false;
+  bool g_outtake = false;
   std::uint32_t g_timeout;
 
+  void light_sen(std::uint32_t timeout){
+  g_outtake = true;
+  g_timeout = pros::millis() + timeout;
+  }
 
   void deploy(std::uint32_t timeout){
   g_target = -80;
@@ -81,14 +86,19 @@ namespace intake{
         if(g_set_time > pros::millis()){
         intake_set(g_target);
           }
+          else if(light_sensor.get_value() > light_sensor_threshold2 && g_outtake && pros::millis() < g_timeout){
+            int ispeed = pow(light_sensor.get_value()*0.01, 1.25);
+            ispeed = std::clamp(ispeed, -80, -60);
+            intake_set(ispeed);
+          }
       else intake_set(0);
 
-        if(light_sensor.get_value() > light_sensor_threshold && g_readyToStack && pros::millis() < g_timeout){
-        intake_set(g_target);
-        }
-        else { intake_set(0);
-        g_readyToStack = false;
-        }
+      //  if(light_sensor.get_value() > light_sensor_threshold && g_readyToStack && pros::millis() < g_timeout){
+      //  intake_set(g_target);
+      //  }
+      //  else { intake_set(0);
+    //    g_readyToStack = false;
+
 
         pros::delay(10);
       }
