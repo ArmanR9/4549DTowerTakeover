@@ -29,11 +29,19 @@
             "-funwind-tables",
             "--std=gnu++17",
             "-o",
+<<<<<<< HEAD
             "bin/sensors.cpp.o",
             "src\\sensors.cpp"
         ],
         "directory": "C:\\13",
         "file": "src\\sensors.cpp"
+=======
+            "bin/utilities.cpp.o",
+            "src\\utilities.cpp"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\utilities.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
     },
     {
         "arguments": [
@@ -44,6 +52,12 @@
             "-fno-ms-extensions",
             "-fno-ms-compatibility",
             "-fno-delayed-template-parsing",
+<<<<<<< HEAD
+=======
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi/thumb/v7-ar/fpv3/softfp",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward",
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
             "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
             "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
             "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
@@ -60,6 +74,7 @@
             "-fdata-sections",
             "-fdiagnostics-color",
             "-funwind-tables",
+<<<<<<< HEAD
             "--std=gnu11",
             "-o",
             "bin/logo.c.o",
@@ -67,150 +82,15 @@
         ],
         "directory": "C:\\13",
         "file": "src\\logo.c"
-    },
-    {
-        "arguments": [
-            "clang++",
-            "-c",
-            "-target",
-            "armv7ar-none-none-eabi",
-            "-fno-ms-extensions",
-            "-fno-ms-compatibility",
-            "-fno-delayed-template-parsing",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi/thumb/v7-ar/fpv3/softfp",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
-            "-iquote./include",
-            "-iquote./include/./",
-            "-mcpu=cortex-a9",
-            "-mfpu=neon-fp16",
-            "-mfloat-abi=softfp",
-            "-Os",
-            "-g",
-            "-D_POSIX_THREADS",
-            "-D_UNIX98_THREAD_MUTEX_ATTRIBUTES",
-            "-ffunction-sections",
-            "-fdata-sections",
-            "-fdiagnostics-color",
-            "-funwind-tables",
-            "--std=gnu++17",
-            "-o",
-            "bin/lift.cpp.o",
-            "src\\lift.cpp"
-        ],
-        "directory": "C:\\13",
-        "file": "src\\lift.cpp"
-    },
-    {
-        "arguments": [
-            "clang++",
-            "-c",
-            "-target",
-            "armv7ar-none-none-eabi",
-            "-fno-ms-extensions",
-            "-fno-ms-compatibility",
-            "-fno-delayed-template-parsing",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi/thumb/v7-ar/fpv3/softfp",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
-            "-iquote./include",
-            "-iquote./include/./",
-            "-mcpu=cortex-a9",
-            "-mfpu=neon-fp16",
-            "-mfloat-abi=softfp",
-            "-Os",
-            "-g",
-            "-D_POSIX_THREADS",
-            "-D_UNIX98_THREAD_MUTEX_ATTRIBUTES",
-            "-ffunction-sections",
-            "-fdata-sections",
-            "-fdiagnostics-color",
-            "-funwind-tables",
-            "--std=gnu++17",
-            "-o",
-            "bin/motors.cpp.o",
-            "src\\motors.cpp"
-        ],
-        "directory": "C:\\13",
-        "file": "src\\motors.cpp"
-    },
-    {
-        "arguments": [
-            "clang++",
-            "-c",
-            "-target",
-            "armv7ar-none-none-eabi",
-            "-fno-ms-extensions",
-            "-fno-ms-compatibility",
-            "-fno-delayed-template-parsing",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi/thumb/v7-ar/fpv3/softfp",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
-            "-iquote./include",
-            "-iquote./include/./",
-            "-mcpu=cortex-a9",
-            "-mfpu=neon-fp16",
-            "-mfloat-abi=softfp",
-            "-Os",
-            "-g",
-            "-D_POSIX_THREADS",
-            "-D_UNIX98_THREAD_MUTEX_ATTRIBUTES",
-            "-ffunction-sections",
-            "-fdata-sections",
-            "-fdiagnostics-color",
-            "-funwind-tables",
-            "--std=gnu++17",
-            "-o",
-            "bin/controller_printing.cpp.o",
-            "src\\controller_printing.cpp"
-        ],
-        "directory": "C:\\13",
-        "file": "src\\controller_printing.cpp"
-    },
-    {
-        "arguments": [
-            "clang++",
-            "-c",
-            "-target",
-            "armv7ar-none-none-eabi",
-            "-fno-ms-extensions",
-            "-fno-ms-compatibility",
-            "-fno-delayed-template-parsing",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi/thumb/v7-ar/fpv3/softfp",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
-            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
-            "-iquote./include",
-            "-iquote./include/./",
-            "-mcpu=cortex-a9",
-            "-mfpu=neon-fp16",
-            "-mfloat-abi=softfp",
-            "-Os",
-            "-g",
-            "-D_POSIX_THREADS",
-            "-D_UNIX98_THREAD_MUTEX_ATTRIBUTES",
-            "-ffunction-sections",
-            "-fdata-sections",
-            "-fdiagnostics-color",
-            "-funwind-tables",
+=======
             "--std=gnu++17",
             "-o",
             "bin/lcd.cpp.o",
             "src\\lcd.cpp"
         ],
-        "directory": "C:\\13",
+        "directory": "C:\\4549D_Code\\LastChance",
         "file": "src\\lcd.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
     },
     {
         "arguments": [
@@ -242,11 +122,195 @@
             "-funwind-tables",
             "--std=gnu++17",
             "-o",
+<<<<<<< HEAD
+            "bin/lift.cpp.o",
+            "src\\lift.cpp"
+        ],
+        "directory": "C:\\13",
+        "file": "src\\lift.cpp"
+=======
+            "bin/PID.cpp.o",
+            "src\\PID.cpp"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\PID.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
+    },
+    {
+        "arguments": [
+            "clang++",
+            "-c",
+            "-target",
+            "armv7ar-none-none-eabi",
+            "-fno-ms-extensions",
+            "-fno-ms-compatibility",
+            "-fno-delayed-template-parsing",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi/thumb/v7-ar/fpv3/softfp",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
+            "-iquote./include",
+            "-iquote./include/./",
+            "-mcpu=cortex-a9",
+            "-mfpu=neon-fp16",
+            "-mfloat-abi=softfp",
+            "-Os",
+            "-g",
+            "-D_POSIX_THREADS",
+            "-D_UNIX98_THREAD_MUTEX_ATTRIBUTES",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-fdiagnostics-color",
+            "-funwind-tables",
+            "--std=gnu++17",
+            "-o",
+<<<<<<< HEAD
+            "bin/motors.cpp.o",
+            "src\\motors.cpp"
+        ],
+        "directory": "C:\\13",
+        "file": "src\\motors.cpp"
+=======
+            "bin/intake.cpp.o",
+            "src\\intake.cpp"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\intake.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
+    },
+    {
+        "arguments": [
+            "clang++",
+            "-c",
+            "-target",
+            "armv7ar-none-none-eabi",
+            "-fno-ms-extensions",
+            "-fno-ms-compatibility",
+            "-fno-delayed-template-parsing",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi/thumb/v7-ar/fpv3/softfp",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
+            "-iquote./include",
+            "-iquote./include/./",
+            "-mcpu=cortex-a9",
+            "-mfpu=neon-fp16",
+            "-mfloat-abi=softfp",
+            "-Os",
+            "-g",
+            "-D_POSIX_THREADS",
+            "-D_UNIX98_THREAD_MUTEX_ATTRIBUTES",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-fdiagnostics-color",
+            "-funwind-tables",
+            "--std=gnu++17",
+            "-o",
+<<<<<<< HEAD
+            "bin/controller_printing.cpp.o",
+            "src\\controller_printing.cpp"
+        ],
+        "directory": "C:\\13",
+        "file": "src\\controller_printing.cpp"
+=======
+            "bin/sensors.cpp.o",
+            "src\\sensors.cpp"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\sensors.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
+    },
+    {
+        "arguments": [
+            "clang++",
+            "-c",
+            "-target",
+            "armv7ar-none-none-eabi",
+            "-fno-ms-extensions",
+            "-fno-ms-compatibility",
+            "-fno-delayed-template-parsing",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi/thumb/v7-ar/fpv3/softfp",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
+            "-iquote./include",
+            "-iquote./include/./",
+            "-mcpu=cortex-a9",
+            "-mfpu=neon-fp16",
+            "-mfloat-abi=softfp",
+            "-Os",
+            "-g",
+            "-D_POSIX_THREADS",
+            "-D_UNIX98_THREAD_MUTEX_ATTRIBUTES",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-fdiagnostics-color",
+            "-funwind-tables",
+            "--std=gnu++17",
+            "-o",
+<<<<<<< HEAD
+            "bin/lcd.cpp.o",
+            "src\\lcd.cpp"
+        ],
+        "directory": "C:\\13",
+        "file": "src\\lcd.cpp"
+=======
+            "bin/motors.cpp.o",
+            "src\\motors.cpp"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\motors.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
+    },
+    {
+        "arguments": [
+            "clang++",
+            "-c",
+            "-target",
+            "armv7ar-none-none-eabi",
+            "-fno-ms-extensions",
+            "-fno-ms-compatibility",
+            "-fno-delayed-template-parsing",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi/thumb/v7-ar/fpv3/softfp",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
+            "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
+            "-iquote./include",
+            "-iquote./include/./",
+            "-mcpu=cortex-a9",
+            "-mfpu=neon-fp16",
+            "-mfloat-abi=softfp",
+            "-Os",
+            "-g",
+            "-D_POSIX_THREADS",
+            "-D_UNIX98_THREAD_MUTEX_ATTRIBUTES",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-fdiagnostics-color",
+            "-funwind-tables",
+            "--std=gnu++17",
+            "-o",
+<<<<<<< HEAD
             "bin/gui.cpp.o",
             "src\\gui.cpp"
         ],
         "directory": "C:\\13",
         "file": "src\\gui.cpp"
+=======
+            "bin/odometry.cpp.o",
+            "src\\odometry.cpp"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\odometry.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
     },
     {
         "arguments": [
@@ -278,11 +342,19 @@
             "-funwind-tables",
             "--std=gnu++17",
             "-o",
+<<<<<<< HEAD
             "bin/utilities.cpp.o",
             "src\\utilities.cpp"
         ],
         "directory": "C:\\13",
         "file": "src\\utilities.cpp"
+=======
+            "bin/controller_printing.cpp.o",
+            "src\\controller_printing.cpp"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\controller_printing.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
     },
     {
         "arguments": [
@@ -293,9 +365,12 @@
             "-fno-ms-extensions",
             "-fno-ms-compatibility",
             "-fno-delayed-template-parsing",
+<<<<<<< HEAD
             "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1",
             "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/arm-none-eabi/thumb/v7-ar/fpv3/softfp",
             "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include/c++/7.2.1/backward",
+=======
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
             "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
             "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
             "-isystemc:\\program files\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
@@ -312,6 +387,7 @@
             "-fdata-sections",
             "-fdiagnostics-color",
             "-funwind-tables",
+<<<<<<< HEAD
             "--std=gnu++17",
             "-o",
             "bin/odometry.cpp.o",
@@ -319,6 +395,15 @@
         ],
         "directory": "C:\\13",
         "file": "src\\odometry.cpp"
+=======
+            "--std=gnu11",
+            "-o",
+            "bin/logo.c.o",
+            "src\\logo.c"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\logo.c"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
     },
     {
         "arguments": [
@@ -350,11 +435,19 @@
             "-funwind-tables",
             "--std=gnu++17",
             "-o",
+<<<<<<< HEAD
             "bin/PID.cpp.o",
             "src\\PID.cpp"
         ],
         "directory": "C:\\13",
         "file": "src\\PID.cpp"
+=======
+            "bin/joystick.cpp.o",
+            "src\\joystick.cpp"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\joystick.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
     },
     {
         "arguments": [
@@ -386,11 +479,19 @@
             "-funwind-tables",
             "--std=gnu++17",
             "-o",
+<<<<<<< HEAD
             "bin/joystick.cpp.o",
             "src\\joystick.cpp"
         ],
         "directory": "C:\\13",
         "file": "src\\joystick.cpp"
+=======
+            "bin/auto_drive.cpp.o",
+            "src\\auto_drive.cpp"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\auto_drive.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
     },
     {
         "arguments": [
@@ -422,11 +523,19 @@
             "-funwind-tables",
             "--std=gnu++17",
             "-o",
+<<<<<<< HEAD
             "bin/auto_drive.cpp.o",
             "src\\auto_drive.cpp"
         ],
         "directory": "C:\\13",
         "file": "src\\auto_drive.cpp"
+=======
+            "bin/gui.cpp.o",
+            "src\\gui.cpp"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\gui.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
     },
     {
         "arguments": [
@@ -458,11 +567,19 @@
             "-funwind-tables",
             "--std=gnu++17",
             "-o",
+<<<<<<< HEAD
             "bin/intake.cpp.o",
             "src\\intake.cpp"
         ],
         "directory": "C:\\13",
         "file": "src\\intake.cpp"
+=======
+            "bin/tilter.cpp.o",
+            "src\\tilter.cpp"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\tilter.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
     },
     {
         "arguments": [
@@ -494,11 +611,19 @@
             "-funwind-tables",
             "--std=gnu++17",
             "-o",
+<<<<<<< HEAD
             "bin/main.cpp.o",
             "src\\main.cpp"
         ],
         "directory": "C:\\13",
         "file": "src\\main.cpp"
+=======
+            "bin/lift.cpp.o",
+            "src\\lift.cpp"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\lift.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
     },
     {
         "arguments": [
@@ -530,10 +655,18 @@
             "-funwind-tables",
             "--std=gnu++17",
             "-o",
+<<<<<<< HEAD
             "bin/tilter.cpp.o",
             "src\\tilter.cpp"
         ],
         "directory": "C:\\13",
         "file": "src\\tilter.cpp"
+=======
+            "bin/main.cpp.o",
+            "src\\main.cpp"
+        ],
+        "directory": "C:\\4549D_Code\\LastChance",
+        "file": "src\\main.cpp"
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
     }
 ]

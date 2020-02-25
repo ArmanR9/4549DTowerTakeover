@@ -37,7 +37,11 @@ extern std::uint32_t g_timeout;
 
 extern const int points[];
 
+<<<<<<< HEAD
 void setTarget(int setTarget, std::uint32_t ifailsafe);
+=======
+void setTarget(int setTarget);
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
 void setTargetAuton(int setTarget, std::uint32_t failsafe);
 void setTargetAutonAsync(int setTarget, std::uint32_t failsafe);
 

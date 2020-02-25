@@ -35,8 +35,11 @@ inline constexpr double ticks_to_in_mtr {circ_mtr / rev_per_tick_mtr};
 
 inline constexpr int light_sensor_threshold {1800}; // When lower than 1800 cube is
 inline constexpr int light_sensor_threshold2 {2500};
+<<<<<<< HEAD
 inline constexpr int light_sensor_threshold3 {2100};
 
+=======
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
 
 // *----------------------------------- *
 // *                                    *

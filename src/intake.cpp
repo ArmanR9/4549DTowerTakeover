@@ -83,12 +83,21 @@ namespace intake{
     while(true){
 
       while(pros::competition::is_autonomous()){
+<<<<<<< HEAD
         if(g_set_time > pros::millis() && !g_outtake){
         intake_set(g_target);
           }
           else if(light_sensor.get_value() > light_sensor_threshold3 && g_outtake && pros::millis() < g_timeout){
             int ispeed = pow(light_sensor.get_value()*0.01, 1.25);
             ispeed = std::clamp(ispeed, -120, -100);
+=======
+        if(g_set_time > pros::millis()){
+        intake_set(g_target);
+          }
+          else if(light_sensor.get_value() > light_sensor_threshold2 && g_outtake && pros::millis() < g_timeout){
+            int ispeed = pow(light_sensor.get_value()*0.01, 1.25);
+            ispeed = std::clamp(ispeed, -80, -60);
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
             intake_set(ispeed);
           }
       else intake_set(0);
@@ -99,7 +108,11 @@ namespace intake{
       //  else { intake_set(0);
     //    g_readyToStack = false;
 
+<<<<<<< HEAD
         std::cout << "intake sen" << light_sensor.get_value() << '\n';
+=======
+
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
         pros::delay(10);
       }
 /*      else{

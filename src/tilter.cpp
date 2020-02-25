@@ -21,6 +21,7 @@ namespace tilter{
   bool g_clearTray = false;
   bool g_readyToStack = true;
   bool g_liftIsReady = false;
+<<<<<<< HEAD
 
   bool g_torqueLoop = false;
 
@@ -30,6 +31,11 @@ namespace tilter{
   std::uint32_t g_timeout;
 
   bool g_manualStack;
+=======
+  std::uint32_t g_timeout;
+
+  bool bro;
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
 
   void setTarget(State_Machine setTarget){
       g_failsafe = pros::millis() + 10000;
@@ -46,9 +52,12 @@ namespace tilter{
                 g_target = 4950;
                 g_clearTray = true;
                 g_timeout = pros::millis() + 1000;
+<<<<<<< HEAD
                 g_t_minTime = pros::millis() + 650;
                 g_t_maxTime = pros::millis() + 850;
                 g_torqueLoop = true;
+=======
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
                 break;
 
                 case(State_Machine::E_LIFT):
@@ -94,8 +103,11 @@ namespace tilter{
      okapi::ControllerButton up(okapi::ControllerDigital::up);
      okapi::ControllerButton x(okapi::ControllerDigital::X);
 
+<<<<<<< HEAD
       bool computeTorque;
 
+=======
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
       float error;
       float last_error;
 
@@ -105,12 +117,21 @@ namespace tilter{
 
       float final_power;
 
+<<<<<<< HEAD
       float kP = 0.0735; // 0.03
       float kD = 0.077; // 0.6
       float kI = 0.0;
 
       float kP_a = 0.0700;
       float kD_a = 0.0765;
+=======
+      float kP = 0.075; // 0.03
+      float kD = 0.076; // 0.6
+      float kI = 0.0;
+
+      float kP_a = 0.0732;
+      float kD_a = 0.077;
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
       float kI_a = 0.0;
 
       float position{0.0};
@@ -215,12 +236,20 @@ namespace tilter{
           }
 
           if(x.isPressed()){
+<<<<<<< HEAD
           g_manualStack = true;
+=======
+          bro = true;
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
         //  tilter_mtr.move(60);
           }
 
           else{
+<<<<<<< HEAD
           g_manualStack = false;
+=======
+          bro = false;
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
           }
 
 
@@ -241,6 +270,12 @@ namespace tilter{
 
           if(up.changedToPressed()){
             tilter::setTarget(tilter::State_Machine::E_LIFT);
+<<<<<<< HEAD
+=======
+          //  tilter_mtr.move_absolute(2000, 100);
+            pros::delay(1000);
+            g_liftIsReady = true;
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
 
           }
 
@@ -303,7 +338,11 @@ namespace tilter{
 
         error = g_target - position;
         p = kP * error;
+<<<<<<< HEAD
         i += kI * error;
+=======
+        i += error;
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
         d = kD * (position - last_position);
 
         if(fabs(error) < threshold){ // 500
@@ -334,6 +373,7 @@ namespace tilter{
 
       if(!invoke_timer){ timer = pros::millis() + settle;}
 
+<<<<<<< HEAD
         if(g_manualStack){
         final_power = 60;
         }
@@ -361,6 +401,13 @@ namespace tilter{
 
 
         if(pros::millis() < g_failsafe || g_manualStack){ //&& g_readyToStack){
+=======
+        if(bro){
+        final_power = 60;
+        }
+
+        if(pros::millis() < g_failsafe || bro){ //&& g_readyToStack){
+>>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
         tilter_set(final_power);
         }
 
