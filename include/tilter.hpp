@@ -21,7 +21,7 @@ E_LIFT // 2
 };
 
 
-void setTarget(State_Machine setTarget);
+void setTarget(State_Machine setTarget, std::uint32_t ifailsafe = 10000);
 
 bool isSettled();
 void waitUntilSettled(uint32_t timeout);

@@ -777,9 +777,14 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle
 
    }
 
-      float kP = 90.0;
-      float kD = 260.0;
-      float kI = 0.0;
+      float kP = 82.55;
+      float kD = 138.75;
+      float kI = 2.055;
+
+      float kPcube = 82.25;
+      float kDcube = 97.25;
+      float kIcube = 0.0;
+
 
       switch(direction){
 
@@ -795,27 +800,28 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle
 
       //error = pos.get_alpha() + fmod(degrees_to_radians(angle) - pos.get_alpha(), M_PI * 2);
 
-      while(pros::millis() < failsafe){//pros::millis() < timer && pros::millis() < failsafe){
+      while(pros::millis() < failsafe && pros::millis() < timer){//pros::millis() < timer && pros::millis() < failsafe){
 
         //error = degrees_to_radians(angle) - pos.get_alpha();
        // final_error = atan2(sin(error), cos(error));
       //  error = pos.get_alpha() + _fmod(pos.get_alpha() - degrees_to_radians(angle), (M_PI * 2));
-        if(direction == _TurnDir::CW){
-        final_error = error - pos.get_alpha();       //  atan2(sin(error), cos(error));      //  error - pos.get_alpha();
+        if(direction == _TurnDir::CW){        
+        final_error = error - pos.get_alpha();
         }
-
         else if(direction == _TurnDir::CCW){
         final_error = pos.get_alpha() - error;
-        }
+        }       //  atan2(sin(error), cos(error));      //  error - pos.get_alpha();
+        
 
+     
         proportional = kP * final_error;
         derivative = kD * (final_error - last_error);
-   //     integral = integral + (kI * final_error);
+        integral += (kI * final_error);
 
-       if(fabs(radians_to_degrees(final_error)) > 22.0 || fabs(radians_to_degrees(final_error)) < 5.0){
+       if(fabs(radians_to_degrees(final_error)) > 6.75 || fabs(radians_to_degrees(final_error)) < 1.5){
        integral = 0.0;
         }
-        else {integral = integral + (kI * final_error); }
+        else {integral += (kI * final_error); }
 
         if(fabs(integral) > 50){
         integral = 50 * sgn_(integral);
@@ -836,7 +842,7 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle
 
 
 
-        final_power = proportional + derivative; //+ integral;
+        final_power = proportional + derivative + integral;
 
 
         if(final_power > max_velocity){
@@ -875,7 +881,6 @@ rightdrive_set(0);
 }
 
 
-
 // double kP, double kD, double kI, double threshold, double maxVel, uint32_t settle, uint32_t max_time
 void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop){
 
@@ -909,7 +914,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
   pos_drive.calculateFailsafe(ifailsafe);
 
   //Correction constant
-  float kP_c = 5.4;
+  float kP_c = 5.0;
 
   // Correction value
   float correction = 0.0;
@@ -1029,7 +1034,7 @@ void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float 
 
          pros::delay(10);
 
-       } while(cur_pos_vector.y < 0.0 && pros::millis() < pos_drive.getFailsafe());
+       } while(cur_pos_vector.y < 0.0 && pros::millis() < pos_drive.getFailsafe()); //&& pros::millis() < pos_drive.getTimer());
 
   //    if(harshStop){
     //  applyHarshStop();

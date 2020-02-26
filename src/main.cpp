@@ -109,6 +109,15 @@ void competition_initialize() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+void tower(){
+        	intake::light_senAsync(400);
+					pros::delay(750);
+					lift::autonLift(lift::heightsAUTO::E_LOW, 2500, 2000);
+					pros::delay(1000);
+					intake::set_targetAsync(intake::States::E_DEPLOY, 1000);
+					pros::delay(1950);
+					tilter::setTarget(tilter::State_Machine::E_OFF); 
+}
 
 void autonomous(){
 	bool readyToStack = false;
@@ -259,7 +268,31 @@ void autonomous(){
 
 					default:
 <<<<<<< HEAD
+<<<<<<< HEAD
 					intake::light_sen(1000);
+=======
+					intake::set_targetAsync(intake::States::E_INTAKE, 2000);
+					driveToPosition(10.0, 0.0, 0.0, 0.0, 0.05, 80, 3000, true, true, false);
+					turn2ang(40.5, 90, _TurnDir::CW, 500, 2000);
+					pros::delay(1000);
+					driveToPosition(19.0, 12.75, 10.0, 0.0, 0.05, 70, 5000, true, true, false);
+					tower();
+					driveToPosition(0.0, 0.0, 20.0, 12.5, 0.05, 70, 5000, true, false, false);
+					turn2ang(0.0, 70, _TurnDir::CW, 500, 2000);
+					pos.reset_pos();
+					intake::set_targetAsync(intake::States::E_INTAKE, 15000);
+					driveToPosition(63.5, 2.0, 0.0, 0.0, 0.05, 70, 5000, true, true, false);
+					turn2ang(0.0, 70, _TurnDir::CH, 500, 2000);
+					tilter::setTarget(tilter::State_Machine::E_LIFT, 10000);
+					driveToPosition(127.5, 2.0, 63.5, 2.0, 0.05, 70, 5000, true, true, false);
+					intake::light_senAsync(500);
+					driveToPosition(130.0, 30.0, 127.5, 2.0, 0.05, 127, 5000, true, true, false);
+					tilter::setTarget(tilter::State_Machine::E_STACK);
+
+
+					 // 3.7 secs
+				//	intake::light_sen(1000);
+>>>>>>> Skills auto (WIP)
 				/*	tilter::setTarget(tilter::State_Machine::E_LIFT);
 				//	pros::delay(10);
 					lift::setTargetAutonAsync(lift::heightsAUTO::E_MED, 1200);
@@ -515,7 +548,7 @@ intake_set(-127);
 else if(light_sensor.get_value() > light_sensor_threshold2 && lift::g_clearTray &&  pros::millis() < lift::g_timeout){
 lift::g_readyToLift = false;// && g_clearTray){ //&& pros::millis() < g_timeout){
 int ispeed = pow(light_sensor.get_value()*0.01, 1.25);
-ispeed = std::clamp(ispeed, -80, -60);
+ispeed = std::clamp(ispeed, -120, -100);
 
 intake_set(ispeed);
 }
