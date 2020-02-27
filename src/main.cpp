@@ -110,7 +110,7 @@ void competition_initialize() {}
  * task, not resume it from where it left off.
  */
 void tower(){
-        	       	intake::light_senAsync(300);
+        	       	intake::light_senAsync(300, -115, -105);
 					pros::delay(750);
 					intake::light_senOff();
 					lift::autonLift(lift::heightsAUTO::E_LOW, 2500, 2000);
@@ -124,6 +124,7 @@ void autonomous(){
 	bool readyToStack = false;
 	using namespace okapi;
 	using namespace okapi::literals;
+	pos.reset_pos();
 //	pos.reset_pos();
 	//	intake::set_targetAsync(intake::States::E_INTAKE, 15000);
 //		pros::delay(10000);
@@ -140,7 +141,6 @@ void autonomous(){
 
 //
  	switch(auton_sel){
-
 					case(1): // Blue
 					tilter::setTarget(tilter::State_Machine::E_LIFT);
 				//	pros::delay(10);
@@ -176,11 +176,11 @@ void autonomous(){
 					case(2): // Red
 					tilter::setTarget(tilter::State_Machine::E_LIFT);
 				//	pros::delay(10);
-				lift::setTargetAutonAsync(lift::heightsAUTO::E_MED, 1200);
+					lift::setTargetAutonAsync(lift::heightsAUTO::E_MED, 1200);
 			//	pros::delay(200);
 				//intake::set_targetAsync(intake::States::E_OUTTAKE, 300);
-				pros::delay(1200);
-				tilter::setTarget(tilter::State_Machine::E_OFF);
+					pros::delay(1200);
+					tilter::setTarget(tilter::State_Machine::E_OFF);
 
 
 					pros::delay(1600);
@@ -216,24 +216,31 @@ void autonomous(){
 				//	turn2ang(90, 90, _TurnDir::CW, 450, 3000);
 					
 					intake::set_targetAsync(intake::States::E_INTAKE, 2000);
-					driveToPosition(10.0, 0.0, 0.0, 0.0, 0.05, 80, 3000, true, true, false);
-					turn2ang(45.0, 90, _TurnDir::CW, 500, 2000);
-					pros::delay(1000);
-					driveToPosition(19.0, 12.75, 10.0, 0.0, 0.05, 70, 5000, true, true, false);
+					driveToPosition(10.0, 0.0, 0.0, 0.0, 0.05, 80, 1000, true, true, false);
+					turn2ang(47.5, 90, _TurnDir::CW, 500, 1500);
+					//pros::delay(1000);
+					driveToPosition(19.0, 12.75, 10.0, 0.0, 0.05, 70, 2000, true, true, false);
 					tower();
-					driveToPosition(0.0, 0.0, 19.0, 12.75, 0.05, 70, 5000, true, false, false);
-					turn2ang(0.0, 70, _TurnDir::CW, 500, 2000);
+					driveToPosition(0.0, 0.0, 19.0, 12.75, 0.05, 90, 2000, true, false, false);
+					turn2ang(0.0, 100, _TurnDir::CW, 500, 1000);
 					pos.reset_pos();
-					intake::set_targetAsync(intake::States::E_INTAKE, 15000);
-					driveToPosition(63.5, 2.0, 0.0, 0.0, 0.05, 70, 5000, true, true, false);
+					intake::set_targetAsync(intake::States::E_INTAKE, 25000);
+					driveToPosition(63.5, 2.55, 0.0, 0.0, 0.05, 70, 5000, true, true, false);
 					turn2ang(0.0, 70, _TurnDir::CH, 500, 2000);
-					tilter::setTarget(tilter::State_Machine::E_LIFT, 10000);
-					driveToPosition(127.5, 2.0, 63.5, 2.0, 0.05, 70, 5000, true, true, false);
-					turn2ang(45.0, 90, _TurnDir::CW, 500, 2500);
-					driveToPosition(140.0, 18.75, 127.5, 2.0, 0.05, 127, 5000, true, true, false);
-					intake::light_senAsync(500);
+					tilter::setTarget(tilter::State_Machine::E_LIFT, 20000);
+					driveToPosition(132.5, 2.55, 63.5, 2.55, 0.05, 70, 5000, true, true, false);
+					turn2ang(45.0, 90, _TurnDir::CW, 500, 1300);
+					driveToPosition(140.0, 18.75, 132.5, 1.0, 0.05, 127, 5000, true, true, false);
+					intake::set_targetAsync(intake::States::E_OFF, 15);
+					pros::delay(25);
+					intake::light_senAsync(100, -35, -20);
+					pros::delay(180);
+					intake::light_senOff();
 				 	tilter::setTarget(tilter::State_Machine::E_STACK);
-					
+					pros::delay(3000);
+					intake::set_targetAsync(intake::States::E_OUTTAKE, 350);
+					driveToPosition(120.0, -14.3, 140.0, 18.75, 0.05, 127, 5000, true, false, false);
+					pros::delay(1000);
 
 					 // 3.7 secs
 				//	intake::light_sen(1000);

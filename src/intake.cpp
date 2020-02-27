@@ -14,6 +14,9 @@ namespace intake{
   bool g_outtake = false;
   std::uint32_t g_timeout;
 
+  int g_hi = -110;
+  int g_lo = -80;
+
  
 void light_sen(std::uint32_t timeout){
 
@@ -26,9 +29,11 @@ void light_sen(std::uint32_t timeout){
       else intake_set(0);
    }
 
-  void light_senAsync(std::uint32_t timeout){
+  void light_senAsync(std::uint32_t timeout, int hi, int lo){
   g_outtake = true;
   g_timeout = pros::millis() + timeout;
+  g_hi = hi;
+  g_lo = lo;
   }
 
   void light_senOff(){
@@ -70,7 +75,7 @@ void light_sen(std::uint32_t timeout){
 
                 case(States::E_DEPLOY):
 
-                g_target = -85;
+                g_target = -97;
                 break;
 
                 case(States::E_OFF):
@@ -104,7 +109,7 @@ void light_sen(std::uint32_t timeout){
           }
           else if(light_sensor.get_value() > light_sensor_threshold2 && g_outtake && pros::millis() < g_timeout){
             int ispeed = pow(light_sensor.get_value()*0.01, 1.25);
-            ispeed = std::clamp(ispeed, -110, -100);
+            ispeed = std::clamp(ispeed, g_hi, g_lo);
             intake_set(ispeed);
           }
       else{

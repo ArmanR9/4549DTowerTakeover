@@ -106,13 +106,13 @@ namespace tilter{
 
       float final_power;
 
-      float kP = 0.1285; // 0.03
-      float kD = 0.1295; // 0.6
-      float kI = 0.0028;
+      float kP = 0.1200; // 0.03
+      float kD = 0.1387; // 0.6
+      float kI = 0.0029;
 
-      float kP_a = 0.0700;
-      float kD_a = 0.0765;
-      float kI_a = 0.0;
+      float kP_a = 0.1050;
+      float kD_a = 0.160;
+      float kI_a = 0.0020;
 
       float position{0.0};
       float last_position{0.0};
@@ -130,37 +130,38 @@ namespace tilter{
     while(true){
 
       while(pros::competition::is_autonomous()){
-      //  std::cout << i << std::endl;
         failsafe = g_failsafe;
 
         position = tilter_mtr.get_position();
 
         error = g_target - position;
-        p = kP_a * error;
-        i += kI_a * error;
-        d = kD_a * (position - last_position);
+        p = kP * error;
+       // i += kI * error;
+        d = kD * (position - last_position);
 
-        if(fabs(error) < threshold){ // 500
+        if(fabs(error) < 5){ // 500
         i = 0.0;
         }
 
-        if(fabs(error) > 2000){
+        else if(fabs(error) > 275){
         i = 0.0;
         }
 
+        else { i += kI * error; }
 
-        if(fabs(i) > 75){
-        i = 75 * sgn_(i);
+        if(fabs(i) > 35){
+        i = 35 * sgn_(i);
         }
 
 
-        final_power = p + d + i; //+ d;
+        final_power = p + i + d;
 
 
         if(fabs(final_power) > 110){
         final_power = 110 * sgn_(final_power);
       }
 
+    
       if(fabs(error) < threshold){
        invoke_timer = true;
        isDone = true;
@@ -172,7 +173,7 @@ namespace tilter{
 
       if(!invoke_timer){ timer = pros::millis() + settle;}
 
-        if(pros::millis() < timer && pros::millis() < failsafe){
+        if( pros::millis() < failsafe){
         tilter_set(final_power);
         }
 

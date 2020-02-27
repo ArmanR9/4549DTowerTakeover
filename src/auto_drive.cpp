@@ -761,7 +761,7 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle
 
   float final_power;
 
-  float threshold = 0.5;
+  float threshold = 0.25;
 
   std::uint32_t failsafe = pros::millis() + max_time;
   uint32_t timer = pros::millis() + settle;
@@ -777,9 +777,9 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle
 
    }
 
-      float kP = 85.55;
-      float kD = 136.75;
-      float kI = 2.555;
+      float kP = 86.55;
+      float kD = 105.75;
+      float kI = 2.789;
 
       float kPcube = 82.25;
       float kDcube = 97.25;
@@ -816,9 +816,9 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle
      
         proportional = kP * final_error;
         derivative = kD * (final_error - last_error);
-        integral += (kI * final_error);
+      //  integral += (kI * final_error);
 
-       if(fabs(radians_to_degrees(final_error)) > 6.75 || fabs(radians_to_degrees(final_error)) < 1.5){
+       if(fabs(radians_to_degrees(final_error)) > 6.75 || fabs(radians_to_degrees(final_error)) < 0.45){
        integral = 0.0;
         }
         else {integral += (kI * final_error); }
@@ -826,6 +826,7 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle
         if(fabs(integral) > 50){
         integral = 50 * sgn_(integral);
         }
+
 
 
         if(fabs(radians_to_degrees(final_error)) < threshold){
