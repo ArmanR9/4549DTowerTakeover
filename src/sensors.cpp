@@ -7,7 +7,7 @@
 //pros::ADIEncoder encoder360R (5,6,true); // top port wire | bottom port wire | reverse boolean
 //pros::ADIEncoder encoder360L (1,2,false);
 //pros::ADIEncoder encoder360B (3,4, true);
-pros::ADIEncoder encoder360L{1,2};
+pros::ADIEncoder encoder360L(1,2, false);
 pros::ADIEncoder encoder360R(5,6, true);
 pros::ADIEncoder encoder360B(3,4, false);
 pros::ADIAnalogIn light_sensor(7);
