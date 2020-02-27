@@ -259,21 +259,21 @@ void autonomous(){
 
 					// Align for scoring zone
 					turn2ang(45.0, 90, _TurnDir::CW, 500, 1300);
-					driveToPosition(140.0, 18.75, 132.5, 1.0, 0.05, 127, 5000, true, true, false);
+					driveToPosition(140.0, 15.00, 132.5, 1.0, 0.05, 127, 5000, true, true, false);
 					intake::set_targetAsync(intake::States::E_OFF, 15);
-					pros::delay(25);
+					pros::delay(500);
+					intake::set_targetAsync(intake::States::E_DEPLOY, 50);
 				 	tilter::setTarget(tilter::State_Machine::E_STACK);
-					pros::delay(75);
-					intake::light_senAsync(100, -35, -20);
 					pros::delay(100);
-					intake::light_senOff();
+				//	intake::light_senOff();
 					pros::delay(3000);
 
 					// Move back and reset on the wall to align for middle tower
-					intake::set_targetAsync(intake::States::E_OUTTAKE, 350);
-					driveToPosition(120.0, -14.3, 140.0, 18.75, 0.05, 127, 5000, true, false, false);
+				//	intake::set_targetAsync(intake::States::E_OUTTAKE, 350);
+					driveToPosition(120.0, -14.3, 140.0, 18.75, 1.5, 127, 5000, true, false, false);
+					tilter::setTarget(tilter::State_Machine::E_OFF);
 					pros::delay(1000);
-					turn2ang(0.0, 90, _TurnDir::CW, 500, 1300);
+					turn2ang(180.0, 90, _TurnDir::CW, 500, 1300);
 					driveToPosition(140.0, -14.3, 120.0, -14.3, 0.05, 100, 3000, true, false, false);
 					pros::delay(3250);
 					pos.reset_pos();
