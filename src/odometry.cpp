@@ -100,15 +100,9 @@ odom.dAlpha = ((odom.dL - odom.dR) / (chassis_width));
  // std::cout << "L" << encoder360L.get_value() << std::endl;
 // std::cout << "R" << encoder360R.get_value() << std::endl;
 
-<<<<<<< HEAD
   pros::delay(10);
 
  //pros::Task::delay_until(&timer, 10);
-=======
-  //pros::delay(10);
-
- pros::Task::delay_until(&timer, 10);
->>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
   }
 }
 

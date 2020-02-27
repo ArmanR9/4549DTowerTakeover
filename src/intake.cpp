@@ -31,6 +31,10 @@ void light_sen(std::uint32_t timeout){
   g_timeout = pros::millis() + timeout;
   }
 
+  void light_senOff(){
+  g_outtake = false;      
+  }
+
   void deploy(std::uint32_t timeout){
   g_target = -80;
   g_readyToStack = true;
@@ -95,26 +99,16 @@ void light_sen(std::uint32_t timeout){
     while(true){
 
       while(pros::competition::is_autonomous()){
-<<<<<<< HEAD
         if(g_set_time > pros::millis() && !g_outtake){
-        intake_set(g_target);
-          }
-          else if(light_sensor.get_value() > light_sensor_threshold3 && g_outtake && pros::millis() < g_timeout){
-            int ispeed = pow(light_sensor.get_value()*0.01, 1.25);
-            ispeed = std::clamp(ispeed, -120, -100);
-=======
-        if(g_set_time > pros::millis()){
         intake_set(g_target);
           }
           else if(light_sensor.get_value() > light_sensor_threshold2 && g_outtake && pros::millis() < g_timeout){
             int ispeed = pow(light_sensor.get_value()*0.01, 1.25);
-            ispeed = std::clamp(ispeed, -80, -60);
->>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
+            ispeed = std::clamp(ispeed, -110, -100);
             intake_set(ispeed);
           }
       else{
        intake_set(0);
-       g_outtake = false;
       }
       //  if(light_sensor.get_value() > light_sensor_threshold && g_readyToStack && pros::millis() < g_timeout){
       //  intake_set(g_target);
@@ -122,11 +116,7 @@ void light_sen(std::uint32_t timeout){
       //  else { intake_set(0);
     //    g_readyToStack = false;
 
-<<<<<<< HEAD
         std::cout << "intake sen" << light_sensor.get_value() << '\n';
-=======
-
->>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
         pros::delay(10);
       }
 /*      else{

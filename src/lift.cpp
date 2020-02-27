@@ -230,11 +230,6 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 1850, 2350, 3000};
 
 
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
             if(l2.changedToPressed()){// && iterator > 0){
             iterator = 0;
             lift_mtr.move_absolute(0, 200);
@@ -245,7 +240,6 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 1850, 2350, 3000};
 
             if(up.changedToPressed()){
 
-<<<<<<< HEAD
               lift::setTarget(heights::E_LOW, 2500);
               pros::delay(500);
 }
@@ -263,16 +257,6 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 1850, 2350, 3000};
               		pros::delay(1300);
               	tilter::setTarget(tilter::State_Machine::E_OFF);
               }
-<<<<<<< HEAD
-=======
-                              if(tilter::g_liftIsReady){//tilter_mtr.get_position() > 1000 && tilter_mtr.get_position() < 2750){
-                              //  tilter_mtr.move_absolute(2000, 100);
-                                pros::delay(1000);
-                              }
-                            //  lift_mtr.move_absolute(1800, 200);
-            }
->>>>>>> 92fd986464b0fdbbc43183bc402b23742a241a64
-=======
 
 
 
@@ -289,7 +273,6 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 1850, 2350, 3000};
               std::cout << "position " << lift_mtr.get_position() << std::endl << std::endl;
 
 
->>>>>>> Skills auto (WIP)
 /*
 
         if(l1.changedToPressed() && iterator == 0){

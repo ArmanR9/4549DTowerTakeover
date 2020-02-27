@@ -777,9 +777,9 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle
 
    }
 
-      float kP = 82.55;
-      float kD = 138.75;
-      float kI = 2.055;
+      float kP = 85.55;
+      float kD = 136.75;
+      float kI = 2.555;
 
       float kPcube = 82.25;
       float kDcube = 97.25;
