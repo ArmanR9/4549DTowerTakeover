@@ -32,7 +32,7 @@ double PID::calculateErr(double ierror){//double target, double pv){
   m_derivative = m_kD * ((m_error - m_lastError)); /// dT);
 
   //calculate integral
-  if(std::abs(m_error) < m_integral_active_zone && std::abs(m_error) > m_threshold){
+  if(std::abs(m_error) < m_threshold && std::abs(m_error) > m_integral_active_zone){
   m_integral += m_kI * m_error;
   }
   else if(!m_integral_active_zone){
@@ -97,6 +97,10 @@ return m_failsafe;
 
 double PID::getSettle(){
 return m_settle;
+}
+
+double PID::getMaxVel(){
+return m_maxVel;
 }
 
 void PID::setThreshold(double ithreshold){

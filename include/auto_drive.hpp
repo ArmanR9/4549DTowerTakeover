@@ -15,7 +15,7 @@ void drive_encoder(int setpoint, int max_speed, float currError);
 void turning_pid(int degrees, int max_speed);
 
 void straight_line_drive(float setpoint, float angle, float kP_correction, float maxErrA, int max_velocity, uint32_t settle, uint32_t max_time);
-void turn2ang(float angle, int max_velocity, _TurnDir direction = _TurnDir::CH , uint32_t settle = 300, uint32_t max_time = 5000);
+void turn2ang(float angle, int max_velocity, _TurnDir direction = _TurnDir::CH , uint32_t settle = 300, uint32_t max_time = 5000, float ikI = 1.589);
 
 void driveToPosition(float y, float x, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop);
 void driveToDistance(float d, float a, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop);

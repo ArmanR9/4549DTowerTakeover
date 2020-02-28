@@ -183,7 +183,7 @@ bin/main.cpp.o: src/main.cpp include/main.h include/api.h \
  include/odometry.hpp include/joystick.hpp include/gui.hpp \
  include/pros/apix.h include/controller_printing.hpp include/tilter.hpp \
  include/motors.hpp include/lift.hpp include/intake.hpp include/tasks.hpp \
- include/auto_drive.hpp include/odometry.hpp
+ include/auto_drive.hpp include/odometry.hpp include/angler.hpp
 
 include/main.h:
 
@@ -716,3 +716,5 @@ include/tasks.hpp:
 include/auto_drive.hpp:
 
 include/odometry.hpp:
+
+include/angler.hpp:

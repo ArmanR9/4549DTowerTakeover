@@ -106,13 +106,13 @@ namespace tilter{
 
       float final_power;
 
-      float kP = 0.1200; // 0.03
-      float kD = 0.1387; // 0.6
-      float kI = 0.0029;
+      float kP = 0.1006; // 0.03
+      float kD = 0.1635; // 0.6
+      float kI = 0.0015;
 
-      float kP_a = 0.1050;
-      float kD_a = 0.155;
-      float kI_a = 0.00205;
+      float kP_a = 0.096;
+      float kD_a = 0.1555;
+      float kI_a = 0.0018;
 
       float position{0.0};
       float last_position{0.0};
@@ -139,7 +139,7 @@ namespace tilter{
        // i += kI * error;
         d = kD * (position - last_position);
 
-        if(fabs(error) < 10){ // 500
+        if(fabs(error) < 5){ // 500
         i = 0.0;
         }
 
@@ -149,8 +149,8 @@ namespace tilter{
 
         else { i += kI * error; }
 
-        if(fabs(i) > 20){
-        i = 20 * sgn_(i);
+        if(fabs(i) > 10){
+        i = 10 * sgn_(i);
         }
 
 

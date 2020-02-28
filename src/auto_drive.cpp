@@ -750,7 +750,7 @@ drive_set(0);
 
 
 
-void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle, uint32_t max_time){
+void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle, uint32_t max_time, float ikI){
 
   float error;
   float final_error = 0.0;
@@ -777,9 +777,9 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle
 
    }
 
-      float kP = 86.55;
-      float kD = 105.75;
-      float kI = 2.789;
+      float kP = 70.05;
+      float kD = 172.90;
+      float kI = ikI;
 
       float kPcube = 82.25;
       float kDcube = 97.25;
@@ -800,7 +800,7 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle
 
       //error = pos.get_alpha() + fmod(degrees_to_radians(angle) - pos.get_alpha(), M_PI * 2);
 
-      while(pros::millis() < failsafe && pros::millis() < timer){//pros::millis() < timer && pros::millis() < failsafe){
+      while(pros::millis() < failsafe && pros::millis() < timer){
 
         //error = degrees_to_radians(angle) - pos.get_alpha();
        // final_error = atan2(sin(error), cos(error));
@@ -818,7 +818,7 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle
         derivative = kD * (final_error - last_error);
       //  integral += (kI * final_error);
 
-       if(fabs(radians_to_degrees(final_error)) > 6.75 || fabs(radians_to_degrees(final_error)) < 0.45){
+       if(fabs(radians_to_degrees(final_error)) > 5.75 || fabs(radians_to_degrees(final_error)) < 1.85){
        integral = 0.0;
         }
         else {integral += (kI * final_error); }

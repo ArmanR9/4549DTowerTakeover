@@ -65,6 +65,7 @@ private:
   double getFailsafe();
   double getFinalPower();
   double getSettle();
+  double getMaxVel();
 
   void reset();
 

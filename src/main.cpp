@@ -14,6 +14,7 @@
 #include "tasks.hpp"
 #include "auto_drive.hpp"
 #include <algorithm>
+#include "angler.hpp"
 
 
 /**
@@ -67,7 +68,7 @@ void initialize() {
 //pros::Task tilter_task_ctor(tilter::tilter_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "tilter task");
 
 //	pros::Task odometry_task_ctor(tracking_update, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "odometry task");
-tilter_task_ctor = std::make_shared<pros::Task>(tilter::tilter_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "tilter task");
+tilter_task_ctor = std::make_shared<pros::Task>(angler_pid_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "tilter task");
 lift_task_ctor = std::make_shared<pros::Task>(lift::lift_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "lift task");
 
 pros::Task odometry_task_ctor(tracking_update, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "odometry task");
@@ -141,6 +142,19 @@ void tower2(){
 					tilter::setTarget(tilter::State_Machine::E_OFF);
 }
 
+void stack(){
+
+					tilter::setTarget(tilter::State_Machine::E_STACK, 15000);
+					intake::light_senAsync(200, -60, -50);
+					pros::delay(160);
+					intake::light_senOff();
+
+					pros::delay(3000);
+					drive_lineup(55, 150);
+}
+
+
+
 void autonomous(){
 	bool readyToStack = false;
 	using namespace okapi;
@@ -166,11 +180,11 @@ void autonomous(){
 					case(1): // Blue
 					tilter::setTarget(tilter::State_Machine::E_LIFT);
 				//	pros::delay(10);
-				lift::setTargetAutonAsync(lift::heightsAUTO::E_MED, 1200);
+					lift::setTargetAutonAsync(lift::heightsAUTO::E_MED, 1200);
 			//	pros::delay(200);
 				//intake::set_targetAsync(intake::States::E_OUTTAKE, 300);
-				pros::delay(1200);
-				tilter::setTarget(tilter::State_Machine::E_OFF);
+					pros::delay(1200);
+					tilter::setTarget(tilter::State_Machine::E_OFF);
 
 
 					pros::delay(1600);
@@ -235,13 +249,20 @@ void autonomous(){
 					break;
 
 					default:
-					// Deploy Stage
+				//	tilter::setTarget(tilter::State_Machine::E_LIFT, 20000);
+				//	pros::delay(3000);
+				//	stack();
+				//	pros::delay(10000);
+						// Deploy Stage
+
+				//	turn2ang(90.0, 90, _TurnDir::CH, 550, 1000);
+				//	pros::delay(10000);
 					deployAuto();
 
 					// Tower and Reset to the wall
 					intake::set_targetAsync(intake::States::E_INTAKE, 2000);
 					driveToPosition(10.0, 0.0, 0.0, 0.0, 0.05, 80, 1000, true, true, false);
-					turn2ang(47.5, 90, _TurnDir::CW, 500, 1500);
+					turn2ang(45.0, 90, _TurnDir::CW, 500, 1500);
 					//pros::delay(1000);
 					driveToPosition(19.0, 12.75, 10.0, 0.0, 0.05, 70, 2000, true, true, false);
 					tower();
@@ -251,35 +272,80 @@ void autonomous(){
 					pros::delay(10);
 
 					// Go for the 8 cube lineup
-					intake::set_targetAsync(intake::States::E_INTAKE, 25000);
-					driveToPosition(63.5, 2.55, 0.0, 0.0, 0.05, 70, 5000, true, true, false);
+					intake::set_targetAsync(intake::States::E_INTAKE, 16500);
+					driveToPosition(63.5, 2.5, 0.0, 0.0, 0.05, 70, 5000, true, true, false);
 					turn2ang(0.0, 70, _TurnDir::CH, 500, 2000);
 					tilter::setTarget(tilter::State_Machine::E_LIFT, 20000);
-					driveToPosition(132.5, 2.55, 63.5, 2.55, 0.05, 70, 5000, true, true, false);
+					driveToPosition(133.5, 2.0, 63.5, 2.5, 0.05, 70, 5000, true, true, false);
 
 					// Align for scoring zone
-					turn2ang(45.0, 90, _TurnDir::CW, 500, 1300);
-					driveToPosition(140.0, 15.00, 132.5, 1.0, 0.05, 127, 5000, true, true, false);
-					intake::set_targetAsync(intake::States::E_OFF, 15);
-					pros::delay(500);
-					intake::set_targetAsync(intake::States::E_DEPLOY, 50);
-				 	tilter::setTarget(tilter::State_Machine::E_STACK);
-					pros::delay(100);
-				//	intake::light_senOff();
+					turn2ang(50.0, 90, _TurnDir::CW, 500, 1300);
+					driveToPosition(140.0, 15.00, 135.5, 2.00, 0.05, 127, 3000, true, true, false);
+				//tilter::setTarget(tilter::State_Machine::E_LIFT, 10000);
+			//	pros::delay(3000);
+					intake::set_targetAsync(intake::States::E_INTAKE, 1000);
+					tilter::setTarget(tilter::State_Machine::E_OFF);
+					pros::delay(1000);
+					//intake::set_targetAsync(intake::States::E_INTAKE, 1000);
+				//	tilter::setTarget(tilter::State_Machine::E_OFF, 100);
+					//pros::delay(500);
+					//intake::set_targetAsync(intake::States::E_OFF, 10);
+					pros::delay(1300);
+					stack();
 					pros::delay(3000);
+					tilter::setTarget(tilter::State_Machine::E_OFF);
+					pros::delay(2000);
+
+				//	tilter::setTarget(tilter::State_Machine::E_OFF, 100);
+				//	pros::delay(1000);
+					//intake::set_targetAsync(intake::States::E_DEPLOY, 50);
+				 	//tilter::setTarget(tilter::State_Machine::E_STACK);
+					//pros::delay(100);
+				//	intake::light_senOff();
+					//pros::delay(3000);
 
 					// Move back and reset on the wall to align for middle tower
 				//	intake::set_targetAsync(intake::States::E_OUTTAKE, 350);
-					driveToPosition(120.0, -14.3, 140.0, 18.75, 1.5, 127, 5000, true, false, false);
-					tilter::setTarget(tilter::State_Machine::E_OFF);
+					intake::set_targetAsync(intake::States::E_OUTTAKE, 2000);
+					//driveToPosition(120.0, -14.3, 140.0, 18.75, 1.5, 127, 5000, true, false, false);
+					drive_lineup(-50, 3000);
+				//	tilter::setTarget(tilter::State_Machine::E_OFF);
 					pros::delay(1000);
-					turn2ang(180.0, 90, _TurnDir::CW, 500, 1300);
-					driveToPosition(140.0, -14.3, 120.0, -14.3, 0.05, 100, 3000, true, false, false);
+					tilter::setTarget(tilter::State_Machine::E_OFF);
+					turn2ang(0.0, 120, _TurnDir::CCW, 590, 1550, 5.94);
+					pros::delay(1000);
+				//	tilter::setTarget(tilter::State_Machine::E_LIFT, 20000);
+				//	pros::delay(300)
+					lift::autonLift(lift::heightsAUTO::E_MED, 6500, 6850);
+					pros::delay(1250);
+				//	driveToPosition(148.0, -15.5, 120.0, -14.3, 0.05, 100, 3000, true, true, false);
+				    drive_lineup(90, 1000);
 					pros::delay(3250);
 					pos.reset_pos();
-					pros::delay(250);
+					pros::delay(500);
+					driveToPosition(-15.0, 0.0, 0.0, 0.0, 0.05, 100, 3000, true, false, false);
+					tilter::setTarget(tilter::State_Machine::E_OFF);
+					turn2ang(90.0, 90, _TurnDir::CCW, 600, 1300);
+					intake::set_targetAsync(intake::States::E_INTAKE, 3000);
+					driveToPosition(-15.0, -20.0, -15.0, 0.0, 0.05, 100, 3000, true, true, false);
+					driveToPosition(-15.0, -15.0, -15.0, -20.0, 0.05, 100, 3000, true, false, false);
+					tower2();
+					turn2ang(0.0, 90.0, _TurnDir::CH, 500, 3000, 3.1);
+					drive_lineup(-90, 1000);
+					pos.reset_pos();
+					pros::delay(500);
 
-					// Go for middle tower
+					// Get the other stack
+					driveToPosition(63.5, -0.5, 0.0 ,0.0, 0.05, 100, 3000, true, true, false);
+					turn2ang(0.0, 70, _TurnDir::CH, 500, 2000);
+					tilter::setTarget(tilter::State_Machine::E_LIFT, 20000);
+					driveToPosition(135.5, -0.5, 63.5, -0.5, 0.05, 70, 5000, true, true, false);
+					turn2ang(55.0, 90, _TurnDir::CCW, 500, 2000);
+					driveToPosition(142.0, -35.0, 135.5, -0.5, 0.05, 90, 6000, true, true, false);
+
+
+
+					/* // Go for middle tower
 					intake::set_targetAsync(intake::States::E_INTAKE, 3500);
 					driveToPosition(50.0, 0.0, 0.0, 0.0, 0.05, 100, 3000, true, true, false);
 					driveToPosition(45.0, 0.0, 50.0, 0.0, 0.05, 100, 3000, true, false, false);
@@ -308,6 +374,7 @@ void autonomous(){
 					// Go to scoring zone
 					turn2ang(55.0, 90, _TurnDir::CCW, 500, 1300);
 					driveToPosition(140.0, -35.41, 132.5, 0.0, 0.05, 127, 5000, true, true, false);
+				
 					intake::set_targetAsync(intake::States::E_OFF, 15);
 					pros::delay(25);
 				 	tilter::setTarget(tilter::State_Machine::E_STACK);
@@ -315,7 +382,8 @@ void autonomous(){
 					intake::light_senAsync(100, -35, -20);
 					pros::delay(100);
 					intake::light_senOff();
-					pros::delay(3000);
+					 //pros::delay(3000);
+					 */
 
 
 
@@ -509,6 +577,7 @@ void opcontrol() {
   int iterator{0};
 	int iterator2{0};
 
+	bool angBtn = false;
 	//okapi::Controller master2;
 
 	okapi::ControllerButton r1(okapi::ControllerDigital::R1);
@@ -516,10 +585,10 @@ void opcontrol() {
 	//okapi::ControllerButton l1(okapi::ControllerDigital::L1);
 	//okapi::ControllerButton l2(okapi::ControllerDigital::L2);
 
-//	okapi::ControllerButton a(okapi::ControllerDigital::A);
+okapi::ControllerButton a(okapi::ControllerDigital::A);
 	okapi::ControllerButton x(okapi::ControllerDigital::X);
 	okapi::ControllerButton y(okapi::ControllerDigital::Y);
-//	okapi::ControllerButton b(okapi::ControllerDigital::B);
+	okapi::ControllerButton b(okapi::ControllerDigital::B);
 
 	Analog_Control opc_analog;
 	DriverProfile* opc_profile = new DriverProfile();
@@ -593,10 +662,28 @@ lift::g_readyToLift = true;
 intake_set(0);
 }
 
+if(master_controller.get_digital_new_press(DIGITAL_A)){
+
+	if(!angBtn){
+	pros::delay(20);
+	angler_pid(-4900, true, 127, false);
+	}
+	else if(angBtn){
+		pros::delay(20);	
+	 	angler_pid(0, true, 127, false, 2000);
+	}
+
+  angBtn = angBtn ? angBtn = false : angBtn = true;
+}
+
+if(b.changedToPressed()){
+
+}
+
 
 
 std::cout << tilter_mtr.get_position() << std::endl << std::endl;
-
+std::cout << angBtn << std::endl << std::endl;
 
 //if(master_controller.get_digital_new_press(DIGITAL_DOWN)){
 //bool prezzed = !prezzed;
