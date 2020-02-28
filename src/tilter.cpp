@@ -106,13 +106,13 @@ namespace tilter{
 
       float final_power;
 
-      float kP = 0.1006; // 0.03
-      float kD = 0.1635; // 0.6
-      float kI = 0.0015;
+      float kP = 0.2; // 0.03
+      float kD = 0.25; // 0.6
+      float kI = 0.75;
 
-      float kP_a = 0.096;
-      float kD_a = 0.1555;
-      float kI_a = 0.0018;
+      float kP_a = 0.2;
+      float kD_a = 0.275;
+      float kI_a = 0.5;
 
       float position{0.0};
       float last_position{0.0};
@@ -136,21 +136,20 @@ namespace tilter{
 
         error = g_target - position;
         p = kP * error;
-       // i += kI * error;
+        i += kI * error;
         d = kD * (position - last_position);
 
-        if(fabs(error) < 5){ // 500
+        if(fabs(error)){ // 500
         i = 0.0;
         }
 
-        else if(fabs(error) > 275){
+        else if(fabs(error) > 300){
         i = 0.0;
         }
 
-        else { i += kI * error; }
 
-        if(fabs(i) > 10){
-        i = 10 * sgn_(i);
+        if(fabs(i) > 30){
+        i = 30 * sgn_(i);
         }
 
 
@@ -175,6 +174,10 @@ namespace tilter{
 
         if( pros::millis() < failsafe){
         tilter_set(final_power);
+        }
+
+        else if(fabs(error) <= 10){
+          tilter_set(0);
         }
 
 
@@ -305,29 +308,31 @@ namespace tilter{
 
         error = g_target - position;
         p = kP * error;
-       // i += kI * error;
+        i += kI * error;
         d = kD * (position - last_position);
 
-        if(fabs(error) < 5){ // 500
+       
+       if(fabs(error) > 300){
         i = 0.0;
         }
 
-        else if(fabs(error) > 275){
-        i = 0.0;
-        }
 
-        else { i += kI * error; }
-
-        if(fabs(i) > 35){
-        i = 35 * sgn_(i);
+        if(fabs(i) > 30){
+        i = 30 * sgn_(i);
         }
 
 
         final_power = p + i + d;
 
 
-        if(fabs(final_power) > 110){
-        final_power = 110 * sgn_(final_power);
+        if(fabs(final_power) > 120){
+        final_power = 120 * sgn_(final_power);
+      }
+
+      if(fabs(error) < 1500){
+        if(final_power > 120){
+        
+        }
       }
 
       if(fabs(error) < threshold){
@@ -352,12 +357,12 @@ namespace tilter{
             if(tilter_mtr.get_torque() > 1.50 && computeTorque){
            // kP = 0.0;
            // kD = 0.0;
-             kI = 0.0035;
+            // kI = 0.0035;
            // g_torqueLoop = false;
            }
 
            else{
-           kI = 0.0028;
+          // kI = 0.0028;
            }
 
         //    else if(!computeTorque){
@@ -375,6 +380,10 @@ namespace tilter{
 
         if((pros::millis() < g_failsafe) || g_manualStack){ //&& g_readyToStack){
         tilter_set(final_power);
+        }
+
+        else if(fabs(error) <= 10){
+        tilter_set(0);
         }
 
 

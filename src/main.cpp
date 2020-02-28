@@ -68,7 +68,7 @@ void initialize() {
 //pros::Task tilter_task_ctor(tilter::tilter_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "tilter task");
 
 //	pros::Task odometry_task_ctor(tracking_update, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "odometry task");
-tilter_task_ctor = std::make_shared<pros::Task>(angler_pid_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "tilter task");
+tilter_task_ctor = std::make_shared<pros::Task>(tilter::tilter_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "tilter task");
 lift_task_ctor = std::make_shared<pros::Task>(lift::lift_task, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "lift task");
 
 pros::Task odometry_task_ctor(tracking_update, nullptr, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "odometry task");
@@ -145,8 +145,8 @@ void tower2(){
 void stack(){
 
 					tilter::setTarget(tilter::State_Machine::E_STACK, 15000);
-					intake::light_senAsync(200, -60, -50);
-					pros::delay(160);
+					intake::light_senAsync(200, -70, -70);
+					pros::delay(200);
 					intake::light_senOff();
 
 					pros::delay(3000);
@@ -655,13 +655,12 @@ intake_set(ispeed);
 }
 
 
-
 else{
 lift::g_clearTray = false;
 lift::g_readyToLift = true;
 intake_set(0);
 }
-
+/*
 if(master_controller.get_digital_new_press(DIGITAL_A)){
 
 	if(!angBtn){
@@ -679,7 +678,7 @@ if(master_controller.get_digital_new_press(DIGITAL_A)){
 if(b.changedToPressed()){
 
 }
-
+*/
 
 
 std::cout << tilter_mtr.get_position() << std::endl << std::endl;
