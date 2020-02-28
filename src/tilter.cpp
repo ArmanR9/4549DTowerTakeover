@@ -5,6 +5,7 @@
 #include "lift.hpp"
 #include "utilities.hpp"
 #include "tasks.hpp"
+#include "pidd.hpp"
 
 namespace tilter{
 
@@ -86,6 +87,7 @@ namespace tilter{
 
 
   void tilter_task(void * param){
+      pid_values angler_pid(0.25, 0.4, 0.75, 30, 500, 127);
      int iterator2;
      okapi::ControllerButton b(okapi::ControllerDigital::B);
      okapi::ControllerButton a(okapi::ControllerDigital::A);
@@ -104,11 +106,11 @@ namespace tilter{
       float integral_active_zone = 500.0;
       float integral_limit;
 
-      float final_power;
+      int final_power;
 
-      float kP = 0.2; // 0.03
-      float kD = 0.25; // 0.6
-      float kI = 0.75;
+      float kP = 0.25; // 0.03
+      float kD = 0.2; // 0.6
+      float kI = 1.0;
 
       float kP_a = 0.2;
       float kD_a = 0.275;
@@ -152,13 +154,19 @@ namespace tilter{
         i = 30 * sgn_(i);
         }
 
+        
 
-        final_power = p + i + d;
+
+        final_power = pid_calc(&angler_pid, g_target, position);//p + i + d;
 
 
         if(fabs(final_power) > 110){
         final_power = 110 * sgn_(final_power);
       }
+
+        if(fabs(angler_pid.error) < 500){
+        final_power = final_power * 0.75;
+        }
 
     
       if(fabs(error) < threshold){
@@ -316,24 +324,22 @@ namespace tilter{
         i = 0.0;
         }
 
+        if(fabs(error) < 5){
+        i = 0.0;
+        }
+
 
         if(fabs(i) > 30){
         i = 30 * sgn_(i);
         }
 
 
-        final_power = p + i + d;
+        final_power = pid_calc(&angler_pid, g_target, position);// p + i + d;
 
 
-        if(fabs(final_power) > 120){
-        final_power = 120 * sgn_(final_power);
-      }
-
-      if(fabs(error) < 1500){
-        if(final_power > 120){
-        
-        }
-      }
+     //   if(fabs(final_power) > 120){
+    //    final_power = 120 * sgn_(final_power);
+    //  }
 
       if(fabs(error) < threshold){
        invoke_timer = true;
@@ -353,17 +359,26 @@ namespace tilter{
           else { computeTorque = false; }
 
 
+          if (fabs(angler_pid.error) < 1300) {
+            if (angler_pid.max_power < 120 * 0.65) {
+              angler_pid.max_power = 120 * 0.65;
+            } else {
+              angler_pid.max_power = angler_pid.max_power - 15;
+            }
+          } else {
+            angler_pid.max_power = 120;
+          }
 
-            if(tilter_mtr.get_torque() > 1.50 && computeTorque){
+         //   if(tilter_mtr.get_torque() > 1.50 && computeTorque){
            // kP = 0.0;
            // kD = 0.0;
             // kI = 0.0035;
-           // g_torqueLoop = false;
-           }
+      // / /   // g_torqueLoop = false;
+         //  }
 
-           else{
+        //   else{
           // kI = 0.0028;
-           }
+        //   }
 
         //    else if(!computeTorque){
           //     kP = 0.0735; // 0.03

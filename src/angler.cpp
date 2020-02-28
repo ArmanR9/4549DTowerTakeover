@@ -48,7 +48,7 @@ void angler_pid(float position, bool holdVal, float speed, bool applyTorque, flo
 }
 
 void angler_pid_task(void*ignore) {
-  pid_values angler_pid(0.25, 0.2, 1.0, 30, 500, 127);
+  pid_values angler_pid(0.25, 0.4, 0.75, 30, 500, 127);
   float timeout;
   float maxTorque = 0;
   bool delayReached = false;
@@ -131,11 +131,11 @@ void angler_pid_task(void*ignore) {
         }
       } else {
         // outtake cube to be at the bottom of the tray
-        if (light_sensor.get_value() < 1850) { // if cube is detected
+        if (light_sensor.get_value() < 2400) { // if cube is detected
           LIntake_mtr.move(0);
           RIntake_mtr.move(0);
           anglerIntakeThreshold = true;
-        } else if (light_sensor.get_value() > 1850) { // if cube isn't detected
+        } else if (light_sensor.get_value() > 2400) { // if cube isn't detected
           // fixes bug if there is no cubes in tray and driver accidentally pressed stack button,
           // disabling the robot lol
           if (pros::millis() > intakeThresholdTimer) {
@@ -143,8 +143,8 @@ void angler_pid_task(void*ignore) {
             RIntake_mtr.move(0);
             anglerIntakeThreshold = true;
           } else {
-               LIntake_mtr.move(-70);
-            RIntake_mtr.move(-70);
+               LIntake_mtr.move(-60);
+            RIntake_mtr.move(-60);
           }
         }
       }

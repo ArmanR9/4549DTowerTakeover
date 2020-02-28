@@ -180,7 +180,7 @@ bin/tilter.cpp.o: src/tilter.cpp include/tilter.hpp include/main.h \
  include/okapi/api/units/QPressure.hpp \
  include/okapi/api/units/QTorque.hpp include/okapi/api/units/QVolume.hpp \
  include/okapi/impl/util/rate.hpp include/lift.hpp include/utilities.hpp \
- include/tasks.hpp
+ include/tasks.hpp include/pidd.hpp
 
 include/tilter.hpp:
 
@@ -695,3 +695,5 @@ include/lift.hpp:
 include/utilities.hpp:
 
 include/tasks.hpp:
+
+include/pidd.hpp:

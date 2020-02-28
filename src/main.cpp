@@ -145,12 +145,12 @@ void tower2(){
 void stack(){
 
 					tilter::setTarget(tilter::State_Machine::E_STACK, 15000);
-					intake::light_senAsync(200, -70, -70);
+					intake::light_senAsync(200, -60, -60);
 					pros::delay(200);
 					intake::light_senOff();
 
 					pros::delay(3000);
-					drive_lineup(55, 150);
+					drive_lineup(60, 150);
 }
 
 
@@ -190,8 +190,8 @@ void autonomous(){
 					pros::delay(1600);
 					intake::set_targetAsync(intake::States::E_INTAKE, 10000);
 					driveToPosition(29.25, 0.0, 0.0, 0.0, 0.25, 90, 1800, true, true, false);
-					driveToPosition(7.50, -23.0, 29.25, 0.0, 0.5, 90, 2000, true, false, false);
-					turn2ang(0.0, 90, _TurnDir::CW, 500, 300);
+					driveToPosition(7.50, -22.0, 29.25, 0.0, 0.5, 90, 2000, true, false, false);
+				//	turn2ang(0.0, 90, _TurnDir::CW, 500, 300);
 					driveToPosition(48.0, -24.0, 7.50, -23.0, 0.5, 75, 2050, true, true, false);
 					driveToPosition(25.0, -24.0, 48.0, -24.0, 0.5, 90, 1100, true, false, false);
 					turn2ang(120.0, 75, _TurnDir::CCW, 500, 1050);
@@ -222,10 +222,10 @@ void autonomous(){
 					pros::delay(1600);
 					intake::set_targetAsync(intake::States::E_INTAKE, 10000);
 					driveToPosition(29.25, 0.0, 0.0, 0.0, 0.25, 90, 1800, true, true, false);
-					driveToPosition(7.50, 23.0, 29.25, 0.0, 0.5, 90, 2000, true, false, false);
-					turn2ang(0.5, 90, _TurnDir::CW, 500, 300);
-					driveToPosition(48.0, 24.0, 7.50, 23.0, 0.5, 75, 2050, true, true, false);
-					driveToPosition(25.0, 24.0, 48.0, 24.0, 0.5, 90, 1100, true, false, false);
+					driveToPosition(7.50, 22.0, 29.25, 0.0, 0.5, 90, 2000, true, false, false);
+				//	turn2ang(0.5, 90, _TurnDir::CW, 500, 300);
+					driveToPosition(48.0, 24.0, 7.50, 23.0, 0.5, 75, 2550, true, true, false);
+					driveToPosition(15.0, 24.0, 48.0, 24.0, 0.5, 90, 2000, true, false, false);
 					turn2ang(120.0, 75, _TurnDir::CW, 500, 1050);
 
 					driveToPosition(0.5, 49.0, 25.0, 24.0, 0.5, 100, 1000, true, true, false);
@@ -233,12 +233,16 @@ void autonomous(){
 					//straight_line_drive(22.0,, float kP_correction, float maxErrA, int max_velocity, uint32_t settle, uint32_t max_time)
 				//	float d, float a, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop
 				//	intake::light_sen(285);
-					intake::set_targetAsync(intake::States::E_OUTTAKE, 350);
-					tilter::setTarget(tilter::State_Machine::E_STACK);
+					
+					//tilter::setTarget(tilter::State_Machine::E_STACK);
+					//intake::light_senAsync(200, -60, -60);
+					stack();
+				//	pros::delay(200);
+					//intake::light_senOff();
 					pros::delay(2800);
 					intake::set_targetAsync(intake::States::E_OUTTAKE, 500);
 					pros::delay(10);
-					drive_lineup(-127, 500);
+					drive_lineup(-90, 500);
 					break;
 
 					case(3): // 1 point
@@ -250,9 +254,13 @@ void autonomous(){
 
 					default:
 				//	tilter::setTarget(tilter::State_Machine::E_LIFT, 20000);
-				//	pros::delay(3000);
-				//	stack();
-				//	pros::delay(10000);
+					pros::delay(3000);
+					stack();
+					pros::delay(3000);
+					intake::set_targetAsync(intake::States::E_OUTTAKE, 2000);
+					drive_lineup(-80, 500);
+					pros::delay(10000);
+
 						// Deploy Stage
 
 				//	turn2ang(90.0, 90, _TurnDir::CH, 550, 1000);
@@ -582,8 +590,8 @@ void opcontrol() {
 
 	okapi::ControllerButton r1(okapi::ControllerDigital::R1);
 	okapi::ControllerButton r2(okapi::ControllerDigital::R2);
-	//okapi::ControllerButton l1(okapi::ControllerDigital::L1);
-	//okapi::ControllerButton l2(okapi::ControllerDigital::L2);
+	okapi::ControllerButton l1(okapi::ControllerDigital::L1);
+	okapi::ControllerButton l2(okapi::ControllerDigital::L2);
 
 okapi::ControllerButton a(okapi::ControllerDigital::A);
 	okapi::ControllerButton x(okapi::ControllerDigital::X);
@@ -662,23 +670,46 @@ intake_set(0);
 }
 /*
 if(master_controller.get_digital_new_press(DIGITAL_A)){
+pros::delay(20);
 
-	if(!angBtn){
+if(!angBtn){
+	pros::delay(20);
+	angler_pid(0, true, 127, false);
+else if(angBtn){
 	pros::delay(20);
 	angler_pid(-4900, true, 127, false);
-	}
-	else if(angBtn){
-		pros::delay(20);	
-	 	angler_pid(0, true, 127, false, 2000);
-	}
-
-  angBtn = angBtn ? angBtn = false : angBtn = true;
 }
+
+angBtn = angBtn ? false : true;
+}
+
+if(y.changedToPressed()){
+pros::delay(20);
+angler_pid(-1800, true, 127, false);
+}
+
+ if(l1.changedToPressed()){
+            angler_pid(-1800, true, 127, false);
+          //  pros::delay(1000);
+        //    lift_mtr.move_absolute(2750, 200);
+          }
+
+          if(l2.changedToPressed()){
+          //  lift_mtr.move_absolute(0, 200);
+          //  pros::delay(1000);
+          pros::delay(500);
+		  angler_pid(0, true, 127, false);
+           
+      //      pros::delay(500);
+        //    g_liftIsReady = false;
+          }
 
 if(b.changedToPressed()){
-
+pros::delay(20);	
+angler_pid(0, true, 127, false, 2000);
 }
 */
+
 
 
 std::cout << tilter_mtr.get_position() << std::endl << std::endl;

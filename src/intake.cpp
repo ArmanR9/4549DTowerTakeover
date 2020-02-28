@@ -107,7 +107,7 @@ void light_sen(std::uint32_t timeout){
         if(g_set_time > pros::millis() && !g_outtake){
         intake_set(g_target);
           }
-          else if(light_sensor.get_value() > 1850 && g_outtake && pros::millis() < g_timeout){
+          else if(light_sensor.get_value() > light_sensor_threshold2 && g_outtake && pros::millis() < g_timeout){
             int ispeed = pow(light_sensor.get_value()*0.01, 1.25);
             ispeed = std::clamp(ispeed, g_hi, g_lo);
             intake_set(ispeed);

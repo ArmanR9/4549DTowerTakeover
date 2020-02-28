@@ -5,6 +5,7 @@
 #include "tilter.hpp"
 #include "tasks.hpp"
 #include "PID.hpp"
+#include "angler.hpp"
 
 pros::Mutex lift_mutex;
 pros::Mutex off_mutex;
@@ -246,7 +247,10 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 1850, 2350, 3000};
 
               if(master_controller.get_digital(DIGITAL_DOWN)){
              	tilter::setTarget(tilter::State_Machine::E_LIFT);
-              //	pros::delay(10);
+              // pros::delay(20);
+               // angler_pid(-1800, true, 127, false);
+
+              	pros::delay(20);
               	lift_mtr.move_absolute(3000, 200);
 
               //	pros::delay(200);
@@ -255,6 +259,7 @@ const int auton_points [heightsAUTO::E_NUM_OF_HEIGHTS] = { 0, 1850, 2350, 3000};
             	    pros::delay(1000);
                   	lift_mtr.move_absolute(0, 200);
               		pros::delay(1300);
+               //   angler_pid(0, true, 127, false);
               	tilter::setTarget(tilter::State_Machine::E_OFF);
               }
 
