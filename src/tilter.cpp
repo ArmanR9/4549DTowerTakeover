@@ -87,7 +87,7 @@ namespace tilter{
 
 
   void tilter_task(void * param){
-      pid_values angler_pid(0.25, 0.4, 0.75, 30, 500, 127);
+      pid_values angler_pid(0.2, 0.75, 0.76, 30, 500, 127);
      int iterator2;
      okapi::ControllerButton b(okapi::ControllerDigital::B);
      okapi::ControllerButton a(okapi::ControllerDigital::A);
@@ -160,13 +160,17 @@ namespace tilter{
         final_power = pid_calc(&angler_pid, g_target, position);//p + i + d;
 
 
-        if(fabs(final_power) > 110){
-        final_power = 110 * sgn_(final_power);
-      }
 
-        if(fabs(angler_pid.error) < 500){
-        final_power = final_power * 0.75;
-        }
+           if (fabs(angler_pid.error) < 1650 && g_target > 4000) {
+            if (angler_pid.max_power < 120 * 0.75) {
+              angler_pid.max_power = 120 * 0.75;
+            } else {
+              angler_pid.max_power = angler_pid.max_power - 25;
+            }
+          } else {
+            angler_pid.max_power = 120;
+          }
+
 
     
       if(fabs(error) < threshold){
@@ -184,7 +188,7 @@ namespace tilter{
         tilter_set(final_power);
         }
 
-        else if(fabs(error) <= 10){
+        else if(fabs(error) <= 5){
           tilter_set(0);
         }
 
@@ -359,11 +363,11 @@ namespace tilter{
           else { computeTorque = false; }
 
 
-          if (fabs(angler_pid.error) < 1300) {
-            if (angler_pid.max_power < 120 * 0.65) {
-              angler_pid.max_power = 120 * 0.65;
+          if (fabs(angler_pid.error) < 1650 && g_target > 4000) {
+            if (angler_pid.max_power < 120 * 0.75) {
+              angler_pid.max_power = 120 * 0.75;
             } else {
-              angler_pid.max_power = angler_pid.max_power - 15;
+              angler_pid.max_power = angler_pid.max_power - 25;
             }
           } else {
             angler_pid.max_power = 120;
@@ -397,7 +401,7 @@ namespace tilter{
         tilter_set(final_power);
         }
 
-        else if(fabs(error) <= 10){
+        else if(fabs(error) <= 5){
         tilter_set(0);
         }
 

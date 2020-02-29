@@ -23,6 +23,7 @@ void driveToDistance(float d, float a, float ys, float xs, float maxErrX, float 
 void position_sweep(double y, double x, double ys, double xs, bool forward);
 
 void drive_lineup(int voltage, uint32_t give_time);
+void turning_lineup(int voltage, uint32_t give_time);
 void drive_outtake(int drive, int intake, uint32_t give_time);
 void outtake(int voltage, uint32_t give_time);
 void lineup_right(int voltage, uint32_t give_time);

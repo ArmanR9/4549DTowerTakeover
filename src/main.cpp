@@ -121,7 +121,7 @@ void competition_initialize() {}
 }
 
 void tower(){
-        	       	intake::light_senAsync(300, -115, -105);
+        	       	intake::light_senAsync(250, -115, -105);
 					pros::delay(750);
 					intake::light_senOff();
 					lift::autonLift(lift::heightsAUTO::E_LOW, 2500, 2000);
@@ -143,16 +143,40 @@ void tower2(){
 }
 
 void stack(){
-
-					tilter::setTarget(tilter::State_Machine::E_STACK, 15000);
-					intake::light_senAsync(200, -60, -60);
-					pros::delay(200);
+					intake::set_targetAsync(intake::States::E_OFF, 10);
+					pros::delay(20);
+					intake::light_senAsync(300, -605, -60);
+				//	intake::set_targetAsync(intake::States::E_OUTTAKE, 175);
+					pros::delay(300);
 					intake::light_senOff();
+					
+					//intake::set_targetAsync(intake::States::E_OUTTAKE, 100);
+					tilter::setTarget(tilter::State_Machine::E_STACK, 15000);
+				//	intake::light_senAsync(200, -60, -55);
+				//	pros::delay(200);
+				//	intake::light_senOff();
 
 					pros::delay(3000);
-					drive_lineup(60, 150);
+					//drive_lineup(20, 100);
 }
 
+void stack2(){
+					intake::set_targetAsync(intake::States::E_OFF, 10);
+					pros::delay(20);
+					intake::light_senAsync(150, -40, -35);
+				//	intake::set_targetAsync(intake::States::E_OUTTAKE, 175);
+					pros::delay(150);
+					intake::light_senOff();
+					intake::set_targetAsync(intake::States::E_INTAKE, 50);
+					//intake::set_targetAsync(intake::States::E_OUTTAKE, 100);
+					tilter::setTarget(tilter::State_Machine::E_STACK, 15000);
+				//	intake::light_senAsync(200, -60, -55);
+				//	pros::delay(200);
+				//	intake::light_senOff();
+
+					pros::delay(3000);
+					drive_lineup(35, 200);
+}
 
 
 void autonomous(){
@@ -178,21 +202,37 @@ void autonomous(){
 //
  	switch(auton_sel){
 					case(1): // Blue
-					tilter::setTarget(tilter::State_Machine::E_LIFT);
+					deployAuto();
+					intake::set_targetAsync(intake::States::E_INTAKE, 10000);
+					driveToPosition(32.0, 0.0, 0.0, 0.0, 0.05, 80, 1800, true, true, false);
+					driveToPosition(9.0, -27.0, 32.0, 0.0, 0.05, 100, 2000, true, false, false);
+					turn2ang(0.0, 120, _TurnDir::CH, 500, 1000);
+					driveToPosition(41.8, -27.7, 9.0, -27.0, 0.05, 80, 2000, true, true, false);
+					driveToPosition(30.2, -27.7, 41.8, -27.7, 0.05, 90, 2000, true, true, false);
+					turn2ang(120, 120, _TurnDir::CCW, 500, 1000);
+					driveToPosition(0.5, -48.5, 30.2, -27.7, 0.05, 127, 1000, true, true, false);
+					stack();
+					pros::delay(2700);
+					drive_lineup(-90, 300);
+
+
+
+				//	tilter::setTarget(tilter::State_Machine::E_LIFT);
 				//	pros::delay(10);
-					lift::setTargetAutonAsync(lift::heightsAUTO::E_MED, 1200);
+				//	lift::setTargetAutonAsync(lift::heightsAUTO::E_MED, 1200);
 			//	pros::delay(200);
 				//intake::set_targetAsync(intake::States::E_OUTTAKE, 300);
-					pros::delay(1200);
-					tilter::setTarget(tilter::State_Machine::E_OFF);
+					//pros::delay(1200);
+					//tilter::setTarget(tilter::State_Machine::E_OFF);
+					deployAuto();
 
 
-					pros::delay(1600);
+			//		pros::delay(1600);
 					intake::set_targetAsync(intake::States::E_INTAKE, 10000);
 					driveToPosition(29.25, 0.0, 0.0, 0.0, 0.25, 90, 1800, true, true, false);
 					driveToPosition(7.50, -22.0, 29.25, 0.0, 0.5, 90, 2000, true, false, false);
 				//	turn2ang(0.0, 90, _TurnDir::CW, 500, 300);
-					driveToPosition(48.0, -24.0, 7.50, -23.0, 0.5, 75, 2050, true, true, false);
+					driveToPosition(48.5, -24.0, 7.50, -23.0, 0.5, 75, 2150, true, true, false);
 					driveToPosition(25.0, -24.0, 48.0, -24.0, 0.5, 90, 1100, true, false, false);
 					turn2ang(120.0, 75, _TurnDir::CCW, 500, 1050);
 
@@ -201,12 +241,13 @@ void autonomous(){
 					//straight_line_drive(22.0,, float kP_correction, float maxErrA, int max_velocity, uint32_t settle, uint32_t max_time)
 				//	float d, float a, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop
 				//	intake::light_sen(285);
-					intake::set_targetAsync(intake::States::E_OUTTAKE, 350);
-					tilter::setTarget(tilter::State_Machine::E_STACK);
+				//	intake::set_targetAsync(intake::States::E_OUTTAKE, 350);
+					stack();
+				//	tilter::setTarget(tilter::State_Machine::E_STACK);
 					pros::delay(2800);
-					intake::set_targetAsync(intake::States::E_OUTTAKE, 500);
+			//		intake::set_targetAsync(intake::States::E_OUTTAKE, 500);
 					pros::delay(10);
-					drive_lineup(-127, 500);
+					drive_lineup(-90, 500);
 					break;
 
 					case(2): // Red
@@ -228,7 +269,7 @@ void autonomous(){
 					driveToPosition(15.0, 24.0, 48.0, 24.0, 0.5, 90, 2000, true, false, false);
 					turn2ang(120.0, 75, _TurnDir::CW, 500, 1050);
 
-					driveToPosition(0.5, 49.0, 25.0, 24.0, 0.5, 100, 1000, true, true, false);
+					driveToPosition(0.5, 45.0, 25.0, 24.0, 0.5, 100, 1000, true, true, false);
 				//	driveToDistance(22.5, pos.get_alpha(), 25.0, -24.0, 0.5, 100, 1050, true, true, false);
 					//straight_line_drive(22.0,, float kP_correction, float maxErrA, int max_velocity, uint32_t settle, uint32_t max_time)
 				//	float d, float a, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop
@@ -242,6 +283,8 @@ void autonomous(){
 					pros::delay(2800);
 					intake::set_targetAsync(intake::States::E_OUTTAKE, 500);
 					pros::delay(10);
+					drive_lineup(-30, 1000);
+					pros::delay(1000);
 					drive_lineup(-90, 500);
 					break;
 
@@ -252,14 +295,99 @@ void autonomous(){
 					pros::delay(3750);
 					break;
 
-					default:
-				//	tilter::setTarget(tilter::State_Machine::E_LIFT, 20000);
-					pros::delay(3000);
+					case(4):
+					intake::set_targetAsync(intake::States::E_INTAKE, 12000);
+					driveToPosition(27.0, 0.0, 0.0, 0.0, 0.05, 90, 1000, true, true, false);
+					driveToPosition(17.0, 0.0, 27.0, 0.0, 0.05, 110, 900, true, false, false);
+					turn2ang(91.0, 100, _TurnDir::CCW, 500, 1000, 2.0);
+					driveToPosition(21.0, -36.0, 17.0, 27.0, 0.05, 110, 900, true, true, false);
+					driveToPosition(21.0, -19.0, 17.0, 27.0, 0.05, 110, 900, true, false, false);
+					turn2ang(91.0, 100, _TurnDir::CW, 500, 1000, 2.0);
+					driveToPosition(9.25, 5.33, 21.0, -19.0, 0.05, 110, 900, true, true, false);
+					intake::set_targetAsync(intake::States::E_OFF, 20);
 					stack();
-					pros::delay(3000);
-					intake::set_targetAsync(intake::States::E_OUTTAKE, 2000);
-					drive_lineup(-80, 500);
-					pros::delay(10000);
+					drive_lineup(-50, 300);
+
+
+
+
+
+					break;
+
+					default:
+
+
+				/*	pros::delay(100000);
+
+
+					intake::set_targetAsync(intake::States::E_INTAKE, 12000);
+					driveToPosition(27.0, 0.0, 0.0, 0.0, 0.05, 90, 1000, true, true, false);
+					driveToPosition(17.0, 0.0, 27.0, 0.0, 0.05, 110, 1000, true, false, false);
+					turn2ang(91.0, 100, _TurnDir::CCW, 500, 1250, 2.0);
+					driveToPosition(21.0, -36.0, 17.0, 27.0, 0.05, 110, 1750, true, true, false);
+					driveToPosition(21.0, -19.0, 17.0, 27.0, 0.05, 110, 1000, true, false, false);
+					turn2ang(91.0, 100, _TurnDir::CW, 500, 1250, 2.0);
+					driveToPosition(9.25, 5.33, 21.0, -19.0, 0.05, 70, 3000, true, true, false);
+					intake::set_targetAsync(intake::States::E_OFF, 20);
+					drive_lineup(70, 750);
+					stack();
+					drive_lineup(-50, 300);
+
+				*/	//pros::delay(100000);
+
+
+
+				//	stack();
+				//	pros::delay(10000);
+
+
+				/*	deployAuto();
+					intake::set_targetAsync(intake::States::E_INTAKE, 10000);
+					driveToPosition(32.0, 0.0, 0.0, 0.0, 0.05, 80, 1800, true, true, false);
+					driveToPosition(8.0, 28.0, 32.0, 0.0, 0.05, 100, 2000, true, false, false);
+					turn2ang(0.0, 120, _TurnDir::CH, 500, 1000);
+					driveToPosition(50.0, 25.0, 9.0, 28.0, 0.05, 80, 2625, true, true, false);
+					driveToPosition(25.2, 25.0, 45.0, 25.0, 0.05, 70, 1000, true, false, false);
+					turn2ang(115, 120, _TurnDir::CW, 500, 1250);
+					driveToPosition(0.5, 55.5, 25.2, 25.0, 0.05, 127, 1300, true, true, false);
+					stack();
+					//pros::delay(2700);
+					drive_lineup(-90, 300);
+
+				*/	// pros::delay(100000);
+
+
+
+
+				/*
+
+					deployAuto();
+					intake::set_targetAsync(intake::States::E_INTAKE, 12000);
+					driveToPosition(32.0, 0.0, 0.0, 0.0, 0.05, 80, 1800, true, true, false);
+					driveToPosition(8.0, -28.0, 32.0, 0.0, 0.05, 100, 2000, true, false, false);
+					turn2ang(0.0, 120, _TurnDir::CH, 500, 1000);
+					driveToPosition(42.8, -25.0, 9.0, -28.0, 0.05, 80, 2500, true, true, false);
+					driveToPosition(30.2, -25.0, 42.8, -25.0, 0.05, 90, 1500, true, false, false);
+					turn2ang(120, 120, _TurnDir::CCW, 500, 1250);
+					driveToPosition(0.5, -55.5, 30.2, -25.0, 0.05, 127, 1500, true, true, false);
+					stack();
+					//pros::delay(2700);
+					drive_lineup(-90, 300);
+
+					pros::delay(100000);
+
+					*/
+
+
+
+
+				//	tilter::setTarget(tilter::State_Machine::E_LIFT, 20000);
+				//	pros::delay(3000);
+				//	stack();
+				//	pros::delay(3000);
+				//	intake::set_targetAsync(intake::States::E_OUTTAKE, 2000);
+				//	drive_lineup(-40, 500);
+				//	pros::delay(10000);
 
 						// Deploy Stage
 
@@ -272,37 +400,38 @@ void autonomous(){
 					driveToPosition(10.0, 0.0, 0.0, 0.0, 0.05, 80, 1000, true, true, false);
 					turn2ang(45.0, 90, _TurnDir::CW, 500, 1500);
 					//pros::delay(1000);
-					driveToPosition(19.0, 12.75, 10.0, 0.0, 0.05, 70, 2000, true, true, false);
+					driveToPosition(19.25, 12.00, 10.0, 0.0, 0.05, 70, 1750, true, true, false);
 					tower();
-					driveToPosition(0.0, 0.0, 19.0, 12.75, 0.05, 90, 2000, true, false, false);
-					turn2ang(0.0, 100, _TurnDir::CW, 500, 1000);
+					driveToPosition(0.0, 0.0, 19.25, 12.00, 0.05, 90, 1500, true, false, false);
+					turn2ang(0.0, 100, _TurnDir::CW, 550, 1000 , 5.25);
 					pos.reset_pos();
-					pros::delay(10);
+					pros::delay(100);
 
 					// Go for the 8 cube lineup
 					intake::set_targetAsync(intake::States::E_INTAKE, 16500);
-					driveToPosition(63.5, 2.5, 0.0, 0.0, 0.05, 70, 5000, true, true, false);
+					driveToPosition(63.5, 0.5, 0.0, 0.0, 0.05, 70, 4000, true, true, false);
 					turn2ang(0.0, 70, _TurnDir::CH, 500, 2000);
 					tilter::setTarget(tilter::State_Machine::E_LIFT, 20000);
-					driveToPosition(133.5, 2.0, 63.5, 2.5, 0.05, 70, 5000, true, true, false);
+					driveToPosition(135.0, 1.0, 63.5, 0.5, 0.05, 70, 4000, true, true, false);
 
 					// Align for scoring zone
-					turn2ang(50.0, 90, _TurnDir::CW, 500, 1300);
-					driveToPosition(140.0, 15.00, 135.5, 2.00, 0.05, 127, 3000, true, true, false);
+					turn2ang(60.0, 90, _TurnDir::CW, 500, 1300);
+					driveToPosition(145.0, 15.00, 135.0, 1.0, 0.05, 127, 3000, true, true, false);
 				//tilter::setTarget(tilter::State_Machine::E_LIFT, 10000);
 			//	pros::delay(3000);
-					intake::set_targetAsync(intake::States::E_INTAKE, 1000);
 					tilter::setTarget(tilter::State_Machine::E_OFF);
+					intake::set_targetAsync(intake::States::E_INTAKE, 1500);
+					drive_lineup(50, 100);
 					pros::delay(1000);
 					//intake::set_targetAsync(intake::States::E_INTAKE, 1000);
 				//	tilter::setTarget(tilter::State_Machine::E_OFF, 100);
 					//pros::delay(500);
 					//intake::set_targetAsync(intake::States::E_OFF, 10);
 					pros::delay(1300);
-					stack();
+					stack2();
 					pros::delay(3000);
-					tilter::setTarget(tilter::State_Machine::E_OFF);
-					pros::delay(2000);
+					//tilter::setTarget(tilter::State_Machine::E_OFF);
+					//pros::delay(2000);
 
 				//	tilter::setTarget(tilter::State_Machine::E_OFF, 100);
 				//	pros::delay(1000);
@@ -314,29 +443,31 @@ void autonomous(){
 
 					// Move back and reset on the wall to align for middle tower
 				//	intake::set_targetAsync(intake::States::E_OUTTAKE, 350);
-					intake::set_targetAsync(intake::States::E_OUTTAKE, 2000);
+				//	intake::set_targetAsync(intake::States::E_OUTTAKE, 2000);
 					//driveToPosition(120.0, -14.3, 140.0, 18.75, 1.5, 127, 5000, true, false, false);
-					drive_lineup(-50, 3000);
+					drive_lineup(-85, 70);
 				//	tilter::setTarget(tilter::State_Machine::E_OFF);
 					pros::delay(1000);
 					tilter::setTarget(tilter::State_Machine::E_OFF);
-					turn2ang(0.0, 120, _TurnDir::CCW, 590, 1550, 5.94);
+					turn2ang(0.0, 127, _TurnDir::CH, 300, 1550);
+					turning_lineup(-50, 200);
 					pros::delay(1000);
 				//	tilter::setTarget(tilter::State_Machine::E_LIFT, 20000);
 				//	pros::delay(300)
-					lift::autonLift(lift::heightsAUTO::E_MED, 6500, 6850);
-					pros::delay(1250);
+					lift::autonLift(lift::heightsAUTO::E_MED, 5000, 5850);
+					pros::delay(1000);
 				//	driveToPosition(148.0, -15.5, 120.0, -14.3, 0.05, 100, 3000, true, true, false);
-				    drive_lineup(90, 1000);
-					pros::delay(3250);
+				    drive_lineup(60, 1000);
+					pros::delay(1000);
 					pos.reset_pos();
-					pros::delay(500);
-					driveToPosition(-15.0, 0.0, 0.0, 0.0, 0.05, 100, 3000, true, false, false);
-					tilter::setTarget(tilter::State_Machine::E_OFF);
-					turn2ang(90.0, 90, _TurnDir::CCW, 600, 1300);
-					intake::set_targetAsync(intake::States::E_INTAKE, 3000);
-					driveToPosition(-15.0, -20.0, -15.0, 0.0, 0.05, 100, 3000, true, true, false);
-					driveToPosition(-15.0, -15.0, -15.0, -20.0, 0.05, 100, 3000, true, false, false);
+					pros::delay(1000);
+					pos.reset_pos();
+					driveToPosition(-12.0, 0.0, 0.0, 0.0, 0.05, 100, 3000, true, false, false);
+				//	tilter::setTarget(tilter::State_Machine::E_OFF);
+					turn2ang(90.0, 110, _TurnDir::CCW, 600, 1300);
+					intake::set_targetAsync(intake::States::E_INTAKE, 4000);
+					driveToPosition(-12.0, -32.0, -12.0, 0.0, 0.05, 100, 3000, true, true, false);
+					driveToPosition(-15.0, -27.5, -12.0, -32.0, 0.05, 100, 3000, true, false, false);
 					tower2();
 					turn2ang(0.0, 90.0, _TurnDir::CH, 500, 3000, 3.1);
 					drive_lineup(-90, 1000);
@@ -344,12 +475,32 @@ void autonomous(){
 					pros::delay(500);
 
 					// Get the other stack
-					driveToPosition(63.5, -0.5, 0.0 ,0.0, 0.05, 100, 3000, true, true, false);
-					turn2ang(0.0, 70, _TurnDir::CH, 500, 2000);
+					driveToPosition(63.5, -0.5, 0.0 ,0.0, 0.05, 100, 2750, true, true, false);
+					turn2ang(0.0, 70, _TurnDir::CH, 500, 1250);
 					tilter::setTarget(tilter::State_Machine::E_LIFT, 20000);
-					driveToPosition(135.5, -0.5, 63.5, -0.5, 0.05, 70, 5000, true, true, false);
+					driveToPosition(135.5, -0.5, 63.5, -0.5, 0.05, 70, 4250, true, true, false);
 					turn2ang(55.0, 90, _TurnDir::CCW, 500, 2000);
 					driveToPosition(142.0, -35.0, 135.5, -0.5, 0.05, 90, 6000, true, true, false);
+					stack();
+					pros::delay(2000);
+					drive_lineup(-50, 500);
+					turn2ang(0.0,110, _TurnDir::CH, 500, 2000);
+					lift::autonLift(lift::heightsAUTO::E_MED, 5000, 5850);
+					pros::delay(1000);
+				//	driveToPosition(148.0, -15.5, 120.0, -14.3, 0.05, 100, 3000, true, true, false);
+				    drive_lineup(90, 1000);
+					pros::delay(1000);
+					pos.reset_pos();
+					pros::delay(100);
+					driveToPosition(-15.0, 0.0, 0.0, 0.0, 0.05, 100, 3000, true, false, false);
+					turn2ang(90.0, 110, _TurnDir::CW, 550, 1200, 2.5);
+					intake::set_targetAsync(intake::States::E_INTAKE, 4000);
+					driveToPosition(-15.0, -20.0, -15.0, 0.0, 0.05, 100, 3000, true, true, false);
+					driveToPosition(-15.0, -15.0, -15.0, -20.0, 0.05, 100, 3000, true, false, false);
+					tower2();
+
+
+
 
 
 

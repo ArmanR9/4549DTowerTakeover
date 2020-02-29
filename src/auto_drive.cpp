@@ -795,7 +795,7 @@ void turn2ang(float angle, int max_velocity, _TurnDir direction, uint32_t settle
         case(_TurnDir::CCW):
         error = pos.get_alpha() - fmod(degrees_to_radians(angle) - pos.get_alpha(), M_PI * 2);
         break;
-
+  
       }
 
       //error = pos.get_alpha() + fmod(degrees_to_radians(angle) - pos.get_alpha(), M_PI * 2);
@@ -1227,6 +1227,12 @@ void drive_lineup(int voltage, uint32_t give_time){
 drive_set(voltage);
 pros::delay(give_time);
 drive_set(0);
+}
+
+void turning_lineup(int voltage, uint32_t give_time){
+turning_set(voltage);
+pros::delay(give_time);
+turning_set(0);
 }
 
 void while_drive(int voltage, uint32_t give_time){
