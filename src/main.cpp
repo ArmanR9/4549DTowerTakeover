@@ -149,7 +149,7 @@ void stack(){
 				//	intake::set_targetAsync(intake::States::E_OUTTAKE, 175);
 					pros::delay(300);
 					intake::light_senOff();
-					
+
 					//intake::set_targetAsync(intake::States::E_OUTTAKE, 100);
 					tilter::setTarget(tilter::State_Machine::E_STACK, 15000);
 				//	intake::light_senAsync(200, -60, -55);
@@ -274,7 +274,7 @@ void autonomous(){
 					//straight_line_drive(22.0,, float kP_correction, float maxErrA, int max_velocity, uint32_t settle, uint32_t max_time)
 				//	float d, float a, float ys, float xs, float maxErrX, float maxVel, std::uint32_t ifailsafe, bool enableCorrect, bool forward, bool harshStop
 				//	intake::light_sen(285);
-					
+
 					//tilter::setTarget(tilter::State_Machine::E_STACK);
 					//intake::light_senAsync(200, -60, -60);
 					stack();
@@ -315,10 +315,32 @@ void autonomous(){
 					break;
 
 					default:
+					turn2ang(0.0, 127, _TurnDir::CH, 300, 1550);
+					turning_lineup(-50, 200);
+					pros::delay(1000);
+				//	tilter::setTarget(tilter::State_Machine::E_LIFT, 20000);
+				//	pros::delay(300)
+					lift::autonLift(lift::heightsAUTO::E_MED, 5000, 5850);
+					pros::delay(1000);
+				//	driveToPosition(148.0, -15.5, 120.0, -14.3, 0.05, 100, 3000, true, true, false);
+						drive_lineup(60, 1000);
+					pros::delay(1000);
+					pos.set_x(0.0);
+					pos.set_y(0.0);
+					pos.set_alpha(0.0);
+					pros::delay(1000);
+					pos.reset_pos();
+					driveToPosition(-12.0, 0.0, 0.0, 0.0, 0.05, 100, 3000, true, false, false);
+				//	tilter::setTarget(tilter::State_Machine::E_OFF);
+					turn2ang(90.0, 110, _TurnDir::CCW, 600, 1300);
+					intake::set_targetAsync(intake::States::E_INTAKE, 4000);
+					driveToPosition(-12.0, -32.0, -12.0, 0.0, 0.05, 100, 3000, true, true, false);
+					driveToPosition(-15.0, -27.5, -12.0, -32.0, 0.05, 100, 3000, true, false, false);
+					tower2();
 
 
-				/*	pros::delay(100000);
-
+					pros::delay(100000);
+/*
 
 					intake::set_targetAsync(intake::States::E_INTAKE, 12000);
 					driveToPosition(27.0, 0.0, 0.0, 0.0, 0.05, 90, 1000, true, true, false);
@@ -445,7 +467,7 @@ void autonomous(){
 				//	intake::set_targetAsync(intake::States::E_OUTTAKE, 350);
 				//	intake::set_targetAsync(intake::States::E_OUTTAKE, 2000);
 					//driveToPosition(120.0, -14.3, 140.0, 18.75, 1.5, 127, 5000, true, false, false);
-					drive_lineup(-85, 70);
+					drive_lineup(-85, 125);
 				//	tilter::setTarget(tilter::State_Machine::E_OFF);
 					pros::delay(1000);
 					tilter::setTarget(tilter::State_Machine::E_OFF);
@@ -457,17 +479,21 @@ void autonomous(){
 					lift::autonLift(lift::heightsAUTO::E_MED, 5000, 5850);
 					pros::delay(1000);
 				//	driveToPosition(148.0, -15.5, 120.0, -14.3, 0.05, 100, 3000, true, true, false);
-				    drive_lineup(60, 1000);
+				  drive_lineup(60, 1550);
 					pros::delay(1000);
-					pos.reset_pos();
+					pos.set_x(0.0);
+					pos.set_y(0.0);
+					pos.set_alpha(0.0);
 					pros::delay(1000);
-					pos.reset_pos();
-					driveToPosition(-12.0, 0.0, 0.0, 0.0, 0.05, 100, 3000, true, false, false);
+					driveToPosition(-12.0, 0.00, 0.0, 0.0, 0.05, 90, 1250, true, false, false);
+					pros::delay(2000);
+				//	pos.reset_pos();
+
 				//	tilter::setTarget(tilter::State_Machine::E_OFF);
 					turn2ang(90.0, 110, _TurnDir::CCW, 600, 1300);
 					intake::set_targetAsync(intake::States::E_INTAKE, 4000);
-					driveToPosition(-12.0, -32.0, -12.0, 0.0, 0.05, 100, 3000, true, true, false);
-					driveToPosition(-15.0, -27.5, -12.0, -32.0, 0.05, 100, 3000, true, false, false);
+					driveToPosition(-13.0, -32.0, -13.0, 0.0, 0.05, 100, 3000, true, true, false);
+					driveToPosition(-13.0, -27.5, -13.0, -32.0, 0.05, 100, 3000, true, false, false);
 					tower2();
 					turn2ang(0.0, 90.0, _TurnDir::CH, 500, 3000, 3.1);
 					drive_lineup(-90, 1000);
@@ -533,7 +559,7 @@ void autonomous(){
 					// Go to scoring zone
 					turn2ang(55.0, 90, _TurnDir::CCW, 500, 1300);
 					driveToPosition(140.0, -35.41, 132.5, 0.0, 0.05, 127, 5000, true, true, false);
-				
+
 					intake::set_targetAsync(intake::States::E_OFF, 15);
 					pros::delay(25);
 				 	tilter::setTarget(tilter::State_Machine::E_STACK);
@@ -850,13 +876,13 @@ angler_pid(-1800, true, 127, false);
           //  pros::delay(1000);
           pros::delay(500);
 		  angler_pid(0, true, 127, false);
-           
+
       //      pros::delay(500);
         //    g_liftIsReady = false;
           }
 
 if(b.changedToPressed()){
-pros::delay(20);	
+pros::delay(20);
 angler_pid(0, true, 127, false, 2000);
 }
 */
