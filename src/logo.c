@@ -9,6 +9,7 @@
 #define LV_ATTRIBUTE_IMG_LOGO
 #endif
 
+// Enver Creek Bitmap
 const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_IMG_LOGO uint8_t logo_map[] = {
 #if LV_COLOR_DEPTH == 1 || LV_COLOR_DEPTH == 8
   /*Pixel format: Red: 3 bit, Green: 3 bit, Blue: 2 bit*/
