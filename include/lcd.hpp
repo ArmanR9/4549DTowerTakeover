@@ -3,6 +3,10 @@
 
 #include "main.h"
 
+// ----------
+// DEPRECATED (refer to GUI)
+// ----------
+
 void auton_index_left();
 void auton_index_right();
 void auton_locker();

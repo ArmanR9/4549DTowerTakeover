@@ -3,30 +3,30 @@
 #include "main.h"
 
 enum class _Dir{
-FWD,
-BWD
+  FWD,
+  BWD
 };
 
 enum class _TurnDir{
-CW,
-CCW,
-CH
+  CW,
+  CCW,
+  CH
 };
 
 struct Vector{
-double x;
-double y;
+  double x;
+  double y;
 };
 
 
 struct Polar{
-double r;
-double theta;
+  double r;
+  double theta;
 };
 
 struct Path{
-Vector p1;
-Vector p2;
+  Vector p1;
+  Vector p2;
 };
 
 struct PosUtils{
@@ -95,6 +95,7 @@ public:
   void reset_pos();
 
   void log_position();
+
   // Default constructor
   // Initialize everything to 0
   ABSPosition() {}
@@ -102,6 +103,7 @@ public:
 };
 
 class Velocity{
+  
   private:
     double m_vel_x;
     double m_vel_y;
@@ -169,7 +171,6 @@ void log_velocity();
  Velocity() {}
 };
 
-void applyHarshStop();
 
 double getLineAngle(Path iline);
 
@@ -190,7 +191,7 @@ extern Velocity velo;
 extern Velocity wheel_vel;
 
 void reset_pos();
-//void odom_task(void* ignore);
+
 void tracking_update(void* ignore);
 
 #endif

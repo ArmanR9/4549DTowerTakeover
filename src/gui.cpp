@@ -29,14 +29,6 @@ static lv_style_t s_sm_text;
 static lv_style_t s_btn_rel;
 static lv_style_t s_btn_pr;
 
-/*
-static lv_style_t s_field_cont;
-static lv_style_t s_field;
-static lv_style_t s_robot;
-static lv_style_t s_line;
-*/
-
-
 lv_theme_t *th;
 void theme(){
 th = lv_theme_alien_init(10, NULL);
@@ -93,69 +85,39 @@ void style_sm_text(){
   s_sm_text.text.color = LV_COLOR_WHITE;
 }
 
-/*
-void field_cont_style(){
-lv_style_copy(&s_field_cont ,&lv_style_plain);
-s_field_cont.body.main_color = LV_COLOR_BLACK;
-s_field_cont.body.grad_color = LV_COLOR_BLACK;
-s_field_cont.body.border.width = 0;
-s_field_cont.body.radius = 0;
-}
-void field_style(){
-  lv_style_copy(&s_field ,&lv_style_plain);
-  s_field_cont.body.main_color = LV_COLOR_WHITE;
-  s_field_cont.body.grad_color = LV_COLOR_WHITE;
-  s_field_cont.body.border.width = 0;
-  s_field_cont.body.radius = 0;
-}
-void robot_style(){
-  s_robot.body.radius = LV_RADIUS_CIRCLE;
-  s_robot.body.main_color = LV_COLOR_RED;
-  s_robot.body.grad_color = LV_COLOR_RED;
-  s_robot.body.border.color = LV_COLOR_WHITE;
-  s_robot.body.border.width = 2;
-  s_robot.body.border.opa = LV_OPA_100;
-}
-void line_style(){
-  s_line.line.width = 3;
-  s_line.line.opa = LV_OPA_100;
-  s_line.line.color = LV_COLOR_GREEN;
-}
-*/
-
 
 int auton_sel = 0;
 
 static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt) {
 
-  int btnm_num = atoi(txt);
+    int btnm_num = atoi(txt);
 
-  switch (btnm_num) {
-  case 1:
-    lv_label_set_text(g_sb_label, "Blue Auton");
-    auton_sel = 1;
-    break;
-  case 2:
-    lv_label_set_text(g_sb_label, "Red Auton");
-    auton_sel = 2;
-    break;
-  case 3:
-    lv_label_set_text(g_sb_label, "Blue Right Auton");
-    auton_sel = 3;
-break;
-  case 4:
-    lv_label_set_text(g_sb_label, "Blue Left Auton");
-    auton_sel = 4;
-break;
-  case 5:
-    lv_label_set_text(g_sb_label, "Skills Auton1");
-    auton_sel = 5;
-break;
-  case 6:
-    lv_label_set_text(g_sb_label, "Skills Auton2");
-    auton_sel = 6;
-break;
-  }
+    switch (btnm_num) {
+      case 1:
+        lv_label_set_text(g_sb_label, "Blue Auton");
+        auton_sel = 1;
+        break;
+      case 2:
+        lv_label_set_text(g_sb_label, "Red Auton");
+        auton_sel = 2;
+        break;
+      case 3:
+        lv_label_set_text(g_sb_label, "Blue Right Auton");
+        auton_sel = 3;
+        break;
+      case 4:
+        lv_label_set_text(g_sb_label, "Blue Left Auton");
+        auton_sel = 4;
+        break;
+      case 5:
+        lv_label_set_text(g_sb_label, "Skills Auton1");
+        auton_sel = 5;
+        break;
+      case 6:
+        lv_label_set_text(g_sb_label, "Skills Auton2");
+        auton_sel = 6;
+        break;
+    }
 
   lv_obj_align(g_sb_label, NULL, LV_ALIGN_CENTER, 0, 0); // must be after set_text
 
@@ -163,7 +125,7 @@ break;
 }
 
 static lv_res_t btn_return_f(lv_obj_t * btn) {
-  gui();
+   gui();
    return LV_RES_OK; /*Return OK if the button is not deleted*/
 }
 
@@ -180,231 +142,140 @@ static lv_res_t btn_reset_f(lv_obj_t * btn) {
 
    return LV_RES_OK; /*Return OK if the button is not deleted*/
 }
-/*
-lv_obj_t * robot = nullptr;
-lv_obj_t * line = nullptr;
-std::vector<lv_point_t> linePoints = {{0, 0}, {0, 0}};
-double fieldDim = 0.0;
-int lineWidth = 0;
-int lineLength = 0;
-*/
-/*
-void gui_odom(){
-  lv_obj_t * container;
-  container = lv_cont_create(lv_scr_act(), NULL);
-  lv_obj_set_size(container, lv_obj_get_width(lv_scr_act()), lv_obj_get_height(lv_scr_act()));
-  lv_obj_align(container, NULL, LV_ALIGN_CENTER, 0, 0);
-  lv_obj_set_style(container, &s_field_cont);
-  lv_obj_t * field = lv_obj_create(container, NULL);
-  lv_coord_t size = std::min(lv_obj_get_width(container), lv_obj_get_height(container));
-  fieldDim = size;
-  lv_obj_set_size(field, size, size);
-  lv_obj_align(field, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
-  lv_obj_set_style(field, &s_field);
-  robot = lv_led_create(field, NULL);
-  lv_led_on(robot);
-  lv_obj_set_size(robot, lv_obj_get_width(field) / 15, lv_obj_get_height(field) / 15);
-  lv_obj_set_style(robot, &s_robot);
-  line = lv_line_create(field, NULL);
-  lv_obj_set_pos(line, 0, 0);
-  lv_obj_set_style(line, &s_line);
-  lineWidth = 3;
-  lineLength = fieldDim / 6;
-}
-*/
-void odom_update(void* ign){
-
-  //while(true){
-    /*
-  lv_line_set_points(line, linePoints.data(), linePoints.size());
-  double c_x = pos.get_x();
-  double c_y = pos.get_y();
-  double c_theta = radians_to_degrees(pos.get_alpha());
-  lv_obj_set_pos(robot, c_x, c_y);
-linePoints[0] = {(int16_t)((c_x * fieldDim)), (int16_t)((c_y * fieldDim) - (lineWidth/2))};
-double newY = lineLength * cos(c_theta);
-double newX = lineLength * sin(c_theta);
-linePoints[1] = {(int16_t)(newX + linePoints[0].x), (int16_t)(-newY + linePoints[0].y)};
-lv_line_set_points(line, linePoints.data(), linePoints.size());
-lv_obj_invalidate(line);
-  lv_obj_t * x_label2 = lv_label_create(lv_scr_act(), NULL);
-  lv_obj_align(x_label2, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 10);
-  lv_obj_set_style(x_label2, &s_white_num);
-  lv_obj_t * y_label2 = lv_label_create(lv_scr_act(), NULL);
-  lv_obj_align(y_label2, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 35);
-  lv_obj_set_style(y_label2, &s_white_num);
-  lv_obj_t * a_label2 = lv_label_create(lv_scr_act(), NULL);
-  lv_obj_align(a_label2, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 60);
-  lv_obj_set_style(a_label2, &s_white_num);
-  std::ostringstream x2;
-  x2 << std::setprecision(4) << pos.get_x();
-  auto s12 = x2.str();
-  lv_label_set_text(x_label2, s12.c_str());
-  std::ostringstream y2;
-  y2 << std::setprecision(4) << pos.get_y();
-  auto s22 = y2.str();
-  lv_label_set_text(y_label2, s22.c_str());
-  std::ostringstream a2;
-  a2 << std::setprecision(4) << radians_to_degrees(pos.get_alpha());
-  auto s32 = a2.str();
-  lv_label_set_text(a_label2, s32.c_str());
-  pros::delay(30);
-  }
-  pros::delay(1);
-  */
-}
 
 
 void gui_debug() {
-lv_obj_t * label_home = lv_label_create(lv_scr_act(), NULL);
-lv_label_set_text(label_home, "RETURN");
-lv_obj_set_style(label_home, &s_sm_text);
-lv_obj_align(label_home, NULL, LV_ALIGN_IN_BOTTOM_RIGHT, -25, -75);
+  lv_obj_t * label_home = lv_label_create(lv_scr_act(), NULL);
+  lv_label_set_text(label_home, "RETURN");
+  lv_obj_set_style(label_home, &s_sm_text);
+  lv_obj_align(label_home, NULL, LV_ALIGN_IN_BOTTOM_RIGHT, -25, -75);
 
-lv_obj_t * btn1 = lv_btn_create(lv_scr_act(), NULL);
-lv_btn_set_style(btn1, LV_BTN_STYLE_REL, th->btn.rel);
-lv_btn_set_style(btn1, LV_BTN_STYLE_PR, th->btn.pr);
-lv_obj_set_size(btn1, 60, 60);
-lv_obj_align(btn1, NULL, LV_ALIGN_IN_BOTTOM_RIGHT, -10, -50);
-//lv_obj_set_free_num(btn1, 1);   /*Set a unique number for the button*/
-lv_btn_set_action(btn1, LV_BTN_ACTION_CLICK, btn_return_f);
+  lv_obj_t * btn1 = lv_btn_create(lv_scr_act(), NULL);
+  lv_btn_set_style(btn1, LV_BTN_STYLE_REL, th->btn.rel);
+  lv_btn_set_style(btn1, LV_BTN_STYLE_PR, th->btn.pr);
+  lv_obj_set_size(btn1, 60, 60);
+  lv_obj_align(btn1, NULL, LV_ALIGN_IN_BOTTOM_RIGHT, -10, -50);
+  lv_btn_set_action(btn1, LV_BTN_ACTION_CLICK, btn_return_f);
 
-lv_obj_t * label_reset = lv_label_create(lv_scr_act(), NULL);
-lv_label_set_text(label_reset, "RESET");
-lv_obj_set_style(label_reset, &s_sm_text);
-lv_obj_align(label_reset, NULL, LV_ALIGN_IN_RIGHT_MID, -27, -25);
+  lv_obj_t * label_reset = lv_label_create(lv_scr_act(), NULL);
+  lv_label_set_text(label_reset, "RESET");
+  lv_obj_set_style(label_reset, &s_sm_text);
+  lv_obj_align(label_reset, NULL, LV_ALIGN_IN_RIGHT_MID, -27, -25);
 
-lv_obj_t * btn_reset = lv_btn_create(lv_scr_act(), NULL);
-lv_btn_set_style(btn_reset, LV_BTN_STYLE_REL, th->btn.rel);
-lv_btn_set_style(btn_reset, LV_BTN_STYLE_PR, th->btn.pr);
-lv_obj_set_size(btn_reset, 60, 60);
-lv_obj_align(btn_reset, NULL, LV_ALIGN_IN_RIGHT_MID, -10, -25);
-//lv_obj_set_free_num(btn_reset, 1);   /*Set a unique number for the button*/
-lv_btn_set_action(btn_reset, LV_BTN_ACTION_CLICK, btn_reset_f);
-
-//lv_coord_t size_w = lv_obj_get_width(lv_scr_act())/6;
-//lv_coord_t size_l = lv_obj_get_height(lv_scr_act())/6;
-lv_obj_t * label = lv_label_create(lv_scr_act(), NULL);
-//lv_obj_set_size(label, size_w, size_l);
-lv_obj_set_style(label, &s_white);
-lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 10);
-lv_label_set_text(label, "Global X:");
-
-label = lv_label_create(lv_scr_act(), NULL);
-lv_obj_set_style(label, &s_white);
-lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 35);
-lv_label_set_text(label, "Global Y:");
-
-label = lv_label_create(lv_scr_act(), NULL);
-lv_obj_set_style(label, &s_white);
-lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 60);
-lv_label_set_text(label, "Global A:");
-
-label = lv_label_create(lv_scr_act(), NULL);
-lv_obj_set_style(label, &s_white);
-lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 110);
-lv_label_set_text(label, "Vel X:");
-
-label = lv_label_create(lv_scr_act(), NULL);
-lv_obj_set_style(label, &s_white);
-lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 135);
-lv_label_set_text(label, "Vel Y:");
+  lv_obj_t * btn_reset = lv_btn_create(lv_scr_act(), NULL);
+  lv_btn_set_style(btn_reset, LV_BTN_STYLE_REL, th->btn.rel);
+  lv_btn_set_style(btn_reset, LV_BTN_STYLE_PR, th->btn.pr);
+  lv_obj_set_size(btn_reset, 60, 60);
+  lv_obj_align(btn_reset, NULL, LV_ALIGN_IN_RIGHT_MID, -10, -25);
+  lv_btn_set_action(btn_reset, LV_BTN_ACTION_CLICK, btn_reset_f);
 
 
-label = lv_label_create(lv_scr_act(), NULL);
-lv_obj_set_style(label, &s_white);
-lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 160);
-lv_label_set_text(label, "Vel A:");
+  lv_obj_t * label = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_set_style(label, &s_white);
+  lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 10);
+  lv_label_set_text(label, "Global X:");
+
+  label = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_set_style(label, &s_white);
+  lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 35);
+  lv_label_set_text(label, "Global Y:");
+
+  label = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_set_style(label, &s_white);
+  lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 60);
+  lv_label_set_text(label, "Global A:");
+
+  label = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_set_style(label, &s_white);
+  lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 110);
+  lv_label_set_text(label, "Vel X:");
+
+  label = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_set_style(label, &s_white);
+  lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 135);
+  lv_label_set_text(label, "Vel Y:");
 
 
+  label = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_set_style(label, &s_white);
+  lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 160);
+  lv_label_set_text(label, "Vel A:");
 
 }
 
 void debug_update(void*){
-//char x[5];
-double g = 5;
-lv_obj_t * x_label = lv_label_create(lv_scr_act(), NULL);
-lv_obj_align(x_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 10);
-lv_obj_set_style(x_label, &s_white_num);
 
-lv_obj_t * y_label = lv_label_create(lv_scr_act(), NULL);
-lv_obj_align(y_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 35);
-lv_obj_set_style(y_label, &s_white_num);
+  double g = 5;
+  lv_obj_t * x_label = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_align(x_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 10);
+  lv_obj_set_style(x_label, &s_white_num);
 
-lv_obj_t * a_label = lv_label_create(lv_scr_act(), NULL);
-lv_obj_align(a_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 60);
-lv_obj_set_style(a_label, &s_white_num);
+  lv_obj_t * y_label = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_align(y_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 35);
+  lv_obj_set_style(y_label, &s_white_num);
 
-lv_obj_t * e360b_label = lv_label_create(lv_scr_act(), NULL);
-lv_obj_align(e360b_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 85);
-lv_obj_set_style(e360b_label, &s_white_num);
+  lv_obj_t * a_label = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_align(a_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 60);
+  lv_obj_set_style(a_label, &s_white_num);
 
-lv_obj_t * vX_label = lv_label_create(lv_scr_act(), NULL);
-lv_obj_align(vX_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 110);
-lv_obj_set_style(vX_label, &s_white_num);
+  lv_obj_t * e360b_label = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_align(e360b_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 85);
+  lv_obj_set_style(e360b_label, &s_white_num);
 
-lv_obj_t * vY_label = lv_label_create(lv_scr_act(), NULL);
-lv_obj_align(vY_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 135);
-lv_obj_set_style(vY_label, &s_white_num);
+  lv_obj_t * vX_label = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_align(vX_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 110);
+  lv_obj_set_style(vX_label, &s_white_num);
 
-lv_obj_t * vA_label = lv_label_create(lv_scr_act(), NULL);
-lv_obj_align(vA_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 160);
-lv_obj_set_style(vA_label, &s_white_num);
+  lv_obj_t * vY_label = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_align(vY_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 135);
+  lv_obj_set_style(vY_label, &s_white_num);
 
-
+  lv_obj_t * vA_label = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_align(vA_label, NULL, LV_ALIGN_IN_TOP_LEFT, 100, 160);
+  lv_obj_set_style(vA_label, &s_white_num);
 
 
-while(true){
-g++;
-std::ostringstream x;
-x << std::setprecision(3) << pos.get_x();//pos.get_x();
-auto s1 = x.str();
-lv_label_set_text(x_label, s1.c_str());
+  while(true){
+    g++;
+    std::ostringstream x;
+    x << std::setprecision(3) << pos.get_x();//pos.get_x();
+    auto s1 = x.str();
+    lv_label_set_text(x_label, s1.c_str());
 
 
-std::ostringstream y;
-y << std::setprecision(3) << pos.get_y();//encoder360R.get_value();
-auto s2 = y.str();
-lv_label_set_text(y_label, s2.c_str());
+    std::ostringstream y;
+    y << std::setprecision(3) << pos.get_y();//encoder360R.get_value();
+    auto s2 = y.str();
+    lv_label_set_text(y_label, s2.c_str());
 
-std::ostringstream a;
-a << std::setprecision(3) << radians_to_degrees(pos.get_alpha());//encoder360B.get_value();//radians_to_degrees(pos.get_alpha());
-auto s3 = a.str();
-lv_label_set_text(a_label, s3.c_str());
+    std::ostringstream a;
+    a << std::setprecision(3) << radians_to_degrees(pos.get_alpha());//encoder360B.get_value();//radians_to_degrees(pos.get_alpha());
+    auto s3 = a.str();
+    lv_label_set_text(a_label, s3.c_str());
 
-std::ostringstream e360b;
-e360b << std::setprecision(4) << g;//  encoder360B.get_value();//encoder360B.get_value();
-auto s4 = e360b.str();
-lv_label_set_text(e360b_label, s4.c_str());
+    std::ostringstream e360b;
+    e360b << std::setprecision(4) << g;//  encoder360B.get_value();//encoder360B.get_value();
+    auto s4 = e360b.str();
+    lv_label_set_text(e360b_label, s4.c_str());
 
-std::ostringstream vX;
-vX << std::setprecision(4) << velo.get_vel_x();//encoder360B.get_value();
-auto s5 = vX.str();
-lv_label_set_text(vX_label, s5.c_str());
+    std::ostringstream vX;
+    vX << std::setprecision(4) << velo.get_vel_x();//encoder360B.get_value();
+    auto s5 = vX.str();
+    lv_label_set_text(vX_label, s5.c_str());
 
-std::ostringstream vY;
-vY << std::setprecision(4) << velo.get_vel_y();//encoder360B.get_value();
-auto s6 = vY.str();
-lv_label_set_text(vY_label, s6.c_str());
+    std::ostringstream vY;
+    vY << std::setprecision(4) << velo.get_vel_y();//encoder360B.get_value();
+    auto s6 = vY.str();
+    lv_label_set_text(vY_label, s6.c_str());
 
-std::ostringstream vA;
-vA << std::setprecision(4) << velo.get_vel_a();//encoder360B.get_value();
-auto s7 = vA.str();
-lv_label_set_text(vA_label, s7.c_str());
+    std::ostringstream vA;
+    vA << std::setprecision(4) << velo.get_vel_a();//encoder360B.get_value();
+    auto s7 = vA.str();
+    lv_label_set_text(vA_label, s7.c_str());
 
+    pros::delay(20);
+  }
 
-
-
-
-
-
-/*sprintf(x,"= %d", i);
-lv_obj_t * label = lv_label_create(lv_scr_act(), NULL);
-lv_label_set_text(label, x);
-*/
-
-pros::delay(20);
- }
 }
 
 void gui_btnm(void) {
@@ -716,7 +587,6 @@ style_sb.body.radius = LV_RADIUS_CIRCLE;
 
 void gui_init() {
  //Intialize styles
-//   lv_theme_t *th = lv_theme_alien_init(10, NULL);
    theme();
    style_white();
    style_black();
@@ -725,11 +595,7 @@ void gui_init() {
    style_btn_rel();
    style_sm_text();
    page();
-   /*field_cont_style();
-   field_style();
-   robot_style();
-   line_style();
-*/
+
    lv_theme_set_current(th);
 }
 
@@ -740,22 +606,15 @@ void gui_init() {
    lv_obj_set_style(box1, &style_sb);
    lv_obj_align(box1, NULL, LV_ALIGN_CENTER, -180, -78);//-150, -75);
    lv_obj_set_size(box1, lv_obj_get_width(lv_scr_act())+5, lv_obj_get_height(lv_scr_act()));
-// -25 , -25
-  /* lv_obj_t * page_ = lv_page_create(lv_scr_act(), NULL);
-   lv_obj_set_size(page_, lv_obj_get_width(lv_scr_act())-10, lv_obj_get_width(lv_scr_act())-10);
-   lv_obj_align(page_, NULL, LV_ALIGN_CENTER, 0, 0);
-   lv_page_set_style(page_, LV_PAGE_STYLE_BG, &style_sb2);
-*/
+
   lv_obj_t * img1 = lv_img_create(lv_scr_act(), NULL);
   lv_img_set_src(img1, &logo);
   lv_obj_align(img1, NULL, LV_ALIGN_CENTER, 0, 0);
 
    lv_coord_t x = lv_obj_get_width(lv_scr_act());
    lv_coord_t y = 15;
-  // Select page
-  /*Create a title label*/
+ 
   lv_obj_t * label = lv_label_create(lv_scr_act(), NULL);
-//  lv_obj_set_width(label, 300);
   lv_label_set_text(label, "4549 Robotics");
   lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_MID, -25, 1);
   lv_obj_set_style(label, &s_red);
@@ -770,7 +629,6 @@ void gui_init() {
   lv_obj_t * btn1 = lv_btn_create(lv_scr_act(), NULL);
   lv_obj_set_size(btn1, btn_width, btn_height);
   lv_obj_align(btn1, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 15);
-  //lv_obj_set_style(btn1, &s_btn_rel);
   lv_obj_set_free_num(btn1, 1);   /*Set a unique number for the button*/
   lv_btn_set_action(btn1, LV_BTN_ACTION_CLICK, demo_click_action);
 

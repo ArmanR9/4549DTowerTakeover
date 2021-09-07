@@ -1,6 +1,7 @@
 #include "motors.hpp"
 #include "main.h"
-// Motor constructor(uint8_t port, enum E_MOTOR_GEARSET, bool reverse, enum E_MOTOR_ENCODER)
+
+// Template: Motor constructor(uint8_t port, enum E_MOTOR_GEARSET, bool reverse, enum E_MOTOR_ENCODER)
 
 pros::Motor LF_mtr (8, pros::E_MOTOR_GEARSET_18, false , pros::E_MOTOR_ENCODER_COUNTS); //false  10 10
 pros::Motor RF_mtr (7, pros::E_MOTOR_GEARSET_18, true , pros::E_MOTOR_ENCODER_COUNTS); // port 12 true
@@ -12,41 +13,41 @@ pros::Motor LB_mtr (5, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_CO
 pros::Motor lift_mtr (4, pros::E_MOTOR_GEARSET_36, true, pros::E_MOTOR_ENCODER_COUNTS);
 
 float encoder_avg_mtrs(){
-return (LF_mtr.get_position() + RF_mtr.get_position() + RB_mtr.get_position() + LB_mtr.get_position()) / 4;
+  return (LF_mtr.get_position() + RF_mtr.get_position() + RB_mtr.get_position() + LB_mtr.get_position()) / 4;
 }
 
 float encoder_lift(){
-return lift_mtr.get_position();
+  return lift_mtr.get_position();
 }
 
 float encoder_intake_left(){
-return LIntake_mtr.get_position();
+  return LIntake_mtr.get_position();
 }
 
 float encoder_intake_right(){
-return RIntake_mtr.get_position();
+  return RIntake_mtr.get_position();
 }
 
 void reset_mtr_encoders()
 {
-LF_mtr.tare_position();
-RF_mtr.tare_position();
-LB_mtr.tare_position();
-RB_mtr.tare_position();
+  LF_mtr.tare_position();
+  RF_mtr.tare_position();
+  LB_mtr.tare_position();
+  RB_mtr.tare_position();
 }
 
 void brake_mode_init(){
-LB_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
-LF_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
-RB_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
-RF_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+  LB_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+  LF_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+  RB_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+  RF_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
 
-tilter_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+  tilter_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
 
-LIntake_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
-RIntake_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+  LIntake_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
+  RIntake_mtr.set_brake_mode(MOTOR_BRAKE_COAST);
 
-lift_mtr.set_brake_mode(MOTOR_BRAKE_HOLD);
+  lift_mtr.set_brake_mode(MOTOR_BRAKE_HOLD);
 }
 
 void driveLR_vel_set(int velL, int velR){
@@ -78,25 +79,25 @@ void drive_setV(int velocity){
 }
 
 void intake_set(int voltage){
-RIntake_mtr.move(voltage);
-LIntake_mtr.move(voltage);
+  RIntake_mtr.move(voltage);
+  LIntake_mtr.move(voltage);
 }
 
 void lift_set(int voltage){
-lift_mtr.move(voltage);
+  lift_mtr.move(voltage);
 }
 
 void tilter_set(int voltage){
-tilter_mtr.move(voltage);
+  tilter_mtr.move(voltage);
 }
 
 
 void left_intake_set(int voltage){
-LIntake_mtr.move(voltage);
+  LIntake_mtr.move(voltage);
 }
 
 void right_intake_set(int voltage){
-RIntake_mtr.move(voltage);
+  RIntake_mtr.move(voltage);
 }
 
 

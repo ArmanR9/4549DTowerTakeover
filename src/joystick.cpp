@@ -7,56 +7,61 @@
 void DriverProfile::toggle_switch(char btn){
 
   // Toggle feature
-  if(!get_isPressed())
-    {
-      set_toggle(1 - get_toggle());
+  if(!get_isPressed()){
 
-      set_isPressed(1);
-      pros::delay(200);
-    }
-  else
-  {
+    set_toggle(1 - get_toggle());
+
+    set_isPressed(1);
+    pros::delay(200);
+  }
+
+  else{
+
     set_isPressed(0);
     pros::delay(200);
   }
 
 
   // Arcade/Tank switching
-    if(btn == 'L'){
+  if(btn == 'L'){
 
-      if(get_toggle())
-         setDrive(Drive_State::ARCADE_DRIVE);
-
-         else if(!get_toggle())
-            setDrive(Drive_State::TANK_DRIVE);
+    if(get_toggle()){
+      setDrive(Drive_State::ARCADE_DRIVE);
     }
+
+    else if(!get_toggle()){
+      setDrive(Drive_State::TANK_DRIVE);
+    }
+
+  }
 
 
   // Modifier switching
-    else if(btn == 'R'){
+  else if(btn == 'R'){
 
-       if(get_toggle()){
-         setModifier(0.5);
-         set_sModifier(Modifier_State::SLOW_DRIVE);
-       }
+    if(get_toggle()){
+      setModifier(0.5);
+      set_sModifier(Modifier_State::SLOW_DRIVE);
+    }
 
-       else if(!get_toggle()){
-         setModifier(1);
-         set_sModifier(Modifier_State::NORMAL_DRIVE);
-       }
-     }
-
-
-
-    // Curve switching
-    else if(btn == 'D'){
-      if(get_toggle())
-       setCurve(Curve_State::QUADRATIC_DRIVE);
-
-    else if(!get_toggle())
-       setCurve(Curve_State::CUBIC_DRIVE);
-          }
+    else if(!get_toggle()){
+      setModifier(1);
+      set_sModifier(Modifier_State::NORMAL_DRIVE);
+    }
   }
+
+
+  // Curve switching
+  else if(btn == 'D'){
+    if(get_toggle()){
+      setCurve(Curve_State::QUADRATIC_DRIVE);
+    }
+    else if(!get_toggle()){
+      setCurve(Curve_State::CUBIC_DRIVE);
+    }
+  }
+
+}
 
 
 /*----------------------- /
@@ -64,13 +69,13 @@ void DriverProfile::toggle_switch(char btn){
 /-----------------------*/
 
 int Analog_Control::deadband(int joystick_value){
-     if(abs(joystick_value) < 3){
-       return 0;
-       }
-     else{
-       return 1;
-       }
-   }
+
+  if(abs(joystick_value) < 3){
+    return 0;
+  }
+
+  return 1;
+}
 
 
 int Analog_Control::speedCap(int control_value){
@@ -79,16 +84,14 @@ int Analog_Control::speedCap(int control_value){
 
     if(m_max_speed > 120){
       control_value = m_max_speed * sgn_(control_value);
-      return control_value;
-      }
-      else{
+    }
+    
   return control_value;
-  }
 }
 
 
 int Analog_Control::calc_l_difference(int & deltaL){
-  //m_difference = deltaL;
+
   m_joy_difference = (master_controller.get_analog(ANALOG_LEFT_Y) - master_controller.get_analog(ANALOG_RIGHT_Y));
 
     if(m_joy_difference < 15 && m_joy_difference > 0 && abs(getJoyLY(master_controller)) > 20){
@@ -102,7 +105,6 @@ int Analog_Control::calc_l_difference(int & deltaL){
 
 
 int Analog_Control::calc_r_difference(int &deltaR){
-//  m_difference = deltaR;
   m_joy_difference = (master_controller.get_analog(ANALOG_RIGHT_Y) - master_controller.get_analog(ANALOG_LEFT_Y));
 
   if(m_joy_difference < 15 && m_joy_difference > 0 && abs(getJoyRY(master_controller)) > 20){
@@ -132,46 +134,35 @@ void joystick_drive(DriverProfile * profile, Analog_Control * analog){
         analog->powerLY = analog->speedCap(master_controller.get_analog(ANALOG_LEFT_Y)) * analog->deadband(master_controller.get_analog(ANALOG_LEFT_Y));
         analog->powerLX = analog->speedCap(master_controller.get_analog(ANALOG_LEFT_X)) * analog->deadband(master_controller.get_analog(ANALOG_LEFT_X));
 
-
         leftdrive_set(analog->powerLY + analog->powerLX);
         rightdrive_set(analog->powerLY - analog->powerLX);
 
         break;
 
 
-
       case (DriverProfile::Drive_State::ARCADE_LIFT_DRIVE):
 
+        analog->powerLY = analog->speedCap(pow(master_controller.get_analog(ANALOG_LEFT_Y), 3)) * analog->deadband(master_controller.get_analog(ANALOG_LEFT_Y));
+        analog->powerLX = analog->speedCap(pow(master_controller.get_analog(ANALOG_LEFT_X), 3)) * analog->deadband(master_controller.get_analog(ANALOG_LEFT_X));
+        analog->powerRY = pow(master_controller.get_analog(ANALOG_RIGHT_Y), 3) * analog->deadband(master_controller.get_analog(ANALOG_RIGHT_Y));
 
-      analog->powerLY = analog->speedCap(pow(master_controller.get_analog(ANALOG_LEFT_Y), 3)) * analog->deadband(master_controller.get_analog(ANALOG_LEFT_Y));
-      analog->powerLX = analog->speedCap(pow(master_controller.get_analog(ANALOG_LEFT_X), 3)) * analog->deadband(master_controller.get_analog(ANALOG_LEFT_X));
-      analog->powerRY = pow(master_controller.get_analog(ANALOG_RIGHT_Y), 3) * analog->deadband(master_controller.get_analog(ANALOG_RIGHT_Y));
-
-      leftdrive_set(analog->powerLY + analog->powerLX);
-      rightdrive_set(analog->powerLY - analog->powerLX);
-      lift_set(analog->powerRY);
-
-
-   // DEFAULT TANK DRIVE, the normal one
-
-     case (DriverProfile::Drive_State::TANK_DRIVE):
-
-            analog->powerLY = exp(((abs(master_controller.get_analog(ANALOG_LEFT_Y)) - 127) * analog->t) / 1000.0) * master_controller.get_analog(ANALOG_LEFT_Y);
-       //  analog->powerLY = (pow (getJoyLY(master_controller), 2) / 127) * sgn_(getJoyLY(master_controller));
-        // analog->powerLY -= analog->calc_l_difference(delta_joyL) * sgn_(getJoyLY(master_controller));
-        // analog->powerLY *= analog->deadband(getJoyLY(master_controller));
-
-           leftdrive_set(analog->powerLY);
+        leftdrive_set(analog->powerLY + analog->powerLX);
+        rightdrive_set(analog->powerLY - analog->powerLX);
+        lift_set(analog->powerRY);
 
 
-         analog->powerRY = exp(((abs(master_controller.get_analog(ANALOG_RIGHT_Y)) - 127) * analog->t) / 1000.0) * master_controller.get_analog(ANALOG_RIGHT_Y);
-         //analog->powerRY -= analog->calc_r_difference(delta_joyR) * sgn_(getJoyRY(master_controller));
-        // analog->powerRY *= analog->deadband(getJoyRY(master_controller));
+     // DEFAULT TANK DRIVE
+      case (DriverProfile::Drive_State::TANK_DRIVE):
 
-           rightdrive_set(analog->powerRY);//*profile->getModifier());
+      analog->powerLY = exp(((abs(master_controller.get_analog(ANALOG_LEFT_Y)) - 127) * analog->scalar) / 1000.0) * master_controller.get_analog(ANALOG_LEFT_Y);
+      leftdrive_set(analog->powerLY);
+
+      analog->powerRY = exp(((abs(master_controller.get_analog(ANALOG_RIGHT_Y)) - 127) * analog->scalar) / 1000.0) * master_controller.get_analog(ANALOG_RIGHT_Y);
+      rightdrive_set(analog->powerRY);
 
       break;
     }
+
 }
 
 

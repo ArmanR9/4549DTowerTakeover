@@ -15,12 +15,12 @@ std::array<std::string, 3> lastLines = {};
 
 void controller_print(void* param){
 
-DriverProfile* profile = (DriverProfile*)param; //cast void pointer param into type Drive Profile
-// create profile ptr to param, and use it access the current members of the passed in object
+  DriverProfile* profile = (DriverProfile*)param; //cast void pointer param into type Drive Profile
+  // create profile ptr to param, and use it access the current members of the passed in object
 
- lines[0] = "init";
- lines[1] = "init";
- lines[2] = "init";
+  lines[0] = "init";
+  lines[1] = "init";
+  lines[2] = "init";
 
   const int maxWidth = 15;
 
@@ -28,49 +28,50 @@ DriverProfile* profile = (DriverProfile*)param; //cast void pointer param into t
 
     bool delayed = false;
 
-    switch(profile->getDrive()){            // Switch case for switching printed strings on controller (Driver Layout)
+    switch(profile->getDrive()){ // Switch case for switching printed strings on controller (Driver Layout)
+
       case (DriverProfile::Drive_State::TANK_DRIVE):
           lines[0] = "Tank";
-        break;
-
-        case (DriverProfile::Drive_State::ARCADE_DRIVE):
-            lines[0] = "Arcade";
           break;
 
-          default:
-            lines[0] = "NULL";
+      case (DriverProfile::Drive_State::ARCADE_DRIVE):
+          lines[0] = "Arcade";
           break;
+
+      default:
+          lines[0] = "NULL";
+          break;
+
     }
 
-     switch(profile->getCurve()){ // Switch case for switching printed strings on controller (Curve setting)
-     case (DriverProfile::Curve_State::CUBIC_DRIVE):
-     lines[1] = "Cubic Curve";
-     break;
+    switch(profile->getCurve()){ // Switch case for switching printed strings on controller (Curve setting)
+      case (DriverProfile::Curve_State::CUBIC_DRIVE):
+        lines[1] = "Cubic Curve";
+        break;
 
-     case(DriverProfile::Curve_State::QUADRATIC_DRIVE):
-     lines[1] = "Quad curve";
-     break;
+      case(DriverProfile::Curve_State::QUADRATIC_DRIVE):
+        lines[1] = "Quad curve";
+        break;
 
+      default:
+        lines[1] = "Default curve";
+        break;
+    }  
 
-     default:
-     lines[1] = "Default curve";
-     break;
-   }
+    switch(profile->get_sModifier()){ // Switch case for switching printed strings on controller (Joystick Modifier setting)
 
-   switch(profile->get_sModifier()){ // Switch case for switching printed strings on controller (Joystick Modifier setting)
+      case(DriverProfile::Modifier_State::SLOW_DRIVE):
+        lines [2] = "Slow boi";
+        break;
 
-    case(DriverProfile::Modifier_State::SLOW_DRIVE):
-    lines [2] = "Slow boi";
-    break;
+      case(DriverProfile::Modifier_State::NORMAL_DRIVE):
+        lines[2] = "Normal boi";
+        break;
 
-    case(DriverProfile::Modifier_State::NORMAL_DRIVE):
-    lines[2] = "Normal boi";
-    break;
-
-    default:
-    lines[2] = "NULL boi";
-    break;
-   }
+      default:
+        lines[2] = "NULL boi";
+        break;
+    }
 
 
 

@@ -5,13 +5,12 @@
 
 
 // Parent class solely for toggle functionality
+
 class ToggleClass{
   private:
-    // Private member variables
 
     bool m_isPressed;
     bool m_toggle;
-
 
   public:
     // Methods
@@ -33,6 +32,8 @@ class ToggleClass{
 class DriverProfile : public ToggleClass {
  public:
 
+  // State machines for the drivetrain
+
    enum class Drive_State : int{
      TANK_DRIVE = 1,
      ARCADE_DRIVE = 2,
@@ -50,9 +51,7 @@ class DriverProfile : public ToggleClass {
   };
 
 
-
   private:
-    //Private member variables
 
     float m_modifier;
     Modifier_State m_sModifier;
@@ -77,7 +76,6 @@ class DriverProfile : public ToggleClass {
     int get_iCurve(){ return static_cast<int>(m_curve); }
 
 
-//static_cast<int>(m_curve)
 
     void logDriverProfile();
 
@@ -94,40 +92,34 @@ class DriverProfile : public ToggleClass {
 
   class Analog_Control{
   private:
-    // Private member variable
 
-    int m_assist_control;
-
-    int m_joy_difference;
-
+    int m_assist_control; 
+    int m_joy_difference; // Delta between both joysticks Y coordinates
     int m_max_speed;
+
   public:
 
     int powerLX;
     int powerLY;
     int powerRX;
     int powerRY;
-    float t;
+    float scalar;
 
   public:
+
      //Methods
 
+     int deadband(int joystick_value); // Remove drift from control input.
+     int speedCap(int control_value); // Cap speed of motors to control_value
+     void logAnalog(); // Log Analog (x,y) data on both joysticks.
 
+     int calc_l_difference(int& deltaL); 
+     int calc_r_difference(int& deltaR);
 
-     int deadband(int joystick_value);
-
-     int speedCap(int control_value);
-
-     void logAnalog();
-
-     int calc_l_difference(int & deltaL);
-     int calc_r_difference(int & deltaR);
-
-     void set_t(float iT){ t = iT;}
+     void set_scalar(float iScalar){ scalar = iScalar;}
 
 
      // Default ctor
-
      Analog_Control() :
      powerLX(0),
      powerLY(0),
@@ -135,7 +127,6 @@ class DriverProfile : public ToggleClass {
      powerRY(0),
 
      m_assist_control(0),
-  //   m_difference(0),
      m_joy_difference(0),
      m_max_speed(0)
      {}

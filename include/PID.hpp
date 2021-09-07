@@ -38,8 +38,6 @@ private:
 
   void reinit(double kp, double kd, double ki, double threshold, int maxvel, uint32_t settle, uint32_t max_time);
 
-
-
   double calculateErr(double ierror);
   double calculateFailsafe(std::uint32_t i_max_time);
   double calculateTimer(std::uint32_t isettle, double ierror);
@@ -47,10 +45,7 @@ private:
   double calculate(double target, double pv);
 
 
-
-
   void setThreshold(double ithreshold);
-  //void setTimeout(uint32_t itimeout);
   void setSettle(uint32_t settle);
   void setInvoke(bool iinvoke);
 
@@ -58,7 +53,6 @@ private:
   void setIntegralLimit(float ilimit);
 
   void setMaxVel(float ivel);
-
 
   double getError();
   double getTimer();
@@ -70,7 +64,6 @@ private:
   void reset();
 
   void logTimer();
-
 
 
   PID(double kP, double kD, double kI, double threshold, double maxVel, uint32_t settle, uint32_t max_time) :
